@@ -71,7 +71,9 @@
         
         //국가코드 외부에서 가지고오고 국가 선택시 변경이벤트
         var countryCode; 
-        var phone_number;            
+        var phone_number; 
+        var code;//서버에서 온 인증번호   
+        var AuthTimer;        
          $('#CountryCode').empty();
          $('#CountryCode').append('<option selected="true" disabled>국가코드 선택</option>');        
          $('#CountryCode').prop('selectedIndex', 0);        
@@ -111,12 +113,63 @@
                     })                  
                     .then(function(res) {   
                         console.log(res.data);
-                        alert("인증번호가 발송되었습니다. 문자를 확인해 주세요");                     
-                        $('#authTime').show();  
+                        alert("인증번호가 발송되었습니다. 문자를 확인해 주세요");     
+                        code = res.data.verification_code;                
+                        $('#authTime').show();                         
 
                         //3분인증용 카운트다운
-                        //인증용 카운트다운 함수및 객체
-                        function $ComTimer(){}
+                        AuthTimer = new $ComTimer()
+                        AuthTimer.comSecond = 180;//10초 카운트다운(180초로 변경할것)
+                        AuthTimer.fnCallback = function(){alert("다시인증을 시도해주세요.")}
+                        AuthTimer.timer =  setInterval(function(){AuthTimer.fnTimer()},1000);
+                        AuthTimer.domId = $("#authDo");
+                                               
+                    })
+                    .catch(function (request, status, error){                          
+                        var msg = "ERROR<br><br>"
+                        msg += request.status + "<br>" + request.responseText + "<br>" + error;
+                        console.log(msg);    
+                        $('#phoneError').modal('show'); 
+                        $('#phone-number-check').val('');
+                    })                
+            }else{
+                $('p.desc > span').show(); 
+            }
+        });
+        //2단계 : 인증 및 로그인  
+          
+            $('#authDo').click(function(){                  
+                var verification_code = $('#resAuthen').val();
+                if(verification_code == code){
+                    console.log(phone_number+"/////"+$('#resAuthen').val());  
+                    AuthTimer.fnStop();                       
+                    axios({
+                        method: "POST",
+                        url: "https://development.api.allegion.imgate.co.kr/v1/user/session",
+                        dataType:"json",     
+                        data:{
+                                "phone_number": phone_number,
+                                "verification_code": verification_code
+                            }
+                        })                                               
+                        .then(function(res) {                         
+                                console.log(res);                                 
+                                location.href="/"
+                        })
+                        .catch(function (request, status, error){  
+                                msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                                console.log(msg);                           
+                        })
+                }else if(!verification_code){
+                    $('#resAuthen').attr('placeholder', '전달받은 인증번호를 입력해 주세요').val('');  
+                }else{
+                    $('#resAuthen').attr('placeholder', '인증번호가 틀렸습니다. 다시 입력해 주세요').val('');                       
+                }                         
+            });
+      
+
+     //인증용 카운트다운 함수및 객체
+     function $ComTimer(){}
                         $ComTimer.prototype = {
                             comSecond : "",
                             fnCallback : function(){},
@@ -136,62 +189,10 @@
                                     // alert("인증시간이 초과하였습니다. 다시 인증해주시기 바랍니다.")
                                 }
                             },
-                            fnStop : function(){
-                                clearInterval(this.timer);
+                            fnStop : function(){                               
+                                   clearInterval(this.timer);
                             }
-                        }
-                        var AuthTimer = new $ComTimer()
-                        AuthTimer.comSecond = 10;//10초 카운트다운(180초로 변경할것)
-                        AuthTimer.fnCallback = function(){alert("다시인증을 시도해주세요.")}
-                        AuthTimer.timer =  setInterval(function(){AuthTimer.fnTimer()},1000);
-                        AuthTimer.domId = $("#authDo");
-
-                        authDo(code); 
-                    })
-                    .catch(function (request, status, error){                          
-                        var msg = "ERROR<br><br>"
-                        msg += request.status + "<br>" + request.responseText + "<br>" + error;
-                        console.log(msg);    
-                        $('#phoneError').modal('show'); 
-                        $('#phone-number-check').val('');
-                    })                
-            }else{
-                $('p.desc > span').show(); 
-            }
-        });
-        //2단계 : 인증 및 로그인
-        function authDo(code){
-            $('#authDo').click(function(){  
-                var verification_code = $('#resAuthen').val();
-                if(verification_code == code){
-                    console.log(phone_number+"/////"+$('#resAuthen').val());                         
-                    axios({
-                        method: "POST",
-                        url: "https://development.api.allegion.imgate.co.kr/v1/user/session",
-                        dataType:"json",     
-                        data:{
-                                "phone_number": phone_number,
-                                "verification_code": verification_code
-                            }
-                        })                                               
-                        .then(function(res) {                         
-                                console.log(res); 
-                                // location.href="/"
-                        })
-                        .catch(function (request, status, error){  
-                                msg = request.status + "<br>" + request.responseText + "<br>" + error;
-                                console.log(msg);                           
-                        })
-                }else if(!verification_code){
-                    $('#resAuthen').attr('placeholder', '전달받은 인증번호를 입력해 주세요').val('');  
-                }else{
-                    $('#resAuthen').attr('placeholder', '인증번호가 틀렸습니다. 다시 입력해 주세요').val('');                       
-                }                         
-            });
-        }
-
-        
-        
+                        }         
 
 
 });
