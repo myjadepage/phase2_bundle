@@ -1,5 +1,16 @@
 {
-    "AD": {
+  "KR": {
+    "name": "South Korea",
+    "native": "대한민국",
+    "phone": "82",
+    "continent": "AS",
+    "capital": "Seoul",
+    "currency": "KRW",
+    "languages": [
+      "ko"
+    ]
+  },  
+  "AD": {
       "name": "Andorra",
       "native": "Andorra",
       "phone": "376",
@@ -1388,18 +1399,7 @@
       "languages": [
         "ko"
       ]
-    },
-    "KR": {
-      "name": "South Korea",
-      "native": "대한민국",
-      "phone": "82",
-      "continent": "AS",
-      "capital": "Seoul",
-      "currency": "KRW",
-      "languages": [
-        "ko"
-      ]
-    },
+    }, 
     "KW": {
       "name": "Kuwait",
       "native": "الكويت",
