@@ -1,0 +1,236 @@
+
+<%- include('inc/head') %> 
+<%- include('inc/sidebar') %>
+<%- include('inc/nav') %>
+        <div class="content">
+            <div class="">
+                <div class="row">
+                        <div class="col-md-6">
+                                <div class="card card-h2">
+                                    <div class="card-header">
+                                        <h5 class="card-title">신규 단지 정보 입력</h5>
+                                    </div> 
+                                    <div class="card-body">
+                                        <form id="item_form" data-parsley-validate>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label>단지 정보 입력</label>
+                                                        <input type="text" class="form-control" placeholder="신규 단지 이름 등록" value="" id="name" name="name">
+                                                    </div>
+                                                </div>                                                        
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">                                                           
+                                                        <div class="row form-group">
+                                                            <div class="col-md-6">
+                                                                <label>단지 지역 정보 입력</label>
+                                                                <select class="form-control" id="CountryName" name="CountryName"><select> 
+                                                            </div> 
+                                                            <div class="col-md-6 pr-1">
+                                                                <label class="txt_hidden">도시선택</label>
+                                                                <input type="text" class="form-control" placeholder="도시 입력 예)서울" value="" id="local" name="local">
+                                                                <!-- <label class="txt_hidden">도시선택</label>                                                                                                                             
+                                                                <select class="form-control" id="CountryCity"><select> -->
+                                                            </div> 
+                                                            <div class="col-md-12 pl-1 pr-1">                                                                        
+                                                                <select class="form-control" id="timeZone" name="timeZone"><select>                                                                                                                                                                                            
+                                                            </div>
+                                                            <div class="col-md-12 pl-1">                                                                        
+                                                                <input type="text" class="form-control" placeholder="상세 주소 입력" value="" id="address" name="address">
+                                                            </div>
+                                                         </div>  
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="propertyType">단지 타입 선택</label>
+                                                        <select class="form-control" id="type" name="type">
+                                                            <option>Hospitality</option>
+                                                            <option>Residential</option>
+                                                            <option>Office</option>
+                                                        <select>                                                               
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">  
+                                                        <label>단지 이미지 등록</label>
+                                                        <input type="file" class="form-control" id="hotel_logo" placeholder="배경 이밎 첨부파일 등록 [png,jpg]" value="">
+
+                                                        <div class="img_insert">
+                                                            <i class="icon image_state"></i>                                                            
+                                                            <span>
+                                                                imagenamadadadasdasdasdasdadasdase.png<br><small>100.1MB</small>
+                                                            </span>
+                                                            <button type="button" rel="이미지삭제" title="Remove" class="btn btn-simple btn-link">
+                                                                <i class="icon trash"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>  
+                                       
+                                    </div>
+                                </div>
+                        </div>
+
+                        <div class="col-md-6">
+                                <div class="card  card-h2">
+                                    <div class="card-header">
+                                        <h5 class="card-title">공용도어 정보 입력</h5>                                      
+                                    </div> 
+                                    <div class="card-body">
+                                            <div class="table-full-width">                                               
+                                                   <table class="table" id="newDoorList">
+                                                        <colgroup>
+                                                            <col width="10%">
+                                                            <col width="*">
+                                                            <col width="25%">
+                                                        </colgroup>
+                                                        <thead>
+                                                            <tr>
+                                                                <th colspan="2" >
+                                                                    <div class="form-check">
+                                                                        <label class="form-check-label" style="line-height: 20px;">
+                                                                            <input class="form-check-input" type="checkbox" value="" disabled>
+                                                                            <span class="form-check-sign"></span>                                                                            
+                                                                        </label>
+                                                                        <span>1 selected</span>
+                                                                        <button type="button" title="Remove" id="delTrash" class="btn btn-simple btn-link" onClick="fn_delRow('chkObject');">
+                                                                            <i class="icon trash"></i>
+                                                                        </button>
+                                                                    </div>                                                                   
+                                                                </th>                                                               
+                                                                <th class="text-right">total: <strong class="text-primary">0</strong></th>
+                                                            </tr>
+                                                        </thead> 
+                                                        
+                                                        <tbody>
+                                                                <tr class="diplayone">
+                                                                    <td colspan="3">
+                                                                        <div class="con_default">
+                                                                            <i class="icon m_issuekey"></i>
+                                                                            <h4 class="text-center text-info">
+                                                                                ‘ 아직 등록된 공용 도어가 없습니다 ’<br>
+                                                                                <span>도어락 정보를 등록하여 서비스를 시작해 보세요. </span>
+                                                                            </h4>
+                                                                        </div>                                                                 
+                                                                    </td>
+                                                                </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                    </div>
+                                    <div class="card-footer ">
+                                            <hr>
+                                            <div class="state form-inline">                                                  
+                                               <input type="text" class="form-control" id="newDoorName" placeholder="공용도어 이름 입력">                                                            
+                                               <button type="button" class="btn btn-primary" id="btnDoorName">공용도어 추가</button>
+                                               <!-- <a role="button" data-toggle="modal" data-target="#newDoorDone" class="btn btn-primary" id="newPropertyDoor">공용도어 추가</a> -->
+                                            </div>
+                                        </div>
+                                </div>
+                        </div>
+                    </form>
+                        <div class="col-md-12">
+                            <button type="reset" class="btn btn-default btn-fill shadow pull-left">취소</button>
+                            <!-- <button type="submit" class="btn btn-info btn-fill shadow">단지생성</button> -->
+                            <button  class="btn btn-primary btn-fill pull-right shadow" id="btnItem">단지 생성하기</a>
+                               <!-- href="/propery_new_done" -->
+                        </div>
+
+                </div>
+            </div>
+        </div>
+<% include inc/footer %>
+<% include inc/modal %>
+<% include inc/bottom %>
+
+<script>
+    //단지생성하기
+    $('#btnItem').on('click',function(){
+        console.log($('#item_form').serialize());
+        $.ajax({
+            url :'/property',
+            dataType :'json',
+            type:'POST',
+            data:$('#item_form').serialize(),
+            done : function (res) {
+                console.log(res);
+            },
+            fail: function(jqXHR, textStatus, errorThrown){
+                console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
+            }  
+        });
+    });
+
+
+    //국가선택
+    $('#CountryName').empty();
+    $('#CountryName').append('<option selected="true" disabled>국가 선택</option>');
+    $('#CountryName').prop('selectedIndex', 0);  
+    $.ajax({
+        url : '/countries', //json 불러오기 router이용해서 불러옴
+        dataType :'json',
+        success : function (data) {
+            console.log(data);
+            $.each(data, function (key, entry) {                
+                $('#CountryName').append($('<option></option>').attr('value', entry.name).text(entry.name));                             
+            })
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+          console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
+        }    
+    });
+
+    // 타임존선택 timeZone
+    $('#timeZone').empty();
+    $('#timeZone').append('<option selected="true" disabled>타임존 선택</option>');
+    $('#timeZone').prop('selectedIndex', 0);  
+    $.ajax({
+        url : '/timezone', //json 불러오기 router이용해서 불러옴
+        dataType :'json',
+        success : function (data) {
+            console.log(data);
+            $.each(data, function (key, entry) { 
+                $('#timeZone').append($('<option></option>').attr('value', entry.value).text(entry.text)); 
+            })
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+          console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
+        }    
+    });
+
+
+    // 공용도어락 추가
+    $('#btnDoorName').click(function(){
+        var doorname = $('#newDoorName').val();             
+        if($('#newDoorName').val() !== ""){     
+            $("#newDoorDone").modal('show');
+            $('#newDoorList > tbody >tr.diplayone').remove();        
+            var rowItem = '<tr>'
+            rowItem += '<td scope="col"><div class="form-check"><label class="form-check-label"><input class="form-check-input" type="checkbox" name="chkObject" value=""><span class="form-check-sign"></span></label></div></td><td>'
+            + doorname + '</td><td class="td-actions text-right"><button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-target="#Editpropertyerror" class="btn btn-info btn-simple btn-link"><i class="fa fa-edit"></i></button></td>'
+            rowItem += '<tr>';
+            $('#newDoorList >tbody').append(rowItem);
+            $('#newDoorName').val('');
+        }else{
+            alert("공용도어의 이름을 입력해 주세요");
+        }
+    });
+    // 공용도어락 삭제
+    function fn_delRow(chkObjNm) { 
+        if ($("input[name="+chkObjNm+"]").is(":checked")){ 
+            if (confirm("삭제 하시겠습니까?")) { 
+                for(var i=$("[name='"+chkObjNm+"']:checked").length-1; i>-1; i--){ 
+                   $("[name='"+chkObjNm+"']:checked").eq(i).closest("tr").remove();
+                } 
+            } 
+         } else { 
+            alert("선택된 데이터가 없습니다.");  
+         }       
+    }
+</script>

@@ -1,0 +1,186 @@
+<%- include('inc/head') %> 
+<%- include('inc/sidebar') %>
+<%- include('inc/nav') %>
+
+
+        <div class="content">
+            <div class="">
+                <div class="row">
+                        <div class="col-md-6">
+                                <div class="card card-h2">
+                                    <div class="card-header">
+                                        <h5 class="card-title">스텝 키 발급</h5>
+                                    </div> 
+                                    <div class="card-body">
+                                        <form>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label>스텝 키 선택</label>
+                                                        <select class="form-control">
+                                                            <option>콘도미디엄</option>
+                                                            <option>빌라</option>
+                                                            <option>카라반</option>
+                                                        </select>                                                   
+                                                    </div>                                                                                              
+                                                    <div class="row form-group">
+                                                            <div class="col-md-12">
+                                                                <label>스텝 선택</label>
+                                                                <select class="form-control">
+                                                                    <option>스텝 선택</option>
+                                                                    <option>빌라</option>
+                                                                    <option>카라반</option>
+                                                                </select> 
+                                                            </div>                                                                                                                 
+                                                    </div>
+                                                    <div class="row form-group">
+                                                            <div class="col-md-12">
+                                                                <label>빌딩 선택</label>
+                                                                <select class="form-control">
+                                                                    <option>스텝키 선택</option>
+                                                                    <option>빌라</option>
+                                                                    <option>카라반</option>
+                                                                </select> 
+                                                            </div>                                                                                                                 
+                                                    </div>
+                                                    <div class="row">
+                                                            <div class="col-md-12">                                                           
+                                                                    <div class="row form-group">
+                                                                        <div class="col-md-6">
+                                                                            <label>사용기간 선택</label>
+                                                                            <select class="form-control" id="propertyType">
+                                                                                <option>시작날짜</option>                                                                               
+                                                                            <select> 
+                                                                        </div> 
+                                                                        <div class="col-md-6 pr-1">
+                                                                            <label class="txt_hidden">종료날짜</label>                                                                                                                             
+                                                                            <select class="form-control" id="propertyType">
+                                                                                <option>종료날짜</option>                                                                              
+                                                                            <select>
+                                                                        </div>                                                                      
+                                                                     </div>  
+                                                            </div>
+                                                        </div>
+
+
+
+                                                </div>
+                                            </div>                                          
+                                        </form>
+                                    </div>
+                                </div>
+                        </div>
+
+                        <div class="col-md-6">
+                                <div class="card  card-h2">
+                                    <div class="card-header">
+                                        <h5 class="card-title">객실 선택</h5>                                      
+                                    </div> 
+                                    <div class="card-body">
+                                            <div class="table-full-width-staffkey">                                               
+                                                   <table class="table">
+                                                        <colgroup>
+                                                            <col width="10%">
+                                                            <col width="*">
+                                                            <col width="15%">
+                                                          
+                                                        </colgroup>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>
+                                                                    <div class="form-check">
+                                                                        <label class="form-check-label">
+                                                                            <input class="form-check-input" type="checkbox" value="">
+                                                                            <span class="form-check-sign"></span>                                                                            
+                                                                        </label>
+                                                                       
+                                                                    </div>
+                                                                   
+                                                                </th>
+                                                                <th>
+                                                                        <span>1 selected</span>
+                                                                      
+                                                                        <button role="button" data-toggle="modal" data-target="#Delproperty"  class="btn btn-simple btn-link">
+                                                                                <i class="icon trash"></i>
+                                                                        </button>
+                                                                </th>                                                               
+                                                                <th class="text-right">total: <strong class="text-primary">4</strong></th>
+                                                            </tr>
+                                                        </thead> 
+                                                        
+                                                      <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="form-check">
+                                                                        <label class="form-check-label">
+                                                                            <input class="form-check-input" type="checkbox" value="">
+                                                                            <span class="form-check-sign"></span>
+                                                                        </label>
+                                                                    </div>
+                                                                </td>
+                                                                <td colspan="2">Room Name 01</td>                                                               
+                                                            </tr>
+                                                            <tr>
+                                                                <td >
+                                                                    <div class="form-check">
+                                                                        <label class="form-check-label">
+                                                                            <input class="form-check-input" type="checkbox" value="" checked>
+                                                                            <span class="form-check-sign"></span>
+                                                                        </label>
+                                                                    </div>
+                                                                </td>
+                                                                <td  colspan="2">Room Name 01</td>                                                             
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="form-check">
+                                                                        <label class="form-check-label">
+                                                                            <input class="form-check-input" type="checkbox" value="" checked>
+                                                                            <span class="form-check-sign"></span>
+                                                                        </label>
+                                                                    </div>
+                                                                </td>
+                                                                <td  colspan="2">Room Name 01</td>                                                             
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="form-check">
+                                                                        <label class="form-check-label">
+                                                                            <input class="form-check-input" type="checkbox" checked>
+                                                                            <span class="form-check-sign"></span>
+                                                                        </label>
+                                                                    </div>
+                                                                </td>
+                                                                 <td  colspan="2">Room Name 01</td>                                                             
+                                                            </tr>                                                                                       
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                    </div>
+                                    <div class="card-footer ">
+                                            <hr>
+                                            <div class="state form-group">  
+                                                    <div class="form-check">
+                                                            <label class="form-check-label">
+                                                                <input class="form-check-input" type="checkbox" value="" checked>
+                                                                <span class="form-check-sign"></span>
+                                                            </label>
+                                                            <span>신규 발급하기</span>
+                                                    </div>                                                
+                                                    <h4>체크 박스를 선택하면 기존에 사용중인  키는 더이상 사용할 수 없습니다</h4>
+                                               <a role="button" data-toggle="modal" data-target="#staffKeyDone" class="btn btn-fill btn-primary">마스터키 발급</a>
+                                            </div>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="col-md-12">
+                            <button type="reset" class="btn btn-default btn-fill shadow pull-left">나가기</button>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+<% include inc/footer %>
+<% include inc/modal %>
+<% include inc/bottom %>
+

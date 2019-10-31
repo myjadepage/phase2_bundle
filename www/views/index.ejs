@@ -1,0 +1,94 @@
+<%- include('inc/head') %> 
+<%- include('inc/sidebar') %>
+<%- include('inc/nav') %>
+
+          <div class="content">
+              <div class="row">                                      
+                      <%- include('inc/search') %><!-- 검색 -->
+                      <% if (data.length > 0) { %>
+                      <div class="slide_wrap">
+                        <ul id="property_list">	                                                
+                      <% for(var property of data) { %>					
+                                <li class="col-md-4">                               
+                                        <div class="card shadow card-s2">
+                                                <div class="image">
+                                                    <img src="assets/img/img_building.jpg" alt="">
+                                                </div>
+                                                <div class="content">
+                                                  <a href="/property_del/<%= property.proId%>"> <h4 class="title"><%=property.name %></h4></a>
+                                                    <p class="description">
+                                                        <%=property.nation %>/<%=property.local %><br>
+                                                        <%=property.addr %>
+                                                    </p>                                 
+                                                </div>
+                                                <!-- 클릭시 모달 단지수정/삭제 -->                                                       
+                                                <a class="setting icon"  data-proper-id="<%= property.proId %>" data-toggle="modal" data-target="#propertySetting" class="open-properDial" role="button" ></a>  
+                                              
+                                        </div> 
+                                
+                                </li>
+                      <% } %>  
+                                <li  class="col-md-4">
+                                        <div class="card card_default card-s2">
+                                            <div class="image">
+                                                <i class="icon"></i>
+                                            </div>
+                                            <div class="content">
+                                                <h4 class="title">
+                                                    <a href="/property_new"  class="icon"></a>
+                                                </h4>
+                                                <p class="description">
+                                                    새로운 단지를 신규로 생성합니다.
+                                                </p>                                 
+                                            </div>
+                                        </div>
+                                </li>
+                        </ul>  
+                        <nav class="bx-control">
+                            <a href='#' class='bxPrev'></a>
+                            <a href='#' class='bxNext'></a>
+                        </nav>
+                      </div>
+
+                      <% } else { %>
+                      <div class="con_default">
+                        <i class="icon building"></i>
+                        <h4 class="text-info">'아직 생성된 단지 정보가 없습니다.'</h4>
+                        <p>단지를 생성하여 놀라운 서비스를 시작해 보세요. </p>
+                        <a href="/property_new" class="btn btn-primary btn-fill btn-wd shadow" role="button">단지 생성하기</a>
+                      </div>
+                      <% } %>
+              </div>
+          </div>
+         
+<% include inc/footer %>
+<% include inc/modal %>   
+<% include inc/bottom %>
+
+    <script type="text/javascript">
+        $('#propertySetting').on('show.bs.modal', function(e) {
+             var proId = $(e.relatedTarget).data('proper-id');
+             $(e.currentTarget).find('.pro_edit').prop('href','/property_edit');
+             $(e.currentTarget).find('.pro_del').prop('href','/property_del/'+proId);
+         });
+    
+         $.ajax({
+            url: "https://dev.api.hospitality.imgate.co.kr/v2/multifamily/hotels",
+            type: "GET",
+            cache:false,
+            timeout : 30000, 
+            beforeSend : function(xhr){
+                xhr.setRequestHeader("Authorization", "Bearer mF_9.B5f-4.1JqM");
+                xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            },                
+            success: function(res) {   
+                console.log(res);                       
+            },
+            error: function (request, status, error){    
+                var msg = "ERROR<br><br>"
+                msg += request.status + "<br>" + request.responseText + "<br>" + error;
+                console.log(msg);   
+            }
+                });
+     </script>     
+

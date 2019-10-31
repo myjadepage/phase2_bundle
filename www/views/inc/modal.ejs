@@ -1,0 +1,394 @@
+<!-- property setting Modal -->
+<div class="modal fade modal-primary" id="propertySetting" tabindex="-1" role="dialog" aria-labelledby="propertySetting" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                   <h5>단지설정</h5>
+                </div>
+                <div class="modal-body setting_choice">                                       
+                    <h6>등록된 단지 정보를 수정 또는 단지 삭제를 선택해 주세요</h6>
+                    <a href="/property_edit" class="pro_edit"><i class="icon edit"></i><p>단지수정</p></a>
+                    <a href="/property_del"  class="pro_del"><i class="icon del"></i><p>단지삭제</p></a>
+                </div>
+                <div class="modal-footer">                   
+                    <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--  End Modal -->
+<!-- 단지 삭제 Modal -->
+<div class="modal fade modal-primary" id="Delproperty" tabindex="-1" role="dialog" aria-labelledby="Delproperty" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                   <h5>알림</h5>
+                </div>
+                <div class="modal-body setting_choice">  
+                    <i class="icon trash"></i>                                     
+                    <h6>센트럴 아이파크2</h6>   
+                    <p>공용도어 삭제가 성공적으로 완료되었습니다.</p>              
+                </div>
+                <div class="modal-footer">                   
+                    <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+</div>
+<!--  End Modal -->
+<!-- 단지 삭제 오류Modal -->
+<div class="modal fade modal-primary" id="DelpropertyError" tabindex="-1" role="dialog" aria-labelledby="DelpropertyError" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                   <h5>알림</h5>
+                </div>
+                <div class="modal-body setting_choice">  
+                    <i class="icon warning"></i>                                     
+                    <h6>단지이름 단지이름 프룽지옹</h6>   
+                    <p>현재 단지에 사용중 인 키가 있습니다.<br>사용중인 키를 삭제후 다시 진행 바랍니다.</p>              
+                </div>
+                <div class="modal-footer">                   
+                    <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--  End Modal -->
+
+<!-- public door done Modal -->
+<div class="modal fade modal-primary" id="newDoorDone" tabindex="-1" role="dialog" aria-labelledby="newPropertyDone" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                   <h5>알림</h5>
+                </div>
+                <div class="modal-body setting_choice">  
+                    <i class="icon confirm"></i>                                     
+                    <h6>공용도어 등록이 성공적으로 완료 되었습니다.</h6>                 
+                </div>
+                <div class="modal-footer">                   
+                    <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--  End Modal -->
+<!-- 공용도어 등록완료 Modal -->
+<div class="modal fade modal-primary" id="propertyDone" tabindex="-1" role="dialog" aria-labelledby="propertyDone" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                   <h5>알림</h5>
+                </div>
+                <div class="modal-body setting_choice">  
+                    <i class="icon confirm"></i>                                     
+                    <h6>공용도어푸르지오앞문</h6>      
+                    <p>공용도어 등록이 성공적으로 완료 되었습니다.</p>           
+                </div>
+                <div class="modal-footer">                   
+                    <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--  End Modal -->
+<!-- 공용도어 수정완료 Modal -->
+<div class="modal fade modal-primary" id="propertyDone" tabindex="-1" role="dialog" aria-labelledby="propertyDone" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                   <h5>알림</h5>
+                </div>
+                <div class="modal-body setting_choice">  
+                    <i class="icon confirm"></i>                                     
+                    <h6>공용도어푸르지오앞문</h6>      
+                    <p>공용도어 등록이 성공적으로 완료 되었습니다.</p>           
+                </div>
+                <div class="modal-footer">                   
+                    <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--  End Modal -->
+
+<!-- 빌딩 수정 오류 Modal -->
+<div class="modal fade modal-primary" id="Editpropertyerror" tabindex="-1" role="dialog" aria-labelledby="Editpropertyerror" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                   <h5>알림</h5>
+                </div>
+                <div class="modal-body setting_choice">  
+                    <i class="icon warning"></i>                                     
+                    <h6>동일한 이름의 빌딩이 존재 합니다.</h6>  
+                    <p>동일한 이름의 빌딩이 등록되어 있습니다.<br>빌딩이름을 확인해 주세요.</p>               
+                </div>
+                <div class="modal-footer">                   
+                    <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--  End Modal -->
+
+<!-- 빌딩 수정완료 Modal -->
+<div class="modal fade modal-primary" id="editBuilingDone" tabindex="-1" role="dialog" aria-labelledby="editBuilingDone" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                   <h5>알림</h5>
+                </div>
+                <div class="modal-body setting_choice">  
+                    <i class="icon confirm"></i>                                     
+                    <h6>공용도어푸르지오앞문</h6>      
+                    <p>빌딩 정보 수정이 성공적으로<br>완료 되었습니다.</p>           
+                </div>
+                <div class="modal-footer">                   
+                    <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--  End Modal -->
+
+<!-- 빌딩 등록 오류 Modal -->
+<div class="modal fade modal-primary" id="Editpropertyerror" tabindex="-1" role="dialog" aria-labelledby="Editpropertyerror" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                   <h5>알림</h5>
+                </div>
+                <div class="modal-body setting_choice">  
+                    <i class="icon warning"></i>                                     
+                    <h6>동일한 이름의 빌딩이 존재 합니다.</h6>  
+                    <p>동일한 이름의 빌딩이 등록되어 있습니다.<br>빌딩이름을 확인해 주세요.</p>               
+                </div>
+                <div class="modal-footer">                   
+                    <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--  End Modal -->
+<!-- 빌딩 등록완료 Modal -->
+<div class="modal fade modal-primary" id="editBuilingDone" tabindex="-1" role="dialog" aria-labelledby="editBuilingDone" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                   <h5>알림</h5>
+                </div>
+                <div class="modal-body setting_choice">  
+                    <i class="icon confirm"></i>                                     
+                    <h6>공용도어푸르지오앞문</h6>      
+                    <p>빌딩 정보 수정이 성공적으로<br>완료 되었습니다.</p>           
+                </div>
+                <div class="modal-footer">                   
+                    <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--  End Modal -->
+
+<!--  도어락 목록 삭제 Modal -->
+<div class="modal fade modal-primary" id="DelDoorlock" tabindex="-1" role="dialog" aria-labelledby="DelDoorlock" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                   <h5>알림</h5>
+                </div>
+                <div class="modal-body setting_choice">  
+                    <i class="icon trash"></i>                                     
+                    <h6>도어락 이름 앞뒷문</h6>      
+                    <p>내용 삭제가 완료되었습니다.</p>           
+                </div>
+                <div class="modal-footer">                   
+                    <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--  End Modal -->
+
+<!--  스텝 등록 완료 Modal -->
+<div class="modal fade modal-primary" id="newstaffDone" tabindex="-1" role="dialog" aria-labelledby="newstaffDone" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                   <h5>알림</h5>
+                </div>
+                <div class="modal-body setting_choice">  
+                    <i class="icon confirm"></i>                                     
+                    <h6>스탭이름</h6>     
+                    <p>스탭 등록이 성공적으로 완료 되었습니다.</p>            
+                </div>
+                <div class="modal-footer">                   
+                    <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--  End Modal -->
+<!-- 스텝등록 오류 Modal -->
+<div class="modal fade modal-primary" id="newstafferror" tabindex="-1" role="dialog" aria-labelledby="newstafferror" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                   <h5>알림</h5>
+                </div>
+                <div class="modal-body setting_choice">  
+                    <i class="icon warning"></i>                                     
+                    <h6>스탭 등록 오류</h6>  
+                    <p>동일한 스탭이 등록 되어 있습니다<br>확인 후 다시 등록 바랍니다</p>               
+                </div>
+                <div class="modal-footer">                   
+                    <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--  End Modal -->
+
+<!--스텝정보상세보기Modal -->
+<div class="modal fade modal-primary" id="viewStaff" tabindex="-1" role="dialog" aria-labelledby="viewStaff" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                   <h5>스텝 정보 상세</h5>
+                </div>
+                <div class="modal-body">                      
+                    <dl>
+                        <dt>Staff name</dt>
+                        <dd>
+                            <label>연락처</label>
+                            <span>+82-10-9999-8888</span>
+                        </dd>
+                        <dd>
+                            <label>스텝 레벨</label>
+                            <span>Master</span>
+                        </dd>
+                        <dd>
+                            <label>등록일</label>
+                            <span>2019-10-01</span>
+                        </dd>
+                        <dd>
+                            <label>보유키</label>
+                            <span>
+                                <strong>마스터키(사용기간 : 2019-10-01 ~ 2099-10-01)</strong>
+                                <strong>스텝키(사용기간 : 2019-10-01 ~ 2099-10-01)</strong>                                
+                            </span>
+                        </dd>
+                        <dd>
+                            <label>메모</label>
+                            <span>미국 시설 단지 마스터</span>
+                        </dd>
+                    </dl>
+                                  
+                </div>
+                <div class="modal-footer">                   
+                    <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--  End Modal -->
+
+<!-- 스텝 삭제 오류 Modal -->
+<div class="modal fade modal-primary" id="DelstaffError" tabindex="-1" role="dialog" aria-labelledby="DelstaffError" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                   <h5>알림</h5>
+                </div>
+                <div class="modal-body setting_choice">  
+                    <i class="icon warning"></i>                                     
+                    <h6>사용중인 스탭키를 삭제해 주세요.</h6>    
+                    <p>삭제를 원하는 스탭의 사용중인 키를 [ 스탭키  발급 내역 ]<br>에서 삭제를 진행해 주세요.</p>                
+                </div>
+                <div class="modal-footer">                   
+                    <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--  End Modal -->
+<!-- 스텝 삭제 Modal -->
+<div class="modal fade modal-primary" id="Delstaff" tabindex="-1" role="dialog" aria-labelledby="Delstaff" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                   <h5>알림</h5>
+                </div>
+                <div class="modal-body setting_choice">  
+                    <i class="icon trash"></i>                                     
+                    <h6>스텝이름이돌찬</h6> 
+                    <p>스텝 삭제가 완료되었습니다.</p>                
+                </div>
+                <div class="modal-footer">                   
+                    <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--  End Modal -->
+<!-- 스텝키 발급완료 Modal -->
+<div class="modal fade modal-primary" id="staffKeyDone" tabindex="-1" role="dialog" aria-labelledby="staffKeyDone" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                   <h5>알림</h5>
+                </div>
+                <div class="modal-body setting_choice">  
+                    <i class="icon confirm"></i>                                     
+                    <h6>스탭키 발급 완료</h6>      
+                    <p>[ 스탭이름 ] 에게  [ 스탭키 종류 ] 발급이 완료 되었습니다</p>           
+                </div>
+                <div class="modal-footer">                   
+                    <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--  End Modal -->
+
+
+<!-- 전화번호 입력 오류 Modal -->
+<div class="modal fade modal-primary" id="phoneError" tabindex="-1" role="dialog" aria-labelledby="phoneError" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                   <h5>알림</h5>
+                </div>
+                <div class="modal-body setting_choice">  
+                    <i class="icon warning"></i>   
+                    <p class="desc text-primary">입력한 전화번호 정보를 찾을 수 없습니다.<br>
+                            입력정보 확인후 다시 인증번호를 요청해 주세요.</p>               
+                </div>
+                <div class="modal-footer">                   
+                    <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--  End Modal -->
+<!-- 로그인중 Modal -->
+<div class="modal fade modal-primary" id="logining" tabindex="-1" role="dialog" aria-labelledby="logining" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                   <h5>알림</h5>
+                </div>
+                <div class="modal-body setting_choice">  
+                    <img src="assets/img/loading.svg" width="180px">
+                    <p class="desc text-primary">로그인 진행중 입니다<br>
+                            잠시만 기다려 주세요</p>               
+                </div>              
+            </div>
+        </div>
+    </div>
+    
+<!--  End Modal -->
+

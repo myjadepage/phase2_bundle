@@ -1,0 +1,175 @@
+<%- include('inc/head') %>
+<%- include('inc/sidebar') %>
+<%- include('inc/nav') %>
+
+
+        <div class="content">
+            <div class="">
+                <div class="row">
+                        <div class="col-md-6">
+                                <div class="card  card-h2">
+                                    <div class="card-header">
+                                        <h5 class="card-title">빌딩 정보 등록</h5>
+                                    </div> 
+                                    <div class="card-body">
+                                        <form>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label>빌딩 이름 입력</label>
+                                                        <input type="text" class="form-control" placeholder="" value="푸르지오1단지">
+                                                    </div>
+                                                </div>                                                        
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">                                                           
+                                                        <div class="row form-group">
+                                                            <div class="col-md-12">
+                                                                <label>빌딩 타입 선택</label>
+                                                                <select class="form-control">
+                                                                    <option>콘도미디엄</option>
+                                                                    <option>빌라</option>
+                                                                    <option>카라반</option>
+                                                                <select> 
+                                                            </div>                                                                                                                 
+                                                         </div>  
+                                                </div>
+                                            </div>                                          
+                                        </form>
+                                    </div>
+                                </div>
+                        </div>
+
+                        <div class="col-md-6">
+                                <div class="card  card-h2">
+                                    <div class="card-header">
+                                        <h5 class="card-title">공용도어 정보 입력</h5>                                      
+                                    </div> 
+                                    <div class="card-body">
+                                            <div class="table-full-width">                                               
+                                                   <table class="table">
+                                                        <colgroup>
+                                                            <col width="10%">
+                                                            <col width="*">
+                                                            <col width="25%">
+                                                        </colgroup>
+                                                        <thead>
+                                                            <tr>
+                                                                <th colspan="2">
+                                                                    <div class="form-check">
+                                                                        <label class="form-check-label" style="line-height: 20px;">
+                                                                            <input class="form-check-input" type="checkbox" value="">
+                                                                            <span class="form-check-sign"></span>                                                                            
+                                                                        </label>
+                                                                        <span>1 selected</span>
+                                                                        <!-- <button type="button" rel="이미지삭제" title="Remove" class="btn btn-simple btn-link">
+                                                                            <i class="icon trash"></i>
+                                                                        </button> -->
+                                                                        <button role="button" data-toggle="modal" data-target="#Delproperty"  class="btn btn-simple btn-link">
+                                                                                <i class="icon trash"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                   
+                                                                </th>                                                               
+                                                                <th class="text-right">total: <strong class="text-primary">4</strong></th>
+                                                            </tr>
+                                                        </thead> 
+                                                        
+                                                      <tbody>
+                                                            <tr>
+                                                                <td scope="col">
+                                                                    <div class="form-check">
+                                                                        <label class="form-check-label">
+                                                                            <input class="form-check-input" type="checkbox" value="">
+                                                                            <span class="form-check-sign"></span>
+                                                                        </label>
+                                                                    </div>
+                                                                </td>
+                                                                <td>빌딩 주 출입구 A</td>
+                                                                <td class="td-actions text-right">
+                                                                    <button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-target="#Editpropertyerror" class="btn btn-info btn-simple btn-link">
+                                                                        <i class="fa fa-edit"></i>
+                                                                    </button>                                                                                              
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td scope="col">
+                                                                    <div class="form-check">
+                                                                        <label class="form-check-label">
+                                                                            <input class="form-check-input" type="checkbox" value="" checked>
+                                                                            <span class="form-check-sign"></span>
+                                                                        </label>
+                                                                    </div>
+                                                                </td>
+                                                                <td>빌딩 주 출입구 B</td>
+                                                                <td class="td-actions text-right">
+                                                                    <button type="button" rel="tooltip" title="수정하기" class="btn btn-info btn-simple btn-link">
+                                                                        <i class="fa fa-edit"></i>
+                                                                    </button>                                                                                             
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td scope="col">
+                                                                    <div class="form-check">
+                                                                        <label class="form-check-label">
+                                                                            <input class="form-check-input" type="checkbox" value="" checked>
+                                                                            <span class="form-check-sign"></span>
+                                                                        </label>
+                                                                    </div>
+                                                                </td>
+                                                                <td>빌딩 주 출입구 C</td>
+                                                                <td class="td-actions text-right">
+                                                                    <button type="button" rel="tooltip" title="수정하기" class="btn btn-info btn-simple btn-link">
+                                                                        <i class="fa fa-edit"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="form-check">
+                                                                        <label class="form-check-label">
+                                                                            <input class="form-check-input" type="checkbox" checked>
+                                                                            <span class="form-check-sign"></span>
+                                                                        </label>
+                                                                    </div>
+                                                                </td>
+                                                                <td>빌딩 주 출입구 D</td>
+                                                                <td class="td-actions text-right">
+                                                                    <button type="button" rel="tooltip" title="수정하기" class="btn btn-info btn-simple btn-link">
+                                                                        <i class="fa fa-edit"></i>
+                                                                    </button>
+                                                                   
+                                                                </td>
+                                                            </tr>                                                                                       
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                    </div>
+                                    <div class="card-footer ">
+                                            <hr>
+                                            <div class="state form-inline">                                                  
+                                               <input type="text" class="form-control" placeholder="공용도어 이름 입력">                                                            
+                                               <!-- <button type="submit" class="btn btn-primary">공용도어 추가</button> -->
+                                               <a role="button" data-toggle="modal" data-target="#propertyDone" class="btn btn-primary">공용도어 추가</a>
+                                            </div>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="col-md-12 text-center">
+                            <button type="reset" class="btn btn-default btn-fill shadow pull-left">나가기</button>
+                            <a type="button" data-toggle="modal" data-target="#editBuilingDone" class="btn btn-fill btn-primary pull-right">빌딩 정보 수정</a>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <% include inc/footer %>
+    </div>
+</div>
+<% include inc/modal %>
+<% include inc/bottom %>
+
+</body>
+</html>

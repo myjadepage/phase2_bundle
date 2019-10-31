@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ko">
+        <%- include('inc/head') %> 
+<body class="nav-md">
+
+<div class="wrapper">
+        <%- include('inc/sidebar') %>
+
+        <div class="main-panel">
+                <%- include('inc/nav') %>
+
+        <div class="content">
+            <div class="">
+                <div class="row">
+                    <div class="col-md-12">
+                            <div class="input-group">
+                                    <span class="input-group-btn">
+                                      <button class="btn btn-default" type="button"><i class="nc-icon nc-zoom-split"></i></button>                                          
+                                    </span>
+                                    <input type="text" class="form-control" placeholder="Search for keyword">
+                            </div><!-- /input-group -->                   
+
+                            <h4>
+                                <div class="row">
+                                    <div class="col-md-3">                                       
+                                        <select class="form-control">
+                                            <option>빌딩선택</option>
+                                            <option>빌라</option>
+                                            <option>카라반</option>
+                                        <select>                                             
+                                    </div>              
+                                    <div class="col-md-3">                                       
+                                            <select class="form-control">
+                                                <option>도어타입 선택</option>
+                                                <option>빌라</option>
+                                                <option>카라반</option>
+                                            <select>                                             
+                                        </div>                                                                                                
+                                </div>  
+    
+                            </h4>
+                            <div class="card">                                   
+                                    <div class="content table-responsive  table-full-width">
+                                        <table class="table table-hover">
+                                            <colgroup>
+                                                <col width="20%">
+                                                <col width="*">
+                                                <col width="15%">
+                                                <col width="30%">
+                                                <col width="10%">
+                                            </colgroup>
+                                            <thead>                                               
+                                                <th>생성일</th>
+                                                <th>빌딩이름</th>
+                                                <th>도어타입</th>
+                                                <th>상세정보</th>                                                
+                                                <th>정렬:생성일 기준</th>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="5">
+                                                        <div class="con_default">
+                                                            <i class="icon m_issuekey"></i>
+                                                            <h4 class="text-center text-info">
+                                                                ‘ 아직 생성된 도어락 정보가 없습니다 ’<br>
+                                                                <span>도어락 정보를 등록하여 서비스를 시작해 보세요. </span>
+                                                            </h4>
+                                                        </div>
+                                                    </td>                                                                      
+                                                </tr>                                                                        
+                                            </tbody>
+                                        </table>        
+                                    </div>
+                            </div>
+
+                            <button class="btn btn-default btn-fill shadow ">나가기</button>
+                            
+                           
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <% include inc/footer %>
+    </div>
+</div>
+<% include inc/modal %>
+<% include inc/bottom %>
+</body>
+</html>

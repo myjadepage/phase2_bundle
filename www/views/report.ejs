@@ -1,0 +1,83 @@
+<%- include('inc/head') %> 
+<%- include('inc/sidebar') %>
+<%- include('inc/nav') %>
+
+        <div class="content">
+            <div class="">
+                <div class="row">
+                    <div class="col-md-12">
+                            <div class="input-group">
+                                    <span class="input-group-btn">
+                                      <button class="btn btn-default" type="button"><i class="nc-icon nc-zoom-split"></i></button>                                          
+                                    </span>
+                                    <input type="text" class="form-control" placeholder="Search for keyword">
+                            </div><!-- /input-group -->
+
+
+
+                            <h4>
+                                <div class="row">
+                                    <div class="col-md-3">                                       
+                                        <select class="form-control">
+                                            <option>리프트 종류 선택</option>
+                                            <option>빌라</option>
+                                            <option>카라반</option>
+                                        <select>                                             
+                                    </div> 
+                                    <div class="col-md-3">                                       
+                                            <select class="form-control">
+                                                <option>빌딩선택</option>
+                                                <option>빌라</option>
+                                                <option>카라반</option>
+                                            <select>                                             
+                                        </div>  
+                                    <div class="col-md-6">            
+                                        <button type="submit" class="btn btn-primary pull-right">Excel 저장</button>                                                                                                   
+                                    </div>
+                                </div>  
+
+                            </h4>
+                            <div class="card">                                   
+                                    <div class="content table-responsive table-full-width">
+                                        <table class="table table-hover">
+                                            <colgroup>
+                                                <col width="20%">
+                                                <col width="*">
+                                                <col width="25%">
+                                                <col width="15%">
+                                            </colgroup>
+                                            <thead>                                               
+                                                <th>생성일</th>
+                                                <th>스텝이름</th>   
+                                                <th>등급</th>                                             
+                                                <th>정렬:생성일 기준</th>
+                                            </thead>
+                                            <tbody>
+                                                <tr>                                                  
+                                                    <td>DD-MMM-YYYY  HH:MM</td>
+                                                    <td><a data-target="#viewStaff" data-toggle="modal" role="button">Staff name 1A</a></td>  
+                                                    <td>마스터 [ 보유키 : 2개 ]</td>                                                  
+                                                    <td></td>
+                                                </tr>
+                                                <tr>                                                  
+                                                    <td>26-SEP-2019  11:01</td>
+                                                    <td><a data-target="#viewStaff" data-toggle="modal" role="button">Staff name 1A</a></td>  
+                                                    <td>하우스키핑 [ 보유키 : 1 개 ]</td>                                             
+                                                    <td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>        
+                                    </div>
+                            </div>
+
+                            <button class="btn btn-default btn-fill shadow pull-left">나가기</button>                          
+                            
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<% include inc/footer %>
+<% include inc/modal %>
+<% include inc/bottom %>
+

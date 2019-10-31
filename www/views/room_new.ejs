@@ -1,0 +1,200 @@
+<%- include('inc/head') %> 
+<%- include('inc/sidebar') %>
+<%- include('inc/nav'}) %>
+
+        <div class="content">
+            <div class="">
+                <div class="row">
+                    <div class="col-md-12">
+                            <div class="input-group">
+                                    <span class="input-group-btn">
+                                      <button class="btn btn-default" type="button"><i class="nc-icon nc-zoom-split"></i></button>                                          
+                                    </span>
+                                    <input type="text" class="form-control" placeholder="Search for keyword">
+                            </div><!-- /input-group -->
+
+
+<div class="row">
+                            <h4 class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-3">                                       
+                                        <select class="form-control">
+                                            <option>빌딩이름</option>
+                                            <option>빌라</option>
+                                            <option>카라반</option>
+                                        <select>                                             
+                                    </div>              
+                                    <button type="submit" class="btn btn-primary">빌딩 선택하기</button>                                                                                                   
+                                </div>  
+                            </h4>
+
+                            <div class="col-md-8">
+                                    <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="card-title">객실 정보 입력</h5>                                      
+                                            </div> 
+                                            <div class="card-body">
+                                                    <div class="table-full-width">                                               
+                                                           <table class="table">                                                               
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th colspan="2">
+                                                                            <div class="form-check">
+                                                                                <label class="form-check-label">
+                                                                                    <input class="form-check-input" type="checkbox" value="">
+                                                                                    <span class="form-check-sign"></span>                                                                            
+                                                                                </label>
+                                                                                <span>1 selected</span>                                                                             
+                                                                                <button role="button" data-toggle="modal" data-target="#Delproperty"  class="btn btn-simple btn-link">
+                                                                                        <i class="icon trash"></i>
+                                                                                </button>
+                                                                            </div>                                                                           
+                                                                        </th>                                                               
+                                                                        <th class="text-right">total: <strong class="text-primary">4</strong></th>
+                                                                    </tr>
+                                                                </thead> 
+                                                                
+                                                              <tbody>
+                                                                    <tr>
+                                                                        <td colspan="3">
+                                                                            <ul class="room_name_item">
+                                                                                <li>
+                                                                                    <div class="form-check border">
+                                                                                            <label class="form-check-label">
+                                                                                                <input class="form-check-input" type="checkbox" value="">
+                                                                                                <span class="form-check-sign"></span>
+                                                                                            </label>
+                                                                                            <span class="room_name">room101</span>
+                                                                                            <button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-target="#EditRoom" class="btn btn-info btn-simple btn-link">
+                                                                                                <i class="icon edit"></i>
+                                                                                            </button>  
+                                                                                        </div>
+
+                                                                                </li>
+                                                                                <li>
+                                                                                        <div class="form-check border">
+                                                                                                <label class="form-check-label">
+                                                                                                    <input class="form-check-input" type="checkbox" value="">
+                                                                                                    <span class="form-check-sign"></span>
+                                                                                                </label>
+                                                                                                <span class="room_name">room101</span>
+                                                                                                <button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-target="#EditRoom" class="btn btn-info btn-simple btn-link">
+                                                                                                    <i class="icon edit"></i>
+                                                                                                </button>  
+                                                                                            </div>
+
+                                                                                </li>
+                                                                                <li>
+                                                                                        <div class="form-check border">
+                                                                                                <label class="form-check-label">
+                                                                                                    <input class="form-check-input" type="checkbox" value="">
+                                                                                                    <span class="form-check-sign"></span>
+                                                                                                </label>
+                                                                                                <span class="room_name">room101</span>
+                                                                                                <button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-target="#EditRoom" class="btn btn-info btn-simple btn-link">
+                                                                                                    <i class="icon edit"></i>
+                                                                                                </button>  
+                                                                                            </div>
+
+                                                                                </li>
+
+                                                                                <li style="float: left; list-style: none; width: 33%;">
+                                                                                        <div class="form-check border">
+                                                                                                <label class="form-check-label">
+                                                                                                    <input class="form-check-input" type="checkbox" value="">
+                                                                                                    <span class="form-check-sign"></span>
+                                                                                                </label>
+                                                                                                <span class="room_name">room101</span>
+                                                                                                <button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-target="#EditRoom" class="btn btn-info btn-simple btn-link">
+                                                                                                    <i class="icon edit"></i>
+                                                                                                </button>  
+                                                                                            </div>
+
+                                                                                </li>
+                                                                                <li>
+                                                                                        <div class="form-check border">
+                                                                                                <label class="form-check-label">
+                                                                                                    <input class="form-check-input" type="checkbox" value="">
+                                                                                                    <span class="form-check-sign"></span>
+                                                                                                </label>
+                                                                                                <span class="room_name">room101</span>
+                                                                                                <button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-target="#EditRoom" class="btn btn-info btn-simple btn-link">
+                                                                                                    <i class="icon edit"></i>
+                                                                                                </button>  
+                                                                                            </div>
+    
+                                                                                    </li>
+                                                                                    <li>
+                                                                                            <div class="form-check border">
+                                                                                                    <label class="form-check-label">
+                                                                                                        <input class="form-check-input" type="checkbox" value="">
+                                                                                                        <span class="form-check-sign"></span>
+                                                                                                    </label>
+                                                                                                    <span class="room_name">room101</span>
+                                                                                                    <button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-target="#EditRoom" class="btn btn-info btn-simple btn-link">
+                                                                                                        <i class="icon edit"></i>
+                                                                                                    </button>  
+                                                                                                </div>
+    
+                                                                                    </li>
+                                                                                    <li>
+                                                                                            <div class="form-check border">
+                                                                                                    <label class="form-check-label">
+                                                                                                        <input class="form-check-input" type="checkbox" value="">
+                                                                                                        <span class="form-check-sign"></span>
+                                                                                                    </label>
+                                                                                                    <span class="room_name">room101</span>
+                                                                                                    <button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-target="#EditRoom" class="btn btn-info btn-simple btn-link">
+                                                                                                        <i class="icon edit"></i>
+                                                                                                    </button>  
+                                                                                                </div>
+    
+                                                                                    </li>    
+    
+
+
+
+                                                                            </ul>
+                                                                    
+                                                                        </td>                                                                       
+                                                                    </tr> 
+                                                                                                                                           
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                            </div>                                          
+                                        </div>
+                            </div>
+                            <div class="col-md-4">
+                                    <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="card-title">객실 정보 입력</h5>
+                                            </div> 
+                                            <div class="card-body">
+                                                <form>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">                                                                
+                                                                <input type="text" class="form-control" placeholder="신규 객실 이름 입력" value="">                                                                
+                                                            </div>
+                                                            <button type="submit" class="col-md-12 btn btn-primary">객실 추가하기</button>      
+                                                        </div>                                   
+                                                    </div>                                                                                       
+                                                </form>
+                                            </div>
+                                        </div>
+                            </div>
+</div>
+
+                          
+                                <button class="btn btn-default btn-fill shadow">나가기</button>
+                           
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<% include inc/footer %>
+<% include inc/modal %>
+<% include inc/bottom %>
+

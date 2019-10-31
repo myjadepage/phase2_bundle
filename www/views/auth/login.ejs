@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="ko">
+<%- include('../inc/head') %> 
+<body class="nav-md">
+
+<div class="wrapper login_page"> 
+            <div class="container">
+                <h1 class="logo"><img src="assets/img/logo_schlage.png"></h1>
+                <div class="col-md-4 col-xs-push-4"> 
+                    <form class="login-form"  id="loginForm">                  
+                        <div class="form-group">
+                            <!-- 국가번호 -->
+                            <select class="form-control" id="CountryCode" name="CountryCode"></select>
+                            <!-- 핸폰번호 -->
+                            <input 
+                                class="form-control" 
+                                name="phone" 
+                                id="phone-number-check"
+                                placeholder=" 전화번호 입력 '-' 제외하고 입력해 주세요." maxlength="13" type="text"  value="">                            
+                            
+                            <!-- <button type="button" data-toggle="modal" data-target="#phoneError" class="btn btn-fill btn-info btn-block" id="requestAuthen">인증번호 요청</button> -->
+                            <button type="button" class="btn btn-fill btn-info btn-block" id="reqAuthen" >인증번호 요청</button>
+                            <p class="desc"><span>휴대번호 입력 후 인증번호 요청을 클릭해 주세요</span></p>
+                            <input type="text" class="form-control" placeholder="전달 받은 인증 번호를 입력해 주세요."  id="resAuthen">
+                            <!-- <button type="button" data-toggle="modal" data-target="#logining" class="btn btn-secondary btn-fill btn-block" id="authDo"> 인증하기</button>  -->
+                            <button type="button" class="btn btn-secondary btn-fill btn-block" id="authDo"><span>인증하기</span></button> 
+                            <p class="desc" id="authTime" style="display: none;">인증번호 입력 유효 시간은 3분 입니다.</p>                   
+
+                        </div> 
+                    </form>                          
+                </div>  
+            </div>
+</div>
+
+
+<% include ../inc/modal %>
+<% include ../inc/bottom %>   
+
+<script>
+    $(function(){      
+
+        //전화번호입력 올바른가?
+        $('p.desc > span').hide();          
+        $("#phone-number-check").on('keydown', function(e){              
+            var trans_num = $(this).val().replace(/-/gi,'').replace(/\D/g,'');
+            var k = e.keyCode;
+            if(trans_num.length >= 11 && ((k >= 48 && k <=126) || (k >= 12592 && k <= 12687 || k==32 || k==229 || (k>=45032 && k<=55203)) )){
+                e.preventDefault();
+            }
+        }).on('blur', function(){
+            if($(this).val() == ''){
+                $('p.desc > span').show(); 
+                $(this).val('');
+                $(this).focus();  
+            }else{
+                var trans_num = $(this).val().replace(/-/gi,'');
+                if(trans_num != null && trans_num != ''){                              
+                    if(trans_num.length==11 || trans_num.length==10) {   
+                        var regExp_ctn = /^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})([0-9]{3,4})([0-9]{4})$/;
+                        if(regExp_ctn.test(trans_num)){                            
+                           $(this).val(trans_num);                           
+                        }else{                          
+                            $(this).val("");
+                            $(this).focus();
+                        }
+                    }else {                       
+                        $(this).val('');
+                        $(this).focus();
+                    }
+                }
+            }
+        }); 
+        
+        //국가코드 외부에서 가지고오고 국가 선택시 변경이벤트
+        var temp;
+        var countryCode; 
+        var phone_number;             
+         $('#CountryCode').empty();
+         $('#CountryCode').append('<option selected="true" disabled>국가코드 선택</option>');
+         $('#CountryCode').prop('selectedIndex', 0);        
+         $.ajax({
+            url : '/countries', //json 불러오기 router이용해서 불러옴
+            dataType :'json',
+            success : function (data) {
+                $.each(data, function (key, entry) {
+                    $('#CountryCode').append($('<option></option>').attr('value', entry.phone).text(entry.name +' ( + ' + entry.phone +' )'));                   
+                })
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+              console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
+          }    
+         });
+        $("#CountryCode").on("change", function(){              
+            var temp =$(this).val();
+            countryCode = temp.replace(/\D/g,''); 
+            phone_number = countryCode + $('input[name=phone]').val();
+        });
+
+        // 인증번호 요청
+        $('button#reqAuthen').click(function(){             
+            if(countryCode && $('input[name=phone]').val()){
+                console.log(countryCode + $('input[name=phone]').val());
+
+                $.ajax({
+                    url: "https://dev.api.hospitality.imgate.co.kr/v2/multifamily/staff/verification_code",
+                    type: "POST",
+                    cache:false,                 
+                    data:{
+                        "phone_number": phone_number,
+                        "need_signedup": false,
+                        "expired_at": "2020-12-31T18:00:32.777Z",
+                        "is_test_mode": true
+                    },                  
+                    success: function(res) {   
+                        console.log(res);
+                        $('input#resAuthen').val(res.verification_code); 
+                        $('#authTime').show();
+
+                        //인증번호 3분안에 넣기
+                        var timer2 = "2:59";                        
+                        var interval = setInterval(function(){
+                            var timer = timer2.split(':');
+                            var mi = parseInt(timer[0], 10);
+                            var sec = parseInt(timer[1],10);
+                            --sec;
+                            mi = (sec < 0) ? --mi : mi;
+                            if(mi < 0) clearInterval(interval);
+                            sec = (sec < 0) ? 59 : sec;
+                            sec = (sec < 10) ? '0' + sec : sec;
+                            $('#authDo').addClass('btn-info').html( mi + " : " + sec + " 인증번호 확인");
+                            timer2 = mi + " : " + sec;
+                            if(mi == 0 && sec == 0){
+                                $('#authDo').removeClass('btn-info').html("인증하기");
+                                $('#resAuthen').val('');
+                                $('#authTime').html('인증요청시간이 지났습니다. 다시 인증번호를 요청해 주세요'); 
+                                $('#reqAuthen').html('인증번호 재요청'); 
+                                clearInterval(interval);
+                            }
+                        },1000);
+                    },
+                    error: function (request, status, error){                          
+                        var msg = "ERROR<br><br>"
+                        msg += request.status + "<br>" + request.responseText + "<br>" + error;
+                        console.log(msg);    
+                        $('#phoneError').modal('show');      //인증번호시간 3분 보이기 텍스트
+                    }
+                });
+            }else{
+                $('p.desc > span').show(); 
+            }
+        });
+
+        // 인증하기
+        $('#authDo').click(function(){
+            var verification_code =  $('input#resAuthen').val(); 
+            $.ajax({
+                    url: "https://dev.api.hospitality.imgate.co.kr/v2/multifamily/staff/verification_token",
+                    type: "POST",
+                    cache:false,                        
+                    data:{
+                        "phone_number": phone_number,
+                        "verification_code": verification_code,
+                        "expired_at": "2099-12-31T18:00:32.777Z"
+                    },
+                    beforeSend:function(){
+                        $('#loading').modal('show');
+                    },
+                    complete:function(){
+                        $('#loading').modal('hide');
+                    },
+                    success: function(res) {
+                        console.log(res);   
+                        location.href='/';
+                    },
+                    error: function (request, status, error){    
+                        var msg = "ERROR<br><br>"
+                        msg += request.status + "<br>" + request.responseText + "<br>" + error;
+                        console.log(msg);                           
+                    },
+                    fail : function(){
+                        alert("인터넷 연결 상태를 확인해주세요.");
+                    }                    
+                });
+        });
+});
+
+</script>
+
+</body>
+</html>
