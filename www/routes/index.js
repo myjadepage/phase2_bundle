@@ -3,7 +3,8 @@ var express = require('express');
 var axios = require('axios');
 var router = express.Router();
 var common = require('../lib/common');
-var fs= require('fs')
+var fs= require('fs');
+
 
 var obj={
 	property:[]
@@ -53,16 +54,16 @@ router.get('/login', function(req, res, next) {
 		title: 'phase2'		
 	});
   });
- 
 
 
 router.get('/', function(req, res, next) {
   res.render('index', { 
-	  title: 'phase2', 
+	isLogin : true,
+	  title: 'phase2', 	 
 	  nav_title:'단지선택',
 	  nav_stitle:'',
 	  date:common.currDateTime(),
-	  path:'/',
+	  path:'/',	  
 	  data:obj.property
 	});
 });
