@@ -22,12 +22,7 @@ app.use(cookieParser());
 
 app.use('/', indexRouter);
 
-app.use(function(req, res, next){
-  if(headers !== ''){
-    res.locals.isLogin = true;
-  }
-  next();
-});
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
