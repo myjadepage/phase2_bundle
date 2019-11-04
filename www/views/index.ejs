@@ -3,7 +3,8 @@
 <%- include('inc/nav') %>
 
           <div class="content">
-              <div class="row">                                      
+              <div class="row">    
+                    <div class="col-md-12">                                  
                       <%- include('inc/search') %><!-- 검색 -->
                       <% if (data.length > 0) { %>
                       <div class="slide_wrap">
@@ -58,6 +59,7 @@
                         <a href="/property_new" class="btn btn-primary btn-fill btn-wd shadow" role="button">단지 생성하기</a>
                       </div>
                       <% } %>
+              </div>
               </div>
           </div>
          

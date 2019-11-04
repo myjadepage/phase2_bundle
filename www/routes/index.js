@@ -57,7 +57,9 @@ router.get('/login', function(req, res) {
   });
 
 router.post('/login', passport.authenticate('local',{failureRedirect: '/login', failureFlash: true}) 
-  ,function (req, res) {res.redirect('/');}
+  ,function (req, res) {
+	  res.redirect('/');
+	}
  );
 
  router.get('/logout', function(req, res){
@@ -71,6 +73,7 @@ router.get('/',common.ensureAuthenticated, function(req, res) { //,common.ensure
 	  nav_title:'단지선택',
 	  nav_stitle:'',
 	  date:common.currDateTime(),
+	  timezone:common.timezone(),
 	  path:'/',	  
 	  data:obj.property
 	});

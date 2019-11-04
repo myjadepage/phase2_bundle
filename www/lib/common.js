@@ -21,3 +21,8 @@ exports.currDate = function() {
 	return d.toFormat('YYYYMMDD');
 };
 
+
+exports.timezone = function(){
+	var d = new Date();	
+	return d;
+};

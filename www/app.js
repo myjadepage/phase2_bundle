@@ -28,7 +28,7 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
   cookie: {
-     maxAge: 1000 * 60 // 쿠키 유효기간 10시간 (1000 * 60 * 60 * 10)
+     maxAge: 1000 * 60 * 60 * 10// 쿠키 유효기간 10시간 (1000 * 60 * 60 * 10)
    }
  }));
  app.use(flash());

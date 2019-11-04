@@ -380,19 +380,21 @@ $('#del_property').on('click', function(e) {
     });
     
 
-
     $('#logout').click(function(){                                             
         axios({
             method: "delete",
             url: "https://development.api.allegion.imgate.co.kr/v1/user/session",
+            headers : {
+                "Authorization": "24a21f9c9277eecd030336364b658f75d3cb4017"
+            }
         })                                                                               
-            .then(function(res) {                         
-                    console.log(res); 
-                    location.href="/login"                                                                                           
-            })
-            .catch(function (request, status, error){  
-                    msg = request.status + "<br>" + request.responseText + "<br>" + error;
-                    console.log(msg);                           
-            })             
+        .then(function(res) {                         
+                console.log(res); 
+                location.href="/login"                                                                                           
+        })
+        .catch(function (request, status, error){  
+                msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                console.log(msg);                           
+        })             
               
 });                   
