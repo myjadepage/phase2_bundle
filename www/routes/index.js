@@ -3,6 +3,7 @@ var express = require('express');
 var axios = require('axios');
 var router = express.Router();
 var common = require('../lib/common');
+var passport = require('../lib/passport');
 var fs= require('fs');
 
 
@@ -10,14 +11,15 @@ var obj={
 	property:[]
 };
 fs.exists('./data/property.json', function(exists){	
-		fs.readFile('./data/property.json', function readFileCallback(err, data){
+		fs.readFile('./data/property.json','utf-8', function readFileCallback(err, data){
 			if (err){
 				console.log(err);
-			} else {
-				obj = JSON.parse(data); 				
+			} else {												
+				return obj = JSON.parse(data); 
 			}
 		})
 })
+
 
 router.post("/property", function(req, res) {	
 	fs.exists('./data/property.json', function(exists){	
@@ -26,8 +28,7 @@ router.post("/property", function(req, res) {
 			if(err) {	
 				res.json({});
 				return;
-			}			
-			console.log(result);
+			}		
 			res.json(result);
 		});
 
@@ -49,16 +50,23 @@ router.get('/timezone', function(req, res) {
 })
 
 
-router.get('/login', function(req, res, next) {
+router.get('/login', function(req, res) {
 	res.render('auth/login',{
 		title: 'phase2'		
 	});
   });
 
+router.post('/login', passport.authenticate('local',{failureRedirect: '/login', failureFlash: true}) 
+  ,function (req, res) {res.redirect('/');}
+ );
 
-router.get('/', function(req, res, next) {
+ router.get('/logout', function(req, res){
+	req.logout();	
+	res.redirect('/login');
+});
+
+router.get('/',common.ensureAuthenticated, function(req, res) { //,common.ensureAuthenticated	
   res.render('index', { 
-	isLogin : true,
 	  title: 'phase2', 	 
 	  nav_title:'단지선택',
 	  nav_stitle:'',
@@ -67,25 +75,52 @@ router.get('/', function(req, res, next) {
 	  data:obj.property
 	});
 });
-router.get('/building_list', function(req, res, next) {
-	res.render('building_list',{
-	  title: 'phase2', 
-	  nav_title:obj.property.name,
-	  nav_stitle:obj.property.addr,
-	  date:common.currDateTime(),
-	  path:'/building_list'
-	});	
+
+router.get('/property_new',common.ensureAuthenticated,function(req, res) {
+	res.render('property_new',{
+		title: 'phase2',
+		nav_title:'단지생성',
+		nav_stitle:'',
+		date:common.currDateTime(),		
+		path:'/'
+	});
+  });
+  
+  router.get('/propery_new_done',common.ensureAuthenticated, function(req, res) {
+	res.render('propery_new_done',{
+		title: 'phase2',
+		nav_title:'단지 생성 완료',
+		nav_stitle:'',
+		date:common.currDateTime(),		
+		path:'/',
+        data:obj.property
+	});
 });
-router.get('/doorlock_list', function(req, res, next) {
-	res.render('doorlock_list',{
-		title: 'phase2', 
-		nav_title:'센트럴 아이파크2',
-		nav_stitle:'(경기도 가평군 청평면 고성리 761-1)',
-		date:common.currDateTime(),
-		path:'/doorlock_list'
-	});	
-});
-router.get('/issuekey', function(req, res, next) {
+
+    router.get('/property_del/:proId',common.ensureAuthenticated, function(req, res) {	
+	res.render('property_del',{
+		title: 'phase2',
+		nav_title:'단지삭제',
+		nav_stitle:'',
+		date:common.currDateTime(),		
+		path:'/',
+        data:obj.property
+	});
+  });
+  router.get('/property_edit',common.ensureAuthenticated, function(req, res) {
+	res.render('property_edit',{
+		title: 'phase2',
+		nav_title:'단지수정',
+		nav_stitle:'',
+		date:common.currDateTime(),		
+		path:'/',
+        data:obj.property
+	});
+  });
+
+
+
+router.get('/issuekey',common.ensureAuthenticated, function(req, res) {
 	res.render('issuekey',{
 		title: 'phase2', 
 		nav_title:'센트럴 아이파크2',
@@ -94,7 +129,7 @@ router.get('/issuekey', function(req, res, next) {
 		path:'/issuekey'
 	});	
 });
-router.get('/staff_list', function(req, res, next) {
+router.get('/staff_list',common.ensureAuthenticated, function(req, res) {
 	res.render('staff_list',{
 		title: 'phase2', 
 		nav_title:'센트럴 아이파크2',
@@ -103,7 +138,7 @@ router.get('/staff_list', function(req, res, next) {
 		path:'/staff_list'
 	});	
 });
-router.get('/report', function(req, res, next) {
+router.get('/report',common.ensureAuthenticated,function(req, res) {
 	res.render('report',{
 		title: 'phase2', 
 		nav_title:'센트럴 아이파크2',
@@ -115,46 +150,5 @@ router.get('/report', function(req, res, next) {
 
 
 
-  router.get('/property_new', function(req, res) {
-	res.render('property_new',{
-		title: 'phase2',
-		nav_title:'단지생성',
-		nav_stitle:'',
-		date:common.currDateTime(),		
-		path:'/'
-	});
-  });
-  
-  router.get('/propery_new_done', function(req, res) {
-	res.render('propery_new_done',{
-		title: 'phase2',
-		nav_title:'단지 생성 완료',
-		nav_stitle:obj.property.name,
-		date:common.currDateTime(),		
-		path:'/',
-		data:obj.property
-	});
-});
-
-    router.get('/property_del/:proId', function(req, res) {	
-	res.render('property_del',{
-		title: 'phase2',
-		nav_title:'단지삭제',
-		nav_stitle:obj.property.name,
-		date:common.currDateTime(),		
-		path:'/',
-		data:obj.property
-	});
-  });
-  router.get('/property_edit', function(req, res) {
-	res.render('property_edit',{
-		title: 'phase2',
-		nav_title:'단지수정',
-		nav_stitle:obj.property.name,
-		date:common.currDateTime(),		
-		path:'/',
-		data:obj.property
-	});
-  });
 
 module.exports = router;

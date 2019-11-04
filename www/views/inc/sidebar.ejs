@@ -3,7 +3,7 @@
         <div class="logo">
             <a href="/" class="simple-text"><%= title %></a>
         </div>
-        <% if(isLogin){ %>
+       
         <div class="userState">
             <dl>
                 <dt class="user_img"><img src="assets/img/faces/face-3.jpg" alt="프로필이미지"></dt>
@@ -12,18 +12,12 @@
                     <p><%= date %></p>
                 </dd>
                 <dd class="user_out">
-                    <i class="icon" ><button type="submit" class="bnt btn-simple btn-link" style="outline: none;" id="logout"></button></i>
+                    <!-- <i class="icon" ><button type="button" class="bnt btn-simple btn-link" style="outline: none;" id="logout"></button></i> -->
+                    <i class="icon" ><a class="bnt btn-simple btn-link" href="/logout"></button></i>
                 <dd>
-            </dl>
-            
-            <!-- <dl style="display: none;">
-                <dt class="user_img"><img src="assets/img/default-avatar.png" alt="기본프로필이미지"></dt>
-                <dd class="user_info">
-                    <h3 class="before_login"><a href="/login">로그인</a>하세요</h3>
-                </dd>
-            </dl> -->
+            </dl>        
         </div>
-        <% } %>
+       
        
         <ul class="nav">
             <li class="<%= path === '/building_list' ? 'active' : '' %>">

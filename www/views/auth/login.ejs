@@ -5,27 +5,26 @@
             <div class="container">
                 <h1 class="logo"><img src="assets/img/logo_schlage.png"></h1>
                 <div class="col-md-4 col-xs-push-4"> 
-                    <form class="login-form"  id="loginForm">                  
+                        <form id="loginForm" action="/login" method="POST" >
                         <div class="form-group">
                             <!-- 국가번호 -->
                             <select class="form-control" id="CountryCode" name="CountryCode"></select>
                             <!-- 핸폰번호 -->
                             <input 
-                                class="form-control" 
-                                name="phone" 
-                                id="phone-number-check"
+                                class="form-control" name="phone" id="phone-number-check"
                                 placeholder=" 전화번호 입력 '-' 제외하고 입력해 주세요." maxlength="13" type="text"  value="">                            
-                            
-                            <!-- <button type="button" data-toggle="modal" data-target="#phoneError" class="btn btn-fill btn-info btn-block" id="requestAuthen">인증번호 요청</button> -->
+                           
                             <button type="button" class="btn btn-fill btn-info btn-block" id="reqAuthen" >인증번호 요청</button>
                             <p class="desc"><span>휴대번호 입력 후 인증번호 요청을 클릭해 주세요</span></p>
-                            <input type="text" class="form-control" placeholder="전달 받은 인증 번호를 입력해 주세요."  id="resAuthen">
-                            <!-- <button type="button" data-toggle="modal" data-target="#logining" class="btn btn-secondary btn-fill btn-block" id="authDo"> 인증하기</button>  -->
-                            <button type="button" class="btn btn-secondary btn-fill btn-block" id="authDo"><span>인증하기</span></button> 
-                            <p class="desc" id="authTime" style="display: none;">인증번호 입력 유효 시간은 3분 입니다.</p>                   
+                            
+                            <input type="text" class="form-control" placeholder="전달 받은 인증 번호를 입력해 주세요." name="resAuthen" id="resAuthen">
+                            <button type="button" class="btn btn-secondary btn-fill btn-block" id="authDo"><span>인증하기</span></button>                                                
 
+
+                            <p class="desc" id="authTime" style="display: none;">인증번호 입력 유효 시간은 3분 입니다.</p>  
+                            
                         </div> 
-                    </form>                          
+                    </form>                                    
                 </div>  
             </div>
 </div>
@@ -33,4 +32,3 @@
 
 <% include ../inc/modal %>
 <% include ../inc/bottom %>   
-

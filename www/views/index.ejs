@@ -70,19 +70,6 @@
              var proId = $(e.relatedTarget).data('proper-id');
              $(e.currentTarget).find('.pro_edit').prop('href','/property_edit');
              $(e.currentTarget).find('.pro_del').prop('href','/property_del/'+proId);
-         });
-    
-         $.ajax({
-            url: "",
-            type: "GET",
-            success: function(res) {   
-                console.log(res);                       
-            },
-            error: function (request, status, error){    
-                var msg = "ERROR<br><br>"
-                msg += request.status + "<br>" + request.responseText + "<br>" + error;
-                console.log(msg);   
-            }
-                });
+         });      
      </script>     
 

@@ -1,21 +1,23 @@
+var util = require('util');
 require('date-utils');
 
-exports.currDateTime = function() {
+exports.ensureAuthenticated = function ensureAuthenticated(req, res, next) {
+    // 로그인이 되어 있으면, 다음 파이프라인으로 진행
+    if (req.isAuthenticated()) { 
+		return next();
+	}
+	// 로그인이 안되어 있으면, login 페이지로 진행
+    res.redirect('/login');
+}
 
-	var d = new Date();
+
+exports.currDateTime = function() {	
+	var d = new Date();	
 	return d.toFormat('DD.MMM.YYYY HH24:MI');
 };
 
 exports.currDate = function() {
 	var d = new Date();
-	// var dString = ''+d.getFullYear();
-	// if(d.getMonth() < 10)
-	// 	dString+='0'+(d.getMonth()+1);
-	// else
-	// 	dString+=(d.getMonth()+1);
-	// dString+= d.getDate();
-
-	// return dString;
-
 	return d.toFormat('YYYYMMDD');
 };
+

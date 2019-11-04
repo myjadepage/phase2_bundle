@@ -28,16 +28,12 @@ var navbar_initialized = false;
 
 $(document).ready(function(){
     window_width = $(window).width();
-
     // check if there is an image set for the sidebar's background
     lbd.checkSidebarImage();
-
     // Init navigation toggle for small screens
     lbd.initRightMenu();
-
     //  Activate the tooltips
     $('[rel="tooltip"]').tooltip();
-
     $('.form-control').on("focus", function(){
         $(this).parent('.input-group').addClass("input-group-focus");
     }).on("blur", function(){
@@ -54,9 +50,11 @@ $(document).ready(function(){
 $('body').on('touchstart.dropdown', '.dropdown-menu', function (e) { e.stopPropagation(); });
 });
 
+
+
+
 $(document).on('click', '.navbar-toggle', function(){
     $toggle = $(this);
-
     if(lbd.misc.navbar_menu_visible == 1) {
         $('html').removeClass('nav-open');
        lbd.misc.navbar_menu_visible = 0;
@@ -90,11 +88,11 @@ $(window).on('resize', function(){
     }
 });
 
+
 lbd = {
     misc:{
         navbar_menu_visible: 0
     },
-
     checkSidebarImage: function(){
         $sidebar = $('.sidebar');
         image_src = $sidebar.data('image');
@@ -104,7 +102,6 @@ lbd = {
             $sidebar.append(sidebar_container);
         }
     },
-
     initRightMenu: debounce(function(){
         if(!navbar_initialized){
             $sidebar_wrapper = $('.sidebar-wrapper');
@@ -221,72 +218,73 @@ $('#del_property').on('click', function(e) {
 // });      
 
 
-// 로그인하기
-$(function(){    
-    //전화번호입력 올바른가?
-    $('p.desc > span').hide();          
-    $("#phone-number-check").on('keydown', function(e){              
-        var trans_num = $(this).val().replace(/-/gi,'').replace(/\D/g,'');
-        var k = e.keyCode;
-        if(trans_num.length >= 11 && ((k >= 48 && k <=126) || (k >= 12592 && k <= 12687 || k==32 || k==229 || (k>=45032 && k<=55203)) )){
-            e.preventDefault();
-        }
-    }).on('blur', function(){
-        if($(this).val() == ''){
-            $('p.desc > span').show(); 
-            $(this).val('');
-            $(this).focus();  
-        }else{
-            var trans_num = $(this).val().replace(/-/gi,'');
-            if(trans_num != null && trans_num != ''){                              
-                if(trans_num.length==11 || trans_num.length==10) {   
-                    var regExp_ctn = /^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})([0-9]{3,4})([0-9]{4})$/;
-                    if(regExp_ctn.test(trans_num)){                            
-                       $(this).val(trans_num);                           
-                    }else{                          
-                        $(this).val("");
+    // 로그인하기
+    $(function(){    
+        //전화번호입력 올바른가?
+        $('p.desc > span').hide();          
+        $("#phone-number-check").on('keydown', function(e){              
+            var trans_num = $(this).val().replace(/-/gi,'').replace(/\D/g,'');
+            var k = e.keyCode;
+            if(trans_num.length >= 11 && ((k >= 48 && k <=126) || (k >= 12592 && k <= 12687 || k==32 || k==229 || (k>=45032 && k<=55203)) )){
+                e.preventDefault();
+            }
+        }).on('blur', function(){
+            if($(this).val() == ''){
+                $('p.desc > span').show(); 
+                $(this).val('');
+                $(this).focus();  
+            }else{
+                var trans_num = $(this).val().replace(/-/gi,'');
+                if(trans_num != null && trans_num != ''){                              
+                    if(trans_num.length==11 || trans_num.length==10) {   
+                        var regExp_ctn = /^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})([0-9]{3,4})([0-9]{4})$/;
+                        if(regExp_ctn.test(trans_num)){                            
+                           $(this).val(trans_num);                           
+                        }else{                          
+                            $(this).val("");
+                            $(this).focus();
+                        }
+                    }else {                       
+                        $(this).val('');
                         $(this).focus();
                     }
-                }else {                       
-                    $(this).val('');
-                    $(this).focus();
                 }
             }
-        }
-    }); 
+        }); 
+        
+        //국가코드 외부에서 가지고오고 국가 선택시 변경이벤트
+        var countryCode; 
+        var phone_number; 
+        var code;//서버에서 온 인증번호   
+        var AuthTimer;        
+         $('#CountryCode').empty();
+         $('#CountryCode').append('<option selected="true" disabled>국가코드 선택</option>');        
+         $('#CountryCode').prop('selectedIndex', 0);        
+         $.ajax({
+            // crossOrigin: true,
+            url : '/countries', //json 불러오기 router이용해서 불러옴
+            dataType :'json',
+            success : function (data) {
+                $.each(data, function (key, entry) {
+                    $('#CountryCode').append($('<option></option>').attr('value', entry.phone).text(entry.name +' ( + ' + entry.phone +' )'));                   
+                })
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+              console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
+          }    
+         });
+        $("#CountryCode").on("change", function(){ 
+            countryCode = $(this).val().replace(/\D/g,'');            
+        });
     
-    //국가코드 외부에서 가지고오고 국가 선택시 변경이벤트
-    var countryCode; 
-    var phone_number; 
-    var code;//서버에서 온 인증번호   
-    var AuthTimer;        
-     $('#CountryCode').empty();
-     $('#CountryCode').append('<option selected="true" disabled>국가코드 선택</option>');        
-     $('#CountryCode').prop('selectedIndex', 0);        
-     $.ajax({
-        url : '/countries', //json 불러오기 router이용해서 불러옴
-        dataType :'json',
-        success : function (data) {
-            $.each(data, function (key, entry) {
-                $('#CountryCode').append($('<option></option>').attr('value', entry.phone).text(entry.name +' ( + ' + entry.phone +' )'));                   
-            })
-        },
-        error: function(jqXHR, textStatus, errorThrown){
-          console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
-      }    
-     });
-    $("#CountryCode").on("change", function(){ 
-        countryCode = $(this).val().replace(/\D/g,'');            
-    });
-
-    //1 단계 :  인증번호 요청
-    $('button#reqAuthen').click(function(){   
-        var userNumber = $('input[name=phone]').val().replace(/(^0+)/, "");            
-        phone_number = countryCode + userNumber;                        
-        if(countryCode && userNumber){    
-           var expired_at = new Date();    
-           expired_at.setMinutes(expired_at.getMinutes() + 3);              
-           axios({
+        //1 단계 :  인증번호 요청
+        $('button#reqAuthen').click(function(){   
+            var userNumber = $('input[name=phone]').val().replace(/(^0+)/, "");            
+            phone_number = countryCode + userNumber;                        
+            if(countryCode && userNumber){    
+               var expired_at = new Date();    
+               expired_at.setMinutes(expired_at.getMinutes() + 3);              
+               axios({
                 method: "POST",  
                 url: "https://development.api.allegion.imgate.co.kr/v1/user/verification_code",                    
                 dataType:"json",                   
@@ -317,91 +315,84 @@ $(function(){
                     console.log(msg);    
                     $('#phoneError').modal('show'); 
                     $('#phone-number-check').val('');
-                })                
-        }else{
-            $('p.desc > span').show(); 
-        }
-    });
-    //2단계 : 인증 및 로그인  
-    var headers;
-        $('#authDo').click(function(){                  
-            var verification_code = $('#resAuthen').val();
-            if(verification_code == code){
-                console.log(phone_number+"/////"+$('#resAuthen').val());  
-                AuthTimer.fnStop();                       
-                axios({
-                    method: "POST",
-                    url: "https://development.api.allegion.imgate.co.kr/v1/user/session",
-                    dataType:"json",     
-                    data:{
-                            "phone_number": phone_number,
-                            "verification_code": verification_code
-                        }
-                    })                                               
-                    .then(function(res) {                         
-                            console.log(res.headers); 
-                            if (res.status == 200) {                                   
-                               headers = res.headers;                                                               
-                            }                                                        
-                            // location.href="/"
-                    })
-                    .catch(function (request, status, error){  
-                            msg = request.status + "<br>" + request.responseText + "<br>" + error;
-                            console.log(msg);                           
-                    })
-            }else if(!verification_code){
-                $('#resAuthen').attr('placeholder', '전달받은 인증번호를 입력해 주세요').val('');  
+                })   
             }else{
-                $('#resAuthen').attr('placeholder', '인증번호가 틀렸습니다. 다시 입력해 주세요').val('');                       
-            }                         
-        });
-  
-
- //인증용 카운트다운 함수및 객체
- function $ComTimer(){}
-                    $ComTimer.prototype = {
-                        comSecond : "",
-                        fnCallback : function(){},
-                        timer : "",
-                        domId : "",
-                        fnTimer : function(){
-                            var m = Math.floor(this.comSecond / 60) + " : " + (this.comSecond % 60);	// 남은 시간 계산
-                            this.comSecond--;					// 1초씩 감소
-                            console.log(m);
-                            this.domId.addClass('btn-info').html( m + " 인증번호 확인");
-                            if (this.comSecond < 0) {			// 시간이 종료 되었으면..
-                                $('#authDo').removeClass('btn-info').html("인증하기");
-                                $('#resAuthen').val('');
-                                $('#authTime').html('인증요청시간이 지났습니다. 다시 인증번호를 요청해 주세요'); 
-                                $('#reqAuthen').html('인증번호 재요청'); 
-                                clearInterval(this.timer);		// 타이머 해제
-                                // alert("인증시간이 초과하였습니다. 다시 인증해주시기 바랍니다.")
+                $('p.desc > span').show(); 
+            }
+            //2단계 : 인증 및 로그인  
+       
+            $('#authDo').click(function(){                  
+                var verification_code = $('#resAuthen').val();
+                if(verification_code == code){                   
+                    AuthTimer.fnStop();                       
+                    axios({
+                        method: "POST",
+                        url: "https://development.api.allegion.imgate.co.kr/v1/user/session",
+                        dataType:"json",     
+                        data:{
+                                "phone_number": phone_number,
+                                "verification_code": verification_code
                             }
-                        },
-                        fnStop : function(){                               
-                               clearInterval(this.timer);
-                        }
-                    }    
-                    
-                    $('#logout').click(function(){    
-                        var con =confirm("로그아웃 하시겠습니까?");              
-                        if(con == true){
-                            axios({
-                            method: "DELETE",
-                            url: "https://development.api.allegion.imgate.co.kr/v1/user/session",
-                            headers: headers
-                            })
-                            .then(function(res) {                         
-                                    console.log(res);                                 
-                                    location.href="/login"
-                            })
-                            .catch(function (request, status, error){  
-                                    msg = request.status + "<br>" + request.responseText + "<br>" + error;
-                                    console.log(msg);                           
-                            })     
-                                                    
-                        }
-                    });
+                        })                                               
+                        .then(function(res) {                         
+                                console.log(res);   
+                                $('#loginForm').submit();                                                                                                                 
+                        })
+                        .catch(function (request, status, error){  
+                                msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                                console.log(msg);                           
+                        })               
+                }else if(!verification_code){
+                    $('#resAuthen').attr('placeholder', '전달 받은 인증번호를 입력해 주세요').val('');  
+                }else {
+                    $('#resAuthen').attr('placeholder', '인증번호가 틀렸습니다. 다시 입력해 주세요').val('');                       
+                }                         
+            });
+      
+        });
+        
+    
+     //인증용 카운트다운 함수및 객체
+     function $ComTimer(){}
+                        $ComTimer.prototype = {
+                            comSecond : "",
+                            fnCallback : function(){},
+                            timer : "",
+                            domId : "",
+                            fnTimer : function(){
+                                var m = Math.floor(this.comSecond / 60) + " : " + (this.comSecond % 60);	// 남은 시간 계산
+                                this.comSecond--;					// 1초씩 감소
+                                console.log(m);
+                                this.domId.addClass('btn-info').html( m + " 인증번호 확인");
+                                if (this.comSecond < 0) {			// 시간이 종료 되었으면..
+                                    $('#authDo').removeClass('btn-info').html("인증하기");
+                                    $('#resAuthen').val('');
+                                    $('#authTime').html('인증요청시간이 지났습니다. 다시 인증번호를 요청해 주세요'); 
+                                    $('#reqAuthen').html('인증번호 재요청'); 
+                                    clearInterval(this.timer);		// 타이머 해제
+                                    // alert("인증시간이 초과하였습니다. 다시 인증해주시기 바랍니다.")
+                                }
+                            },
+                            fnStop : function(){                               
+                                   clearInterval(this.timer);
+                            }
+                        }  
+    });
+    
 
 
-});
+    $('#logout').click(function(){                                             
+        axios({
+            method: "delete",
+            url: "https://development.api.allegion.imgate.co.kr/v1/user/session",
+        })                                                                               
+            .then(function(res) {                         
+                    console.log(res); 
+                    location.href="/login"                                                                                           
+            })
+            .catch(function (request, status, error){  
+                    msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                    console.log(msg);                           
+            })             
+              
+});                   

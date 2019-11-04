@@ -3,9 +3,14 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
-
+var bodyParser = require('body-parser');
+var session = require('express-session');
+var passport = require('passport');
+var flash = require('connect-flash'); 
 var indexRouter = require('./routes/index');
+var buildingRouter = require('./routes/building');
+var doorlockRouter = require('./routes/doorlock');
+
 
 var app = express();
 
@@ -14,13 +19,32 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.use(session({
+  secret: '@#@$MYSIGN#@$#$',
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+     maxAge: 1000 * 60 // 쿠키 유효기간 10시간 (1000 * 60 * 60 * 10)
+   }
+ }));
+ app.use(flash());
+ app.use(passport.initialize());
+ app.use(passport.session());
+
+ app.use(express.static(path.join(__dirname, 'public')));
+
+ app.use(function(req, res, next) {
+  if(req.user) res.locals.user = req.user;
+  next();
+});
 
 app.use('/', indexRouter);
+app.use('/building_list', buildingRouter);
+app.use('/doorlock_list', doorlockRouter);
 
 
 
