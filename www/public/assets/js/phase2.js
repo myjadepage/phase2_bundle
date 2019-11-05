@@ -161,6 +161,12 @@ function debounce(func, wait, immediate) {
 };
 
 
+
+// 사이드바,상단네비 날짜시간설정
+var d =  new Date();
+$('.timezone').text('[ '+ d + ' ]');
+
+
 //단지선택 슬라이드 bx슬라이드 및  
 $('#property_list' ).bxSlider( {
     speed: 500, 
@@ -255,7 +261,8 @@ $('#del_property').on('click', function(e) {
         //국가코드 외부에서 가지고오고 국가 선택시 변경이벤트
         var countryCode; 
         var phone_number; 
-        var code;//서버에서 온 인증번호   
+        var code;//서버에서 온 인증번호  
+        var getkey;   
         var AuthTimer;        
          $('#CountryCode').empty();
          $('#CountryCode').append('<option selected="true" disabled>국가코드 선택</option>');        
@@ -292,7 +299,7 @@ $('#del_property').on('click', function(e) {
                     "phone_number": phone_number,
                     "need_signedup": true,
                     "expired_at": expired_at,                       
-                    "is_test_mode": true
+                    "is_test_mode": true                   
                     }
                 })                  
                 .then(function(res) {   
@@ -319,12 +326,15 @@ $('#del_property').on('click', function(e) {
             }else{
                 $('p.desc > span').show(); 
             }
-            //2단계 : 인증 및 로그인  
-       
-            $('#authDo').click(function(){                  
+
+
+            //2단계 : 인증 및 로그인          
+           
+            $('#authDo').click(function(){    
+                                                                     
                 var verification_code = $('#resAuthen').val();
                 if(verification_code == code){                   
-                    AuthTimer.fnStop();                       
+                    AuthTimer.fnStop();
                     axios({
                         method: "POST",
                         url: "https://development.api.allegion.imgate.co.kr/v1/user/session",
@@ -333,22 +343,23 @@ $('#del_property').on('click', function(e) {
                                 "phone_number": phone_number,
                                 "verification_code": verification_code
                             }
-                        })                                               
-                        .then(function(res) {                         
-                                console.log(res);   
-                                $('#loginForm').submit();                                                                                                                 
-                        })
-                        .catch(function (request, status, error){  
-                                msg = request.status + "<br>" + request.responseText + "<br>" + error;
-                                console.log(msg);                           
-                        })               
+                    })  
+                    .then(function(res) {  
+                        console.log(res);
+                        localStorage.setItem('api_key',res.data.api_key);
+                        $('#loginForm').submit();    
+                    }) 
+                   .catch(function (request, status, error){  
+                        msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                        console.log(msg);                           
+                    })                     
+
                 }else if(!verification_code){
                     $('#resAuthen').attr('placeholder', '전달 받은 인증번호를 입력해 주세요').val('');  
                 }else {
                     $('#resAuthen').attr('placeholder', '인증번호가 틀렸습니다. 다시 입력해 주세요').val('');                       
                 }                         
             });
-      
         });
         
     
@@ -377,24 +388,35 @@ $('#del_property').on('click', function(e) {
                                    clearInterval(this.timer);
                             }
                         }  
+
+
+        // 로그아웃
+        
+        $('#logout').click(function(){  
+            var getkey = localStorage.getItem('api_key');
+            console.log(getkey);
+                axios({
+                    method: "delete",
+                    url: "https://development.api.allegion.imgate.co.kr/v1/user/session",
+                    headers : {
+                        "Authorization": "Bearer " + getkey
+                    }
+                })                                                                               
+                .then(function(res) {                         
+                    console.log(res); 
+                    localStorage.clear();                    
+                    location.href="/logout"                                                                                           
+                })
+                .catch(function (request, status, error){  
+                    msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                    console.log(msg);                           
+                })   
+        });   
+
+
+
+       
     });
     
 
-    $('#logout').click(function(){                                             
-        axios({
-            method: "delete",
-            url: "https://development.api.allegion.imgate.co.kr/v1/user/session",
-            headers : {
-                "Authorization": "24a21f9c9277eecd030336364b658f75d3cb4017"
-            }
-        })                                                                               
-        .then(function(res) {                         
-                console.log(res); 
-                location.href="/login"                                                                                           
-        })
-        .catch(function (request, status, error){  
-                msg = request.status + "<br>" + request.responseText + "<br>" + error;
-                console.log(msg);                           
-        })             
-              
-});                   
+                

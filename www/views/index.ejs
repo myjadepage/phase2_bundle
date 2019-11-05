@@ -67,7 +67,8 @@
 <% include inc/modal %>   
 <% include inc/bottom %>
 
-    <script type="text/javascript">
+
+    <script type="text/javascript">   
         $('#propertySetting').on('show.bs.modal', function(e) {
              var proId = $(e.relatedTarget).data('proper-id');
              $(e.currentTarget).find('.pro_edit').prop('href','/property_edit');

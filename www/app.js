@@ -28,7 +28,7 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
   cookie: {
-     maxAge: 1000 * 60 * 60 * 10// 쿠키 유효기간 10시간 (1000 * 60 * 60 * 10)
+     maxAge: 1000 * 60 * 60 * 1// 쿠키 유효기간 10시간 (1000 * 60 * 60 * 10)
    }
  }));
  app.use(flash());
@@ -37,10 +37,6 @@ app.use(session({
 
  app.use(express.static(path.join(__dirname, 'public')));
 
- app.use(function(req, res, next) {
-  if(req.user) res.locals.user = req.user;
-  next();
-});
 
 app.use('/', indexRouter);
 app.use('/building_list', buildingRouter);

@@ -49,35 +49,43 @@ router.get('/timezone', function(req, res) {
     res.send(result);
 })
 
+router.get('/', function(req, res) { 
+	if(req.user) {
+		res.render('index', { 
+			title: 'phase2', 	 
+			nav_title:'단지선택',
+			nav_stitle:'',
+			date:common.currDateTime(),			
+			path:'/',	  
+			data:obj.property
+		});	
+	}else {
+		res.redirect('/login')
+	}
+});
 
 router.get('/login', function(req, res) {
-	res.render('auth/login',{
-		title: 'phase2'		
-	});
+		res.render('auth/login',{
+			title: 'phase2'	
+		});
   });
 
-router.post('/login', passport.authenticate('local',{failureRedirect: '/login', failureFlash: true}) 
-  ,function (req, res) {
+ router.get('/logout', function(req, res){
+	req.logout();	
+	req.session = null;
+	res.redirect('/login');	
+	
+});
+
+router.post('/login', passport.authenticate('local',{
+		failureRedirect: '/login', 
+		failureFlash: true
+	}),
+    function (req, res) {
 	  res.redirect('/');
 	}
  );
 
- router.get('/logout', function(req, res){
-	req.logout();	
-	res.redirect('/login');
-});
-
-router.get('/',common.ensureAuthenticated, function(req, res) { //,common.ensureAuthenticated	
-  res.render('index', { 
-	  title: 'phase2', 	 
-	  nav_title:'단지선택',
-	  nav_stitle:'',
-	  date:common.currDateTime(),
-	  timezone:common.timezone(),
-	  path:'/',	  
-	  data:obj.property
-	});
-});
 
 router.get('/property_new',common.ensureAuthenticated,function(req, res) {
 	res.render('property_new',{
@@ -94,7 +102,7 @@ router.get('/property_new',common.ensureAuthenticated,function(req, res) {
 		title: 'phase2',
 		nav_title:'단지 생성 완료',
 		nav_stitle:'',
-		date:common.currDateTime(),		
+		date:common.currDateTime(),	
 		path:'/',
         data:obj.property
 	});
@@ -105,7 +113,7 @@ router.get('/property_new',common.ensureAuthenticated,function(req, res) {
 		title: 'phase2',
 		nav_title:'단지삭제',
 		nav_stitle:'',
-		date:common.currDateTime(),		
+		date:common.currDateTime(),	
 		path:'/',
         data:obj.property
 	});
@@ -115,7 +123,7 @@ router.get('/property_new',common.ensureAuthenticated,function(req, res) {
 		title: 'phase2',
 		nav_title:'단지수정',
 		nav_stitle:'',
-		date:common.currDateTime(),		
+		date:common.currDateTime(),	
 		path:'/',
         data:obj.property
 	});
