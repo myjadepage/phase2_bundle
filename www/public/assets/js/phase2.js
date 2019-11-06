@@ -168,26 +168,7 @@ $('.timezone').text('[ '+ d + ' ]');
 
 
 //단지선택 슬라이드 bx슬라이드 및  
-$('#property_list' ).bxSlider( {
-    speed: 500, 
-    moveSlides: 3,    
-    slideWidth:1000,  
-    minSlides: 3,     
-    maxSlides:3,        
-    infiniteLoop: false,
-    pager:false,
-    responsive:true,    
-    nextSelector: '.bxNext',
-    prevSelector: '.bxPrev',
-    nextText: '<i class="pe-7s-angle-right"></i>',
-    prevText: '<i class="pe-7s-angle-left"></i>',      
-    touchEnabled: false, //모달 충돌용방지1
-    onSliderLoad: function () {//모달 충돌용방지2
-        $('.bx-viewport').on('click','a.collapse-toggle', function () {                
-            $(this).parent().find('.collapse-box').collapse('toggle'); 
-        });
-    }
-});
+
 
 
 // 단지삭제

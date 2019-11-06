@@ -6,59 +6,38 @@
               <div class="row">    
                     <div class="col-md-12">                                  
                       <%- include('inc/search') %><!-- 검색 -->
-                      <% if (data.length > 0) { %>
-                      <div class="slide_wrap">
-                        <ul id="property_list">	                                                
-                      <% for(var property of data) { %>					
-                                <li class="col-md-4">                               
-                                        <div class="card shadow card-s2">
-                                                <div class="image">
-                                                    <img src="assets/img/img_building.jpg" alt="">
-                                                </div>
-                                                <div class="content">
-                                                  <a href="/property_del/<%= property.proId%>"> <h4 class="title"><%=property.name %></h4></a>
-                                                    <p class="description">
-                                                        <%=property.nation %>/<%=property.local %><br>
-                                                        <%=property.addr %>
-                                                    </p>                                 
-                                                </div>
-                                                <!-- 클릭시 모달 단지수정/삭제 -->                                                       
-                                                <a class="setting icon"  data-proper-id="<%= property.proId %>" data-toggle="modal" data-target="#propertySetting" class="open-properDial" role="button" ></a>  
-                                              
-                                        </div> 
-                                
-                                </li>
-                      <% } %>  
-                                <li  class="col-md-4">
-                                        <div class="card card_default card-s2">
-                                            <div class="image">
-                                                <i class="icon"></i>
-                                            </div>
-                                            <div class="content">
-                                                <h4 class="title">
-                                                    <a href="/property_new"  class="icon"></a>
-                                                </h4>
-                                                <p class="description">
-                                                    새로운 단지를 신규로 생성합니다.
-                                                </p>                                 
-                                            </div>
+                     
+                      <div class="slide_wrap" style="display: none;">
+                        <ul id="property_list">                            	                                                  
+                            <li  class="col-md-4">
+                                    <div class="card card_default card-s2">
+                                        <div class="image">
+                                            <i class="icon"></i>
                                         </div>
-                                </li>
+                                        <div class="content">
+                                            <h4 class="title">
+                                                <a href="/property_new"  class="icon"></a>
+                                            </h4>
+                                            <p class="description">
+                                                새로운 단지를 신규로 생성합니다.
+                                            </p>                                 
+                                        </div>
+                                    </div>
+                            </li>
                         </ul>  
                         <nav class="bx-control">
                             <a href='#' class='bxPrev'></a>
                             <a href='#' class='bxNext'></a>
                         </nav>
                       </div>
-
-                      <% } else { %>
-                      <div class="con_default">
+                     
+                      <div class="con_default" style="display:none">
                         <i class="icon building"></i>
                         <h4 class="text-info">'아직 생성된 단지 정보가 없습니다.'</h4>
                         <p>단지를 생성하여 놀라운 서비스를 시작해 보세요. </p>
                         <a href="/property_new" class="btn btn-primary btn-fill btn-wd shadow" role="button">단지 생성하기</a>
                       </div>
-                      <% } %>
+                   
               </div>
               </div>
           </div>
@@ -67,12 +46,73 @@
 <% include inc/modal %>   
 <% include inc/bottom %>
 
+<script>
+    $(document).ready(function(){        
+        var getkey = localStorage.getItem('api_key');
+        $.ajax({
+            url:'/property',
+            method:'get',
+            contentType: "application/json; charset=utf-8",
+            dataType:"json"
+            // headers : {
+            //     "Authorization": "Bearer " + getkey
+            // }
+        })
+        .done(function(res) {     
+            var result = JSON.parse(res)
+            var text='';
+            console.log(result.items);   
+            if(result.items.length > 0){
+                $('.slide_wrap').show();
+                for(var data of result.items){
+                    text ='<li class="col-md-4"><div class="card shadow card-s2"><div class="image">';                        
+                    text+='<img src="assets/img/img_building.jpg" alt=""></div><div class="content">';                      
+                    text+='<a href="/property_del"> <h4 class="title">'+ data.name +'</h4></a>';
+                    text+='<p class="description">'+ data.address +'</p></div>';
+                    text+='<a class="setting icon"  data-proper-id="' + data.id + '" data-toggle="modal" data-target="#propertySetting" class="open-properDial" role="button" ></a>';
+                    text+='</li>';
+                    $('#property_list').prepend(text);
+                }
+                //단지선택 슬라이드 bx슬라이드 및  
+                $('#property_list' ).bxSlider( {
+                    speed: 500, 
+                    moveSlides: 3,    
+                    slideWidth:1000,  
+                    minSlides: 3,     
+                    maxSlides:3,        
+                    infiniteLoop: false,
+                    pager:false,
+                    responsive:false,    
+                    nextSelector: '.bxNext',
+                    prevSelector: '.bxPrev',
+                    nextText: '<i class="pe-7s-angle-right"></i>',
+                    prevText: '<i class="pe-7s-angle-left"></i>',      
+                    touchEnabled: false, //모달 충돌용방지1
+                    onSliderLoad: function () {//모달 충돌용방지2
+                        $('.bx-viewport').on('click','a.collapse-toggle', function () {                
+                            $(this).parent().find('.collapse-box').collapse('toggle'); 
+                        });
+                    }
+                });
+
+            }else{
+                $('.con_default').show();
+            }                                                                                     
+         })
+        .fail(function (request, status, error){  
+            msg = request.status + "<br>" + request.responseText + "<br>" + error;
+            console.log(msg);                           
+        })  
+    });
+</script>
+
+
 
     <script type="text/javascript">   
         $('#propertySetting').on('show.bs.modal', function(e) {
              var proId = $(e.relatedTarget).data('proper-id');
              $(e.currentTarget).find('.pro_edit').prop('href','/property_edit');
-             $(e.currentTarget).find('.pro_del').prop('href','/property_del/'+proId);
+             $(e.currentTarget).find('.pro_del').prop('href','/property_del');
          });      
      </script>     
 

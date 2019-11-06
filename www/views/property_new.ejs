@@ -178,7 +178,7 @@
         success : function (data) {
             console.log(data);
             $.each(data, function (key, entry) {                
-                $('#CountryName').append($('<option></option>').attr('value', entry.name).text(entry.name));                             
+                $('#CountryName').append($('<option></option>').attr('value', key).text(entry.name + ' / ' + key ));                             
             })
         },
         error: function(jqXHR, textStatus, errorThrown){
@@ -196,7 +196,7 @@
         success : function (data) {
             console.log(data);
             $.each(data, function (key, entry) { 
-                $('#timeZone').append($('<option></option>').attr('value', entry.value).text(entry.text)); 
+                $('#timeZone').append($('<option></option>').attr('value', entry.code).text('['+entry.code+'] '+entry.ko)); 
             })
         },
         error: function(jqXHR, textStatus, errorThrown){

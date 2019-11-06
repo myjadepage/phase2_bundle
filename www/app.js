@@ -37,8 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(function(req, res, next) {
   res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
   next();
-});
-
+});//logout 후 뒤로가기 시 방문했던 화면 보이던 것 처리
 
 
 app.use(function(req, res, next) {

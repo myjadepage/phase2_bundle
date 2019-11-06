@@ -20,10 +20,10 @@ fs.exists('./data/property.json', function(exists){
 })
 
 
-router.post("/property", function(req, res) {	
+router.get("/property", function(req, res) {	
 	fs.exists('./data/property.json', function(exists){	
 	var filePath = path.join(__dirname, '/../data/property.json');	
-	fs.readFile(filePath, function readFileCallback(err,result){
+	fs.readFile(filePath,'utf-8', function readFileCallback(err,result){
 			if(err) {	
 				res.json({});
 				return;
@@ -42,7 +42,7 @@ router.get('/countries', function(req, res) {
     res.send(result);
 })
 router.get('/timezone', function(req, res) {
-    var filePath = path.join(__dirname, '/../data/timezones.json');
+    var filePath = path.join(__dirname, '/../data/time_zone.json');
     var file = fs.readFileSync(filePath, 'utf8');
     var result = JSON.parse(file);
     res.send(result);
@@ -55,36 +55,46 @@ router.get('/login', function(req, res) {
 	});
 });
 
-router.post('/login', passport.authenticate('local',{
-	successRedirect: '/',
-	failureRedirect: '/login', 
-	failureFlash: true
-	})
-);
+// router.post('/login', passport.authenticate('local',{
+// 	successRedirect: '/',
+// 	failureRedirect: '/login', 
+// 	failureFlash: true
+// 	})
+// );
+router.post('/login', function(req, res) {	
+	res.redirect('/');	
+});
 
  router.get('/logout', function(req, res){
-	req.logout();	
-	res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');		 
+	req.logout();			 
 	res.redirect('/login');		
 });
 
- router.get('/',common.ensureAuthenticated, function(req, res, next) { 
-	if(req.user){
+//  router.get('/',common.ensureAuthenticated, function(req, res) { 
+// 	if(req.user){
+// 		res.render('index', { 
+// 			title: 'phase2', 	 
+// 			nav_title:'단지선택',
+// 			nav_stitle:'',
+// 			date:common.currDateTime(),			
+// 			path:'/',	  
+// 			data:obj.property
+// 		});	
+// 	}else{
+// 		res.redirect('/login');	
+// 	}
+// });
+router.get('/', function(req, res) { 	
 		res.render('index', { 
 			title: 'phase2', 	 
 			nav_title:'단지선택',
 			nav_stitle:'',
 			date:common.currDateTime(),			
-			path:'/',	  
-			data:obj.property
-		});	
-	}else{
-		res.redirect('/login');	
-	}
-	});
+			path:'/'
+		});		
+});
 
-
-router.get('/property_new',common.ensureAuthenticated,function(req, res,next) {
+router.get('/property_new',common.ensureAuthenticated,function(req, res) {
 	res.render('property_new',{
 		title: 'phase2',
 		nav_title:'단지생성',
@@ -94,41 +104,38 @@ router.get('/property_new',common.ensureAuthenticated,function(req, res,next) {
 	});
   });
   
-  router.get('/propery_new_done',common.ensureAuthenticated, function(req, res,next) {
+  router.get('/propery_new_done',common.ensureAuthenticated, function(req, res) {
 	res.render('propery_new_done',{
 		title: 'phase2',
 		nav_title:'단지 생성 완료',
 		nav_stitle:'',
 		date:common.currDateTime(),	
-		path:'/',
-        data:obj.property
+		path:'/'
 	});
 });
 
-    router.get('/property_del/:proId',common.ensureAuthenticated, function(req, res,next) {	
+    router.get('/property_del',common.ensureAuthenticated, function(req, res) {	
 	res.render('property_del',{
 		title: 'phase2',
 		nav_title:'단지삭제',
 		nav_stitle:'',
 		date:common.currDateTime(),	
-		path:'/',
-        data:obj.property
+		path:'/'
 	});
   });
-  router.get('/property_edit',common.ensureAuthenticated, function(req, res,next) {
+  router.get('/property_edit',common.ensureAuthenticated, function(req, res) {
 	res.render('property_edit',{
 		title: 'phase2',
 		nav_title:'단지수정',
 		nav_stitle:'',
 		date:common.currDateTime(),	
-		path:'/',
-        data:obj.property
+		path:'/'       
 	});
   });
 
 
 
-router.get('/issuekey',common.ensureAuthenticated, function(req, res,next) {
+router.get('/issuekey',common.ensureAuthenticated, function(req, res) {
 	res.render('issuekey',{
 		title: 'phase2', 
 		nav_title:'센트럴 아이파크2',
@@ -137,7 +144,7 @@ router.get('/issuekey',common.ensureAuthenticated, function(req, res,next) {
 		path:'/issuekey'
 	});	
 });
-router.get('/staff_list',common.ensureAuthenticated, function(req, res,next) {
+router.get('/staff_list',common.ensureAuthenticated, function(req, res) {
 	res.render('staff_list',{
 		title: 'phase2', 
 		nav_title:'센트럴 아이파크2',
@@ -146,7 +153,7 @@ router.get('/staff_list',common.ensureAuthenticated, function(req, res,next) {
 		path:'/staff_list'
 	});	
 });
-router.get('/report',common.ensureAuthenticated,function(req, res,next) {
+router.get('/report',common.ensureAuthenticated,function(req, res) {
 	res.render('report',{
 		title: 'phase2', 
 		nav_title:'센트럴 아이파크2',
