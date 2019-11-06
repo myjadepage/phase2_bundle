@@ -167,7 +167,7 @@ var d =  new Date();
 $('.timezone').text('[ '+ d + ' ]');
 
 
-//단지선택 슬라이드 bx슬라이드 및  
+
 
 
 
