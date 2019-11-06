@@ -11,7 +11,7 @@
                             <select class="form-control" id="CountryCode" name="CountryCode"></select>
                             <!-- 핸폰번호 -->
                             <input 
-                                class="form-control" name="phone" id="phone-number-check"
+                                class="form-control" id="phone-number-check" name="phone"
                                 placeholder=" 전화번호 입력 '-' 제외하고 입력해 주세요." maxlength="13" type="text"  value="">                            
                            
                             <button type="button" class="btn btn-fill btn-info btn-block" id="reqAuthen" >인증번호 요청</button>
@@ -21,9 +21,9 @@
                             <button type="button" class="btn btn-secondary btn-fill btn-block" id="authDo"><span>인증하기</span></button>                                                
 
 
-                            <p class="desc" id="authTime" style="display: none;">인증번호 입력 유효 시간은 3분 입니다.</p>  
-                            <input type="hidden" id="api_key" name="api_key">
-                            
+                            <p class="desc" id="authTime" style="display: none;">인증번호 입력 유효 시간은 3분 입니다.</p> 
+                            <input type="hidden" id="sendPhone" name="sendPhone">                                                    
+                            <input type="hidden" id="sendName" name="sendName">  
                         </div> 
                     </form>                                    
                 </div>  

@@ -1,10 +1,10 @@
 var util = require('util');
 require('date-utils');
 
-exports.ensureAuthenticated = function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) { 
+exports.ensureAuthenticated = function (req, res, next) {
+    if (req.isAuthenticated()) { 		
 		return next();
-	}else{	
+	}else{		
 		res.redirect('/login');
 	}
 }

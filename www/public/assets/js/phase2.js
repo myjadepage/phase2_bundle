@@ -208,22 +208,6 @@ $('#del_property').on('click', function(e) {
 // });
 
 
-/* 단지선택 슬라이드 */
-// $('#myProperty').carousel({
-//     interval: 0,
-//     wrap: false
-// })  
-// $('#myProperty').on('slid.bs.carousel', '', function() {
-//     var $this = $(this);      
-//     $this.children('.carousel-control').show();  
-//     if($('.carousel-inner .item:first').hasClass('active')) {
-//       $this.children('.left.carousel-control').hide();
-//     } else if($('.carousel-inner .item:last').hasClass('active')) {
-//       $this.children('.right.carousel-control').hide();    
-//     }  
-// });      
-
-
     // 로그인하기
     $(function(){    
         //전화번호입력 올바른가?
@@ -262,7 +246,6 @@ $('#del_property').on('click', function(e) {
         var countryCode; 
         var phone_number; 
         var code;//서버에서 온 인증번호  
-        var getkey;   
         var AuthTimer;        
          $('#CountryCode').empty();
          $('#CountryCode').append('<option selected="true" disabled>국가코드 선택</option>');        
@@ -287,25 +270,25 @@ $('#del_property').on('click', function(e) {
         //1 단계 :  인증번호 요청
         $('button#reqAuthen').click(function(){   
             var userNumber = $('input[name=phone]').val().replace(/(^0+)/, "");            
-            phone_number = countryCode + userNumber;                        
+            phone_number = countryCode + userNumber;              
             if(countryCode && userNumber){    
                var expired_at = new Date();    
-               expired_at.setMinutes(expired_at.getMinutes() + 3);              
-               axios({
+               expired_at.setMinutes(expired_at.getMinutes() + 3);   
+               $.ajax({
                 method: "POST",  
-                url: "https://development.api.allegion.imgate.co.kr/v1/user/verification_code",                    
-                dataType:"json",                   
-                data:{
+                url: "https://development.api.allegion.imgate.co.kr/v1/user/verification_code", 
+                contentType: "application/json; charset=utf-8",
+                data:JSON.stringify({
                     "phone_number": phone_number,
                     "need_signedup": true,
                     "expired_at": expired_at,                       
                     "is_test_mode": true                   
-                    }
+                    })
                 })                  
-                .then(function(res) {   
-                    console.log(res.data);
-                    alert("인증번호가 발송되었습니다. 문자를 확인해 주세요");     
-                    code = res.data.verification_code;                
+                .done(function(res) { 
+                    console.log(res)
+                    alert("인증번호가 발송되었습니다. 문자를 확인해 주세요");                        
+                    code = res.verification_code;                
                     $('#authTime').show();                         
 
                     //3분인증용 카운트다운
@@ -316,7 +299,7 @@ $('#del_property').on('click', function(e) {
                     AuthTimer.domId = $("#authDo");
                                            
                 })
-                .catch(function (request, status, error){                          
+                .fail(function (request, status, error){                          
                     var msg = "ERROR<br><br>"
                     msg += request.status + "<br>" + request.responseText + "<br>" + error;
                     console.log(msg);    
@@ -330,26 +313,27 @@ $('#del_property').on('click', function(e) {
 
             //2단계 : 인증 및 로그인          
            
-            $('#authDo').click(function(){    
-                                                                     
+            $('#authDo').click(function(){                                                                         
                 var verification_code = $('#resAuthen').val();
                 if(verification_code == code){                   
                     AuthTimer.fnStop();
-                    axios({
+                    $.ajax({
                         method: "POST",
                         url: "https://development.api.allegion.imgate.co.kr/v1/user/session",
-                        dataType:"json",     
-                        data:{
+                        contentType: "application/json; charset=utf-8",  
+                        data:JSON.stringify({
                                 "phone_number": phone_number,
                                 "verification_code": verification_code
-                            }
+                            })
                     })  
-                    .then(function(res) {  
-                        console.log(res);
-                        localStorage.setItem('api_key',res.data.api_key);
+                    .done(function(res) {  
+                        console.log(res);                       
+                        $('#sendPhone').val(res.phone_number); 
+                        $('#sendName').val(res.name)
+                        localStorage.setItem('api_key',res.api_key);
                         $('#loginForm').submit();    
                     }) 
-                   .catch(function (request, status, error){  
+                   .fail(function (request, status, error){  
                         msg = request.status + "<br>" + request.responseText + "<br>" + error;
                         console.log(msg);                           
                     })                     
@@ -394,27 +378,23 @@ $('#del_property').on('click', function(e) {
         
         $('#logout').click(function(){  
             var getkey = localStorage.getItem('api_key');
-            console.log(getkey);
-                axios({
+                $.ajax({
                     method: "delete",
                     url: "https://development.api.allegion.imgate.co.kr/v1/user/session",
                     headers : {
                         "Authorization": "Bearer " + getkey
                     }
                 })                                                                               
-                .then(function(res) {                         
+                .done(function(res) {                         
                     console.log(res); 
-                    localStorage.clear();                    
-                    location.href="/logout"                                                                                           
+                    localStorage.clear();                   
+                    location.replace('/logout');                                                                    
                 })
-                .catch(function (request, status, error){  
+                .fail(function (request, status, error){  
                     msg = request.status + "<br>" + request.responseText + "<br>" + error;
                     console.log(msg);                           
                 })   
-        });   
-
-
-
+        }); 
        
     });
     

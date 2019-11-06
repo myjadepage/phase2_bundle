@@ -1,14 +1,15 @@
+
 <div class="sidebar" data-color="blue" data-image="assets/img/sidebar-4.jpg">
     <div class="sidebar-wrapper">
         <div class="logo">
             <a href="/" class="simple-text"><%= title %></a>
         </div>
-       
+      
         <div class="userState">
             <dl>
                 <dt class="user_img"><img src="assets/img/faces/face-0.jpg" alt="프로필이미지"></dt>
                 <dd class="user_info">
-                    <h3>name</h3>
+                    <h3><%= locals.user %></h3>
                     <p><%= date %></p>
                 </dd>
                 <dd class="user_out">
@@ -16,7 +17,7 @@
                 <dd>
             </dl>        
         </div>
-       
+    
        
         <ul class="nav">
             <li class="<%= path === '/building_list' ? 'active' : '' %>">

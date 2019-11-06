@@ -1,6 +1,5 @@
 var path = require('path');
 var express = require('express');
-var axios = require('axios');
 var router = express.Router();
 var common = require('../lib/common');
 var passport = require('../lib/passport');
@@ -49,8 +48,28 @@ router.get('/timezone', function(req, res) {
     res.send(result);
 })
 
-router.get('/', function(req, res) { 
-	if(req.user) {
+router.get('/login', function(req, res) {	
+	if(req.user) res.redirect('/');
+	res.render('auth/login',{
+		title: 'phase2'	
+	});
+});
+
+router.post('/login', passport.authenticate('local',{
+	successRedirect: '/',
+	failureRedirect: '/login', 
+	failureFlash: true
+	})
+);
+
+ router.get('/logout', function(req, res){
+	req.logout();	
+	res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');		 
+	res.redirect('/login');		
+});
+
+ router.get('/',common.ensureAuthenticated, function(req, res, next) { 
+	if(req.user){
 		res.render('index', { 
 			title: 'phase2', 	 
 			nav_title:'단지선택',
@@ -59,35 +78,13 @@ router.get('/', function(req, res) {
 			path:'/',	  
 			data:obj.property
 		});	
-	}else {
-		res.redirect('/login')
+	}else{
+		res.redirect('/login');	
 	}
-});
-
-router.get('/login', function(req, res) {
-		res.render('auth/login',{
-			title: 'phase2'	
-		});
-  });
-
- router.get('/logout', function(req, res){
-	req.logout();	
-	req.session = null;
-	res.redirect('/login');	
-	
-});
-
-router.post('/login', passport.authenticate('local',{
-		failureRedirect: '/login', 
-		failureFlash: true
-	}),
-    function (req, res) {
-	  res.redirect('/');
-	}
- );
+	});
 
 
-router.get('/property_new',common.ensureAuthenticated,function(req, res) {
+router.get('/property_new',common.ensureAuthenticated,function(req, res,next) {
 	res.render('property_new',{
 		title: 'phase2',
 		nav_title:'단지생성',
@@ -97,7 +94,7 @@ router.get('/property_new',common.ensureAuthenticated,function(req, res) {
 	});
   });
   
-  router.get('/propery_new_done',common.ensureAuthenticated, function(req, res) {
+  router.get('/propery_new_done',common.ensureAuthenticated, function(req, res,next) {
 	res.render('propery_new_done',{
 		title: 'phase2',
 		nav_title:'단지 생성 완료',
@@ -108,7 +105,7 @@ router.get('/property_new',common.ensureAuthenticated,function(req, res) {
 	});
 });
 
-    router.get('/property_del/:proId',common.ensureAuthenticated, function(req, res) {	
+    router.get('/property_del/:proId',common.ensureAuthenticated, function(req, res,next) {	
 	res.render('property_del',{
 		title: 'phase2',
 		nav_title:'단지삭제',
@@ -118,7 +115,7 @@ router.get('/property_new',common.ensureAuthenticated,function(req, res) {
         data:obj.property
 	});
   });
-  router.get('/property_edit',common.ensureAuthenticated, function(req, res) {
+  router.get('/property_edit',common.ensureAuthenticated, function(req, res,next) {
 	res.render('property_edit',{
 		title: 'phase2',
 		nav_title:'단지수정',
@@ -131,7 +128,7 @@ router.get('/property_new',common.ensureAuthenticated,function(req, res) {
 
 
 
-router.get('/issuekey',common.ensureAuthenticated, function(req, res) {
+router.get('/issuekey',common.ensureAuthenticated, function(req, res,next) {
 	res.render('issuekey',{
 		title: 'phase2', 
 		nav_title:'센트럴 아이파크2',
@@ -140,7 +137,7 @@ router.get('/issuekey',common.ensureAuthenticated, function(req, res) {
 		path:'/issuekey'
 	});	
 });
-router.get('/staff_list',common.ensureAuthenticated, function(req, res) {
+router.get('/staff_list',common.ensureAuthenticated, function(req, res,next) {
 	res.render('staff_list',{
 		title: 'phase2', 
 		nav_title:'센트럴 아이파크2',
@@ -149,7 +146,7 @@ router.get('/staff_list',common.ensureAuthenticated, function(req, res) {
 		path:'/staff_list'
 	});	
 });
-router.get('/report',common.ensureAuthenticated,function(req, res) {
+router.get('/report',common.ensureAuthenticated,function(req, res,next) {
 	res.render('report',{
 		title: 'phase2', 
 		nav_title:'센트럴 아이파크2',

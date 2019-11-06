@@ -3,14 +3,14 @@ var LocalStrategy = require('passport-local').Strategy;
 
 
 passport.use(new LocalStrategy({
-    usernameField: 'phone',
+    usernameField: 'sendPhone',
     passwordField: 'resAuthen',
     passReqToCallback: true
-  }, 
-  function (req, phone, resAuthen, done) {
-        if(phone && (req.body.resAuthen == resAuthen)) {
+  }, function (req, sendPhone, resAuthen, done) {
+        if(sendPhone && resAuthen) {
           return done(null, {
-              user_id: phone
+              user_id: sendPhone,
+              user_name : req.body.sendName
             });
         } else {
           return done(false, null)
@@ -18,7 +18,7 @@ passport.use(new LocalStrategy({
   }));
 
 passport.serializeUser(function (user, done) {
-  done(null, user)
+  done(null, user.user_name)
 });
 
 passport.deserializeUser(function (user, done) {
