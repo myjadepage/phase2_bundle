@@ -268,8 +268,10 @@ $(function(){
             .done(function(res) { 
                 console.log(res)
                 alert("인증번호가 발송되었습니다. 문자를 확인해 주세요");                        
-                code = res.verification_code;                
+                code = res.verification_code; 
+                var expired_at = res.expired_at;//유효시간               
                 $('#authTime').show();                                   
+                
                 AuthTimer = new $ComTimer()
                 AuthTimer.comSecond = 178;//(180초 : 3 분)
                 AuthTimer.fnCallback = function(){}
