@@ -1,0 +1,131 @@
+
+<%- include('inc/head') %> 
+<%- include('inc/sidebar') %>
+<%- include('inc/nav') %>
+
+        <div class="content">
+            <div class="">
+                <div class="row">
+                        <div class="col-md-6">
+                                <div class="card card-h2">
+                                    <div class="card-header">
+                                        <h5 class="card-title">단지정보 보기</h5>
+                                    </div> 
+                                    <div class="card-body">                                       
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label>단지 이름</label>
+                                                        <p name="viewName" class="form-control"></p>
+                                                    </div>
+                                                </div>                                                        
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">                                                           
+                                                    <div class="row form-group">
+                                                        <div class="col-md-6">
+                                                            <label>단지 지역정보</label>
+                                                            <p name="viewCountry" class="form-control"></p>  
+                                                        </div> 
+                                                        <div class="col-md-6 pr-1">
+                                                            <label class="txt_hidden">도시선택</label>
+                                                            <p name ="viewCity" class="form-control"></p>                                                                     
+                                                        </div> 
+                                                        <div class="col-md-12 pl-1 pr-1">                                                                        
+                                                            <p class="form-control"  name="viewTimeZone"></p>                                                                                                                                                                                            
+                                                        </div>
+                                                        <div class="col-md-12 pl-1">                                                                        
+                                                            <p class="form-control" value="" name="viewAddress"></p>
+                                                        </div>
+                                                    </div>  
+                                                </div>
+                                            </div>                                            
+                                    </div>
+                                </div>
+                        </div>
+
+                        <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title">공용도어 정보</h5>                                      
+                                    </div> 
+                                    <div class="card-body">
+                                            <div class="table-full-width">                                               
+                                                   <table class="table">
+                                                        <colgroup>
+                                                            <col width="10%">
+                                                            <col width="*">
+                                                            <col width="25%">
+                                                        </colgroup>
+                                                        <thead>
+                                                            <tr>                                                            
+                                                                <th class="text-right">total: <strong class="text-primary">4</strong></th>
+                                                            </tr>
+                                                        </thead>                                                         
+                                                      <tbody>
+                                                            <tr>
+                                                                <td>빌딩 주 출입구 A</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>빌딩 주 출입구 B</td>                                                                
+                                                            </tr>
+                                                            <tr>
+                                                                <td>빌딩 주 출입구 C</td>                                                               
+                                                            </tr>
+                                                            <tr>
+                                                                <td>빌딩 주 출입구 D</td>                                                               
+                                                            </tr>                                                                                       
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                    </div>
+                                    <div class="card-footer" style="height:70px;"></div>
+                                </div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="col-md-12 text-center">
+                            <button type="reset" class="btn btn-default btn-fill shadow pull-left" onclick="location='javascript:history.back()'">뒤로가기</button>                           
+                            <button type="button" onclick="location='../../property_edit/<%= id%>'" class="btn btn-fill btn-primary pull-right shadow">단지 수정하기</button>
+                        </div>
+                
+                </div>
+            </div>
+        </div>
+<% include inc/footer %>
+<% include inc/modal %>
+<% include inc/bottom %>
+<script>    
+    //프라퍼티 상세보기
+        $(function(){            
+                $.ajax({
+                    url:'/property_view',//property 상세보기 api
+                    /*url:'https://development.api.allegion.imgate.co.kr/v1/properties/< property_id >',*/
+                    method:'get',
+                    contentType: "application/json; charset=utf-8",
+                    dataType:"json",
+                    // data:{
+                    //     property_id : < property_id >
+                    // }
+                    // headers : {
+                    //     "Authorization": "Bearer " + getkey
+                    // }
+                })
+                .done(function(res) {     
+                    var result = JSON.parse(res);
+                    $('p[name="viewName"').text(result.name);
+                    $('p[name="viewCountry"').text(result.country_code);
+                    $('p[name="viewCity"').text(result.city);
+                    $('p[name="viewTimeZone"').text(result.timezone);
+                    $('p[name="viewAddress"').text(result.address);
+                    navTitle(result.name,result.address);                   
+                })
+                .fail(function (request, status, error){  
+                    msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                    console.log(msg);                           
+                })    
+        
+    
+        });
+    
+</script>

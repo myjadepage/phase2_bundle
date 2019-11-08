@@ -34,11 +34,16 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//하위경로에서 스태틱파일 읽기
+app.use('/property_del/:id',express.static(path.join(__dirname, 'public')));
+app.use('/property_read/:id',express.static(path.join(__dirname, 'public')));
+app.use('/property_edit/:id',express.static(path.join(__dirname, 'public')));
+
+//logout 후 뒤로가기 시 방문했던 화면 보이던 것 처리
 app.use(function(req, res, next) {
   res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
   next();
-});//logout 후 뒤로가기 시 방문했던 화면 보이던 것 처리
-
+});
 
 app.use(function(req, res, next) {
  if(req.user) res.locals.user = req.user;

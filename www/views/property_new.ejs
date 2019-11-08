@@ -25,7 +25,7 @@
                                                         <div class="row form-group">
                                                             <div class="col-md-6">
                                                                 <label>단지 지역 정보 입력</label>
-                                                                <select class="form-control" id="CountryName" name="CountryName"><select> 
+                                                                <select class="form-control" id="CountryName" name="CountryName"></select> 
                                                             </div> 
                                                             <div class="col-md-6 pr-1">
                                                                 <label class="txt_hidden">도시선택</label>
@@ -34,7 +34,7 @@
                                                                 <select class="form-control" id="CountryCity"><select> -->
                                                             </div> 
                                                             <div class="col-md-12 pl-1 pr-1">                                                                        
-                                                                <select class="form-control" id="timeZone" name="timeZone"><select>                                                                                                                                                                                            
+                                                                <select class="form-control" id="timeZone" name="timeZone"></select>                                                                                                                                                                                            
                                                             </div>
                                                             <div class="col-md-12 pl-1">                                                                        
                                                                 <input type="text" class="form-control" placeholder="상세 주소 입력" value="" id="address" name="address">
@@ -50,7 +50,7 @@
                                                             <option>Hospitality</option>
                                                             <option>Residential</option>
                                                             <option>Office</option>
-                                                        <select>                                                               
+                                                        </select>                                                               
                                                     </div>
                                                 </div>
                                             </div> 
@@ -137,7 +137,6 @@
                     </form>
                         <div class="col-md-12">
                             <button type="reset" class="btn btn-default btn-fill shadow pull-left">취소</button>
-                            <!-- <button type="submit" class="btn btn-info btn-fill shadow">단지생성</button> -->
                             <button  class="btn btn-primary btn-fill pull-right shadow" id="btnItem">단지 생성하기</a>
                                <!-- href="/propery_new_done" -->
                         </div>
@@ -149,15 +148,21 @@
 <% include inc/modal %>
 <% include inc/bottom %>
 
-<script>
+<script>    
+    navTitle('단지생성','');
+    
     //단지생성하기
     $('#btnItem').on('click',function(){
+        var getkey = localStorage.getItem('api_key');
         console.log($('#item_form').serialize());
         $.ajax({
-            url :'/property',
+            url :'/properties',
             dataType :'json',
             type:'POST',
             data:$('#item_form').serialize(),
+            // headers : {
+            //     "Authorization": "Bearer " + getkey
+            // }
             done : function (res) {
                 console.log(res);
             },

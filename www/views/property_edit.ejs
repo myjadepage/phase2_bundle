@@ -12,36 +12,36 @@
                                         <h5 class="card-title">단지정보 수정</h5>
                                     </div> 
                                     <div class="card-body">
-                                        <form>
+                                        <form id="item_edit_form" data-parsley-validate>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label>단지 이름 수정</label>
-                                                        <input type="text" class="form-control" placeholder="" value="푸르지오1단지">
+                                                        <label>단지 이름</label>
+                                                        <input type="text" class="form-control" name="viewName">
                                                     </div>
                                                 </div>                                                        
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-12">                                                           
-                                                        <div class="row form-group">
-                                                            <div class="col-md-12 pr-1">
-                                                                <label>단지 지역정보 수정</label>
-                                                                <select class="form-control">
-                                                                    <option>대한민국</option>
-                                                                    <option>나라이름2</option>
-                                                                    <option>나라이름3</option>
-                                                                <select> 
-                                                            </div> 
-                                                            <div class="col-md-12 pl-1">                                                                                                                                                                                  
-                                                                <select class="form-control">
-                                                                    <option>서울</option>
-                                                                    <option>도시이름</option>
-                                                                    <option>도시이름</option>
-                                                                <select>
-                                                            </div>                                                           
-                                                         </div>  
-                                                </div>
-                                            </div>                                          
+                                                    <div class="col-md-12">                                                           
+                                                            <div class="row form-group">
+                                                                <div class="col-md-6">
+                                                                    <label>단지 지역 정보 입력</label>
+                                                                    <select class="form-control" id="CountryName" name="viewCountry"></select> 
+                                                                </div> 
+                                                                <div class="col-md-6 pr-1">
+                                                                    <label class="txt_hidden">도시선택</label>
+                                                                    <input type="text" class="form-control" id="local" name="viewCity">                                                                  
+                                                                </div> 
+                                                                <div class="col-md-12 pl-1 pr-1">                                                                        
+                                                                    <select class="form-control" id="timeZone" name="viewTimeZone"></select>                                                                                                                                                                                            
+                                                                </div>
+                                                                <div class="col-md-12 pl-1">                                                                        
+                                                                    <input type="text" class="form-control" id="address" name="viewAddress">
+                                                                </div>
+                                                             </div>  
+                                                    </div>
+                                                </div>                                                                                            
+                                                                                    
                                         </form>
                                     </div>
                                 </div>
@@ -165,13 +165,9 @@
                         <div class="clearfix"></div>
 
                         <div class="col-md-12 text-center">
-                            <button type="reset" class="btn btn-default btn-fill shadow pull-left">취소</button>
-                            <!-- <button type="submit" class="btn btn-info btn-fill shadow">단지생성</button> -->
-                            <button type="button" onclick="location='propery_new_done.html'" class="btn btn-fill btn-primary pull-right">단지 생성 하기</button>
+                            <button type="reset" class="btn btn-default btn-fill shadow pull-left">취소</button>                           
+                            <button type="button" onclick="location='propery_new_done'" class="btn btn-fill btn-primary pull-right shadow">단지 수정 하기</button>
                         </div>
-
-                        
-                
                 </div>
             </div>
         </div>
@@ -179,3 +175,74 @@
 <% include inc/modal %>
 <% include inc/bottom %>
 
+<script>
+    //국가선택 
+    $('#CountryName').empty();
+    $('#CountryName').append('<option selected="true" disabled>국가 선택</option>');
+    $('#CountryName').prop('selectedIndex', 0);  
+    $.ajax({
+        url : '/countries', //json 불러오기 router이용해서 불러옴
+        dataType :'json',
+        success : function (data) {
+            console.log(data);
+            $.each(data, function (key, entry) {                
+                $('#CountryName').append($('<option></option>').attr('value', key).text(entry.name + ' / ' + key ));                             
+            })
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+        console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
+        }    
+    });
+
+     // 타임존선택 timeZone
+    $('#timeZone').empty();
+    $('#timeZone').append('<option selected="true" disabled>타임존 선택</option>');
+    $('#timeZone').prop('selectedIndex', 0);  
+    $.ajax({
+        url : '/timezone', //json 불러오기 router이용해서 불러옴
+        dataType :'json',
+        success : function (data) {
+            console.log(data);
+            $.each(data, function (key, entry) { 
+                $('#timeZone').append($('<option></option>').attr('value', entry.code).text('['+entry.code+'] '+entry.ko)); 
+            })
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+          console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
+        }    
+    });
+
+
+        //프라퍼티 상세보기
+            $(function(){                
+                $.ajax({
+                    url:'/property_view',//property 상세보기 api
+                    // url:'https://development.api.allegion.imgate.co.kr/v1/properties/{'+ property_id +'}',
+                    method:'get',
+                    contentType: "application/json; charset=utf-8",
+                    dataType:"json",
+                    // data:{
+                    //     property_id : property_id
+                    // }
+                    // headers : {
+                    //     "Authorization": "Bearer " + getkey
+                    // }
+                })
+                .done(function(res) {     
+                    var result = JSON.parse(res);
+                    $('input[name="viewName"').val(result.name);
+                    $('input[name="viewCountry"').val(result.country_code);
+                    $('input[name="viewCity"').val(result.city);
+                    $('input[name="viewTimeZone"').val(result.timezone);
+                    $('input[name="viewAddress"').val(result.address);
+                    navTitle(result.name,result.address); 
+                })
+                .fail(function (request, status, error){  
+                    msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                    console.log(msg);                           
+                })    
+              
+        
+            });
+        
+    </script>

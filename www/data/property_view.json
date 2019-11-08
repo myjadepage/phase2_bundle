@@ -1,0 +1,16 @@
+{
+	
+	
+		
+			"id": "bc0a2cab6f342968f6a76229f247fd50246c4f7b",
+			"name": "Imgate 호텔",
+			"country_code": "KR",
+			"city": "Seoul",
+			"timezone": "Asia/Seoul",
+			"address": "경기도 성남시 분당구 판교로 256번길 25 B동 4층",
+			"image_url": "https://imgate.io/hotels/logo.png",
+			"day_type_offset": "1200",
+			"created_at": "2099-12-31T18:00:32.777Z",
+			"updated_at": "2099-12-31T18:00:32.777Z"
+		
+}

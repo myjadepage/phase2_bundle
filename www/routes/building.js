@@ -4,10 +4,7 @@ var common = require('../lib/common');
 
 
 router.get('/',common.ensureAuthenticated, function(req, res) {   
-	res.render('building_list',{
-	  title: 'phase2', 
-	  nav_title:'',
-	  nav_stitle:'',
+	res.render('building_list',{	  
 	  date:common.currDateTime(),
 	  path:'/building_list'
 	});	

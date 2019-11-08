@@ -14,11 +14,8 @@
                                 <img src="assets/img/img_building.jpg" alt="">
                             </div>
                             <div class="content">
-                                <h4 class="title"><%=data.name %></h4>
-                                <p class="description">
-                                        <%=data.nation %>/<%=data.local %><br>
-                                        <%=data.addr %>
-                                </p>                                 
+                                <a href="/property_read"><h4 class="title"></h4></a>
+                                <p class="description"></p>                                                              
                             </div>                                  
                         </div>                       
                         <br>
@@ -34,3 +31,32 @@
 <% include inc/modal %>
 <% include inc/bottom %>
 
+<script>
+    $(function(){     
+        $.ajax({
+            url:'/property_view',//property 상세보기 api
+            // url:'https://development.api.allegion.imgate.co.kr/v1/properties/{'+ property_id +'}',
+            method:'get',
+            contentType: "application/json; charset=utf-8",
+            dataType:"json",
+            // data:{
+            //     property_id : property_id
+            // }
+            // headers : {
+            //     "Authorization": "Bearer " + getkey
+            // }
+        })
+        .done(function(res) {     
+            var result = JSON.parse(res);
+            $('h4.title').text(result.name);
+            $('p.description').text(result.address);
+            navTitle(result.name,result.address); 
+         })
+        .fail(function (request, status, error){  
+            msg = request.status + "<br>" + request.responseText + "<br>" + error;
+            console.log(msg);                           
+        })    
+
+    });
+
+</script>
