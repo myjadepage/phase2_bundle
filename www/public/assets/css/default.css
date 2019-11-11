@@ -295,6 +295,17 @@ input:focus {
     height: 60px;
 }
 
+
+.sidebar .nav.disable li > a {
+    color: #FFFFFF;
+    opacity: .3;
+}
+.sidebar .nav.disable .open > a,
+.sidebar .nav.disable li.dropdown .dropdown-menu li:hover > a,
+.sidebar .nav.disable li:hover > a {
+    background-color: transparent;
+}
+
 .sidebar .nav {
     margin-top: 20px;
     float: none;

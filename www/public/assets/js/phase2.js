@@ -294,17 +294,14 @@ $(function(){
     $('button#reqAuthen').click(function(){   
         var userNumber = $('input[name=phone]').val().replace(/(^0+)/, "");  //맨 앞 "0"제거
         phone_number = countryCode + userNumber;              
-        if(countryCode && userNumber){    
-        //    var expired_at = new Date();    
-        //    expired_at.setMinutes(expired_at.getMinutes() + 3);   
+        if(countryCode && userNumber){         
            $.ajax({
             method: "POST",  
             url: API_ENDPOINT + "user/verification_code", 
             contentType: "application/json; charset=utf-8",
             data:JSON.stringify({
                 "phone_number": phone_number,
-                "need_signedup": true,
-                // "expired_at": expired_at,                       
+                "need_signedup": true,                                     
                 "is_test_mode": true                   
                 })
             })                  
