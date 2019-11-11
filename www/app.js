@@ -34,7 +34,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//하위경로에서 스태틱파일 읽기
+//하위경로에서 static파일 읽기
 app.use('/property_del/:id',express.static(path.join(__dirname, 'public')));
 app.use('/property_read/:id',express.static(path.join(__dirname, 'public')));
 app.use('/property_edit/:id',express.static(path.join(__dirname, 'public')));

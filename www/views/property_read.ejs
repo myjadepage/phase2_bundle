@@ -97,19 +97,19 @@
 <% include inc/bottom %>
 <script>    
     //프라퍼티 상세보기
-        $(function(){            
-                $.ajax({
-                    url:'/property_view',//property 상세보기 api
-                    /*url:'https://development.api.allegion.imgate.co.kr/v1/properties/< property_id >',*/
+        $(function(){   
+            var API_KEY = localStorage.getItem('api_key');           
+                $.ajax({                   
+                    //property 상세보기 api
+                    url:'https://development.api.allegion.imgate.co.kr/v1/properties/'+property_id,
                     method:'get',
                     contentType: "application/json; charset=utf-8",
-                    dataType:"json",
-                    // data:{
-                    //     property_id : < property_id >
-                    // }
-                    // headers : {
-                    //     "Authorization": "Bearer " + getkey
-                    // }
+                    data:{
+                        property_id : property_id
+                    },
+                    headers : {
+                        "Authorization": "Bearer " + API_KEY
+                    }
                 })
                 .done(function(res) {     
                     var result = JSON.parse(res);
@@ -123,9 +123,7 @@
                 .fail(function (request, status, error){  
                     msg = request.status + "<br>" + request.responseText + "<br>" + error;
                     console.log(msg);                           
-                })    
-        
-    
+                })   
         });
     
 </script>

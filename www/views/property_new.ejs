@@ -15,8 +15,8 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label>단지 정보 입력</label>
-                                                        <input type="text" class="form-control" placeholder="신규 단지 이름 등록" value="" id="name" name="name">
+                                                        <label>단지 이름 입력<i class="text-danger">*</i></label>
+                                                        <input type="text" class="form-control" placeholder="신규 단지 이름 등록" name="name" onkeyup="chkword(this,100);">
                                                     </div>
                                                 </div>                                                        
                                             </div>
@@ -24,20 +24,18 @@
                                                 <div class="col-md-12">                                                           
                                                         <div class="row form-group">
                                                             <div class="col-md-6">
-                                                                <label>단지 지역 정보 입력</label>
-                                                                <select class="form-control" id="CountryName" name="CountryName"></select> 
+                                                                <label>단지 지역 정보 입력<i class="text-danger">*</i></label>
+                                                                <select class="form-control"  name="country_code" required></select> 
                                                             </div> 
                                                             <div class="col-md-6 pr-1">
-                                                                <label class="txt_hidden">도시선택</label>
-                                                                <input type="text" class="form-control" placeholder="도시 입력 예)서울" value="" id="local" name="local">
-                                                                <!-- <label class="txt_hidden">도시선택</label>                                                                                                                             
-                                                                <select class="form-control" id="CountryCity"><select> -->
+                                                                <label class="txt_hidden">도시입력<i class="text-danger" role="presentation"></i></label>
+                                                                <input type="text" class="form-control" placeholder="도시 입력 예)서울" name="city" >                                                               
                                                             </div> 
                                                             <div class="col-md-12 pl-1 pr-1">                                                                        
-                                                                <select class="form-control" id="timeZone" name="timeZone"></select>                                                                                                                                                                                            
+                                                                <select class="form-control" name="timezone" required></select>                                                                                                                                                                                            
                                                             </div>
                                                             <div class="col-md-12 pl-1">                                                                        
-                                                                <input type="text" class="form-control" placeholder="상세 주소 입력" value="" id="address" name="address">
+                                                                <input type="text" class="form-control" placeholder="상세 주소 입력" name="address" onkeyup="chkword(this,200);">
                                                             </div>
                                                          </div>  
                                                 </div>
@@ -46,9 +44,11 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="propertyType">단지 타입 선택</label>
-                                                        <select class="form-control" id="type" name="type">
-                                                            <option>Hospitality</option>
+                                                        <select class="form-control" name="type">
+                                                            <option selected="true" disabled>단지 타입 선택</option>
                                                             <option>Residential</option>
+                                                            <option>B&B Hotel</option>
+                                                            <option>Hospitality</option>
                                                             <option>Office</option>
                                                         </select>                                                               
                                                     </div>
@@ -56,9 +56,18 @@
                                             </div> 
                                             <div class="row">
                                                 <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="day_type_offset">일 단위 타입 선택</label>
+                                                        <select class="form-control"  name="day_type_offset"></select>                                                               
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                            <div class="row">
+                                                <div class="col-md-12">
                                                     <div class="form-group">  
                                                         <label>단지 이미지 등록</label>
-                                                        <input type="file" class="form-control" id="hotel_logo" placeholder="배경 이밎 첨부파일 등록 [png,jpg]" value="">
+                                                        <!-- 이미지등록 알아볼것 -->
+                                                        <input type="file" class="form-control" id="hotel_logo" placeholder="배경 이밎 첨부파일 등록 [png,jpg]">
 
                                                         <div class="img_insert">
                                                             <i class="icon image_state"></i>                                                            
@@ -137,8 +146,7 @@
                     </form>
                         <div class="col-md-12">
                             <button type="reset" class="btn btn-default btn-fill shadow pull-left">취소</button>
-                            <button  class="btn btn-primary btn-fill pull-right shadow" id="btnItem">단지 생성하기</a>
-                               <!-- href="/propery_new_done" -->
+                            <button  class="btn btn-primary btn-fill pull-right shadow" id="btnItem">단지 생성하기</a>                            
                         </div>
 
                 </div>
@@ -150,40 +158,97 @@
 
 <script>    
     navTitle('단지생성','');
-    
-    //단지생성하기
-    $('#btnItem').on('click',function(){
-        var getkey = localStorage.getItem('api_key');
-        console.log($('#item_form').serialize());
+
+     //단지생성하기
+     $('#btnItem').on('click',function(){
+        var API_KEY = localStorage.getItem('api_key');  
+        
+        var name = $('input[name="name"]').val();
+        var country_code =  $('select[name="country_code"] option:selected').val();        
+        var timezone = $('select[name="timezone"]  option:selected').val();  
+        var city = $('input[name="city"]').val();
+        var address =$('input[name="address"]').val();
+        var day_type_offset =$('select[name="day_type_offset"] option:selected').val();   
+        var image_url = $('#hotel_logo').val();
+
+        //단지정보입력 여부 체크
+        if(name ==""){
+            alert("단지이름을 입력해 주세요");            
+        }else if(name){
+            var chkAdd = chkAdd(name, address);
+        }else if(country_code == "" ){
+            alert("국가코드를 선택해 주세요");
+        }else if(timezone == ""){
+            alert("타임존을 선택해 주세요")
+        }else if(city == ""){
+            alert("도시를 입력해 주세요")
+        }else if(address == ""){
+            alert("상세주소를 입력해 주세요")
+        }else if(address){
+            characterCheck(address);
+        }
+
+        var formArray =$("#item_form").serialize();       
+        var returnArray = {};
+        for (var i = 0; i < formArray.length; i++){
+            returnArray[formArray[i]['name']] = formArray[i]['value'];
+            console.log('테스트',returnArray);
+        }
+  
         $.ajax({
-            url :'/properties',
-            dataType :'json',
-            type:'POST',
-            data:$('#item_form').serialize(),
-            // headers : {
-            //     "Authorization": "Bearer " + getkey
-            // }
-            done : function (res) {
-                console.log(res);
+            url :'https://development.api.allegion.imgate.co.kr/v1/properties',
+            contentType: "application/json; charset=utf-8",
+            type:'POST',           
+            headers : {
+            "Authorization": "Bearer " + API_KEY
             },
-            fail: function(jqXHR, textStatus, errorThrown){
+            data:$("#item_form").serialize()
+        }) 
+        .done(function (res) {
+            console.log(res);
+        })
+        .fail(function(jqXHR, textStatus, errorThrown){
                 console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
-            }  
-        });
+        })         
     });
 
+     //동일한 단지이름과 상세주소 있는지 체크
+     function chkAdd(name,address){
+                $.ajax({
+                    url:'https://development.api.allegion.imgate.co.kr/v1/properties',
+                    method:'get',
+                    contentType: "application/json; charset=utf-8",
+                    headers : {
+                        "Authorization": "Bearer " + API_KEY
+                    }
+                })
+                .done(function(result) {        
+                    if(result){            
+                        for(var i=0; i<result.length; i++){                
+                            if(name == result[i].name && address == result[i].address){
+                                alert("단지 이름과 상세 주소가 동일한 정보가 있습니다.");
+                            }
+                        }                             
+                    }
+                    return false;                                                                           
+                })
+                .fail(function (request, status, error){  
+                    msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                    console.log(msg);                           
+                }) 
+    }
 
-    //국가선택
-    $('#CountryName').empty();
-    $('#CountryName').append('<option selected="true" disabled>국가 선택</option>');
-    $('#CountryName').prop('selectedIndex', 0);  
+    //국가코드선택
+    $('select[name="country_code"]').empty();
+    $('select[name="country_code"]').append('<option selected="true" disabled>국가 선택</option>');
+    $('select[name="country_code"]').prop('selectedIndex', 0);  
     $.ajax({
         url : '/countries', //json 불러오기 router이용해서 불러옴
         dataType :'json',
         success : function (data) {
             console.log(data);
             $.each(data, function (key, entry) {                
-                $('#CountryName').append($('<option></option>').attr('value', key).text(entry.name + ' / ' + key ));                             
+                $('select[name="country_code"]').append($('<option></option>').attr('value', key).text(entry.name + ' / ' + key ));                             
             })
         },
         error: function(jqXHR, textStatus, errorThrown){
@@ -192,16 +257,16 @@
     });
 
     // 타임존선택 timeZone
-    $('#timeZone').empty();
-    $('#timeZone').append('<option selected="true" disabled>타임존 선택</option>');
-    $('#timeZone').prop('selectedIndex', 0);  
+    $('select[name="timezone"]').empty();
+    $('select[name="timezone"]').append('<option selected="true" disabled>타임존 선택</option>');
+    $('select[name="timezone"]').prop('selectedIndex', 0);  
     $.ajax({
         url : '/timezone', //json 불러오기 router이용해서 불러옴
         dataType :'json',
         success : function (data) {
             console.log(data);
             $.each(data, function (key, entry) { 
-                $('#timeZone').append($('<option></option>').attr('value', entry.code).text('['+entry.code+'] '+entry.ko)); 
+                $('select[name="timezone"]').append($('<option></option>').attr('value', entry.code).text('['+entry.code+'] '+entry.ko)); 
             })
         },
         error: function(jqXHR, textStatus, errorThrown){
@@ -209,11 +274,47 @@
         }    
     });
 
+    //day-type-offset option
+    $('select[name="day_type_offset"]').empty();
+    $('select[name="day_type_offset"]').append('<option selected="true" disabled>일단위 시간 선택</option>')
+    for(var i=0; i<24 ;i++){
+        $('select[name="day_type_offset"]').append($('<option></option>').attr('value', i).text(i)); 
+    }
 
     // 공용도어락 추가
     $('#btnDoorName').click(function(){
-        var doorname = $('#newDoorName').val();             
-        if($('#newDoorName').val() !== ""){     
+        var doorname = $('#newDoorName').val();   
+        if(doorname !== ""){  
+            chkword(doorname, 100);  
+
+            chkDoorName(doorname);
+            function chkDoorName(){
+                $.ajax({
+                    url:'https://development.api.allegion.imgate.co.kr/v1/properties',
+                    method:'get',
+                    contentType: "application/json; charset=utf-8",
+                    headers : {
+                        "Authorization": "Bearer " + API_KEY
+                    }
+                })
+                .done(function(result) {        
+                    if(result){            
+                        for(var i=0; i<result.length; i++){                
+                            if(doorname == result[i].commonrooms){
+                                alert("동일한 이름의 공용도어가 존재합니다.");
+                            }
+                        }                             
+                    }
+                    return false;                                                                           
+                })
+                .fail(function (request, status, error){  
+                    msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                    console.log(msg);                           
+                }) 
+            }
+            
+
+
             $("#newDoorDone").modal('show');
             $('#newDoorList > tbody >tr.diplayone').remove();        
             var rowItem = '<tr>'
@@ -238,4 +339,8 @@
             alert("선택된 데이터가 없습니다.");  
          }       
     }
+
+
+   
+   
 </script>

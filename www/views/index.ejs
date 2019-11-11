@@ -45,50 +45,42 @@
 <% include inc/modal %>   
 <% include inc/bottom %>
 
-<script>   
+<script>  
     navTitle('단지선택','');
-
+    var API_KEY = localStorage.getItem('api_key');
     //property list api
-        var getkey = localStorage.getItem('api_key');
-        $.ajax({
-            url:'/property',
-            method:'get',
-            contentType: "application/json; charset=utf-8",
-            dataType:"json"
-            // headers : {
-            //     "Authorization": "Bearer " + getkey
-            // }
-        })
-        .done(function(res) {     
-            var result = JSON.parse(res)
-            var liHtml='';           
-            console.log(result.items);   
-            if(result.items.length > 0){
-                $('.slide_wrap').show();
-                for(var data of result.items){
-                    liHtml ='<li class="col-md-4"><div class="card shadow card-s2"><div class="image">';                        
-                    liHtml+='<img src="assets/img/img_building.jpg" alt=""></div><div class="content">';                      
-                    liHtml+='<a href="/property_read/' + data.id + '"> <h4 class="title">'+ data.name +'</h4></a>';
-                    liHtml+='<p class="description">'+ data.address +'</p></div>';
-                    liHtml+='<a class="setting icon"  data-property_id="' + data.id + '" data-toggle="modal" data-target="#propertySetting" class="open-properDial" role="button" ></a>';
-                    liHtml+='</li>';
-                    $('#property_list').prepend(liHtml);
-                }                
-                propertyList();//슬라이드
-              
-            }else{
-                $('.con_default').show();
-            }                                                                                     
-         })
-        .fail(function (request, status, error){  
-            msg = request.status + "<br>" + request.responseText + "<br>" + error;
-            console.log(msg);                           
-        }) 
-    
-   
-</script>
+    $.ajax({
+        url:'https://development.api.allegion.imgate.co.kr/v1/properties',
+        method:'get',
+        contentType: "application/json; charset=utf-8",
+        headers : {
+            "Authorization": "Bearer " + API_KEY
+        }
+    })
+    .done(function(result) {  
+        var liHtml=''; 
+        if(result){
+            $('.slide_wrap').show();
+            for(var data of result){
+                liHtml ='<li class="col-md-4"><div class="card shadow card-s2"><div class="image">';                        
+                liHtml+='<img src="assets/img/img_building.jpg" alt=""></div><div class="content">';                      
+                liHtml+='<a href="/property_read/' + data.id + '"> <h4 class="title">'+ data.name +'</h4></a>';
+                liHtml+='<p class="description">'+ data.address +'</p></div>';
+                liHtml+='<a class="setting icon"  data-property_id="' + data.id + '" data-toggle="modal" data-target="#propertySetting" class="open-properDial" role="button" ></a>';
+                liHtml+='</li>';
+                $('#property_list').prepend(liHtml);
+            }                
+            propertyList();//슬라이드 
+          
+        }else if(result == null || result == undefined){
+            $('.con_default').show();
+        }                                                                                     
+     })
+    .fail(function (request, status, error){  
+        msg = request.status + "<br>" + request.responseText + "<br>" + error;
+        console.log(msg);                           
+    }) 
 
-<script type="text/javascript">   
     // 설정클릭시 수정/삭제 선택 모달
     $('#propertySetting').on('show.bs.modal', function(e) {        
          var id = $(e.relatedTarget).data('property_id');//해당 프라퍼티 아이디 가지고 오기

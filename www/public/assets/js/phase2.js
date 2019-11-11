@@ -160,7 +160,7 @@ $('meta[name="description"]').attr("content", newDescription);
  * api 주소
  */
 var API_ENDPOINT ='https://development.api.allegion.imgate.co.kr/v1/'
-
+var API_KEY = localStorage.getItem('api_key');
 
 /* 
  *사이드바,상단네비 날짜시간설정
@@ -215,6 +215,49 @@ function phoneNumCheck(){
     }); 
 }
 
+/**
+ * 글자 입력수 제한
+ */
+function chkword(obj, maxlength) {     
+    var str = obj.value; // 이벤트가 일어난 컨트롤의 value 값     
+    var str_length = str.length; // 전체길이       
+    
+    // 변수초기화     
+    var max_length = maxlength; // 제한할 글자수 크기     
+    var i = 0; // for문에 사용     
+    var ko_byte = 0; // 한글일경우는 2 그밗에는 1을 더함     
+    var li_len = 0; // substring하기 위해서 사용     
+    var one_char = ""; // 한글자씩 검사한다     
+    var str2 = ""; // 글자수를 초과하면 제한할수 글자전까지만 보여준다.       
+    for (i = 0; i < str_length; i++) {         
+        // 한글자추출         
+        one_char = str.charAt(i);             
+        ko_byte++;         
+    }           
+    // 전체 크기가 max_length를 넘지않으면         
+    if (ko_byte <= max_length) {             
+        li_len = i + 1;        
+     }            
+     // 전체길이를 초과하면     
+     if (ko_byte > max_length) {         
+         alert(max_length + " 글자 이상 입력할 수 없습니다. \n 초과된 내용은 자동으로 삭제 됩니다. ");         
+         str2 = str.substr(0, max_length);         
+         obj.value = str2;    
+        }     
+        obj.focus();   
+    }
+
+    /**
+     * 상세주소 특수기호(-(하이픈), .(마침표), ,(콤마), ()(괄호), [](중괄호), {}(대괄호) 제외), 이모티콘 입력 불가
+     */
+
+function characterCheck(obj) {
+    var RegExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;//정규식 구문   
+    if (RegExp.test(obj)) {
+        alert("특수문자는 입력하실 수 없습니다.");
+        obj = obj.substring(0, obj.length - 1);//특수문자를 지우는 구문
+    }
+}
 
 /* 
  *    로그인  api
@@ -268,17 +311,27 @@ $(function(){
             .done(function(res) { 
                 console.log(res)
                 alert("인증번호가 발송되었습니다. 문자를 확인해 주세요");                        
-                code = res.verification_code; 
-                var expired_at = res.expired_at;//유효시간               
-                $('#authTime').show();                                   
+                code = res.verification_code;  
+                var endSeconds = Math.floor(new Date(res.expired_at) / 1000);
+                var startSeconds = Math.floor(Date.now() / 1000);
+                var expired_at = endSeconds - startSeconds;
+                console.log(expired_at )
+
+                // $('button#reqAuthen').addClass('active');
+                $('button#reqAuthen').attr('disabled', true);
+                $('#authTime').show();    
                 
                 AuthTimer = new $ComTimer()
-                AuthTimer.comSecond = 178;//(180초 : 3 분)
-                AuthTimer.fnCallback = function(){}
-                AuthTimer.timer =  setInterval(function(){
-                    AuthTimer.fnTimer()
-                },1000);
-                AuthTimer.domId = $("#authDo");                  
+                AuthTimer.comSecond = expired_at;//(180초 : 3 분)
+                AuthTimer.timer =  setInterval(function(){                    
+                    AuthTimer.fnTimer();                
+                }, 1000);
+                AuthTimer.domId = $("#authDo"); 
+                // //인증번호 버튼 재 클릭시 가속도 붙는거땜에 넣어줘야함
+                // $('button#reqAuthen.active').click(function(){
+                //     AuthTimer.fnStop();                     
+                //     $('button#reqAuthen').removeClass('active');
+                // });
             })
             .fail(function (request, status, error){                          
                 var msg = "ERROR<br><br>"
@@ -302,7 +355,7 @@ $(function(){
                     data:JSON.stringify({
                             "phone_number": phone_number,
                             "verification_code": verification_code
-                        })
+                    })
                 })  
                 .done(function(res) {  
                     console.log(res);                       
@@ -328,13 +381,11 @@ $(function(){
  */
  function $ComTimer(){}
  $ComTimer.prototype = {     
-     comSecond : "",   
-     fnCallback : function(){},      
+     comSecond : "",         
      timer : "",
      domId : "",
      fnTimer : function(){
-         var m = Math.floor(this.comSecond / 60) + " : " + (this.comSecond % 60);	// 남은 시간 계산
-         this.comSecond--;					// 1초씩 감소
+         var m = Math.floor(this.comSecond / 60) + " : " + (this.comSecond % 60);	// 남은 시간 계산   
          console.log(m);
          this.domId.addClass('btn-info').html( m + " 인증번호 확인");
          if (this.comSecond < 0) {			// 시간이 종료 되었으면..             
@@ -344,9 +395,10 @@ $(function(){
              $('#reqAuthen').html('인증번호 재요청'); 
              clearInterval(this.timer);		// 타이머 해제  
          }
+         this.comSecond--;				// 1초씩 감소    
      },
      fnStop : function(){                               
-            clearInterval(this.timer);            
+        clearInterval(this.timer);        
      }
  }  
 
@@ -364,7 +416,7 @@ $('#logout').click(function(){
         })                                                                               
         .done(function(res) {                         
             console.log(res); 
-            localStorage.clear();                   
+            localStorage.removeItem('api_key');                   
             location.replace('/logout');                                                                    
         })
         .fail(function (request, status, error){  
@@ -373,6 +425,12 @@ $('#logout').click(function(){
         })   
   });  
 });
+
+
+/**
+ * property list api
+ */
+
 
 
 /**
