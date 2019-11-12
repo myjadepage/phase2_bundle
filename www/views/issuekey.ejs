@@ -44,14 +44,11 @@
                                                                     </div>
                                                                     <div class="col-md-12 pr-1 pl-1">    
                                                                         <select class="form-control">
-                                                                            <option>대한민국 (+82)</option>
-                                                                            <option>나라이름2</option>
-                                                                            <option>나라이름3</option>
+                                                                            <option>대한민국 (+82)</option>                                                                          
                                                                         </select> 
                                                                     </div> 
                                                                     <div class="col-md-12 pl-1">  
-                                                                            <input class="form-control" type="text" placeholder="상세 전화번호 입력">                                                                                                                                                                                
-                                                                      
+                                                                            <input class="form-control" type="text" placeholder="상세 전화번호 입력"> 
                                                                     </div>                                                           
                                                                 </div>  
                                                         </div>
@@ -79,22 +76,30 @@
                                                     <div class="card-body table-full-width-staffkey">
                                                     <div class="row  form-group">
                                                         <div class="col-md-12">
-                                                            <div class="col-md-6">
-                                                                    <i class="icon checkin"></i><label>체크인</label>
-                                                                    <select class="form-control">
-                                                                        <option>2019-10-01</option>
-                                                                        <option>나라이름2</option>
-                                                                        <option>나라이름3</option>
-                                                                    <select> 
+                                                            <div class="col-md-6 input-group date">
+                                                                    <i class="icon checkin"></i><label>체크인</label>                                                                   
+                                                                    <input type="text" class="form-control">
+                                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                                    <!-- <select class="form-control" >
+                                                                        <option>2019-10-01</option>                                                                       
+                                                                    <select>  -->
                                                             </div> 
                                                             <div class="col-md-6">
-                                                                    <i class="icon checkin txt_hidden"></i><label class="txt_hidden">시간선택</label>                                                                                                                             
-                                                                    <select class="form-control">
-                                                                        <option>13:00</option>
-                                                                        <option>도시이름</option>
-                                                                        <option>도시이름</option>
-                                                                    <select>
-                                                            </div> 
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <i class="icon checkin txt_hidden"></i><label class="txt_hidden">시간 선택</label>                                                                                                                             
+                                                                        <select class="form-control">
+                                                                            <option>13시</option>                                                                   
+                                                                        <select>
+                                                                    </div> 
+                                                                    <div class="col-md-6">
+                                                                        <i class="icon checkin txt_hidden"></i><label class="txt_hidden">분 선택</label>                                                                                                                             
+                                                                        <select class="form-control">
+                                                                            <option>10분</option>                                                                                                                                                
+                                                                        <select>
+                                                                    </div>  
+                                                                </div>                                                               
+                                                            </div>
                                                         </div>
                                                     </div>
 
@@ -103,19 +108,25 @@
                                                             <div class="col-md-6">
                                                                     <i class="icon checkout"></i><label>체크아웃</label>
                                                                     <select class="form-control">
-                                                                        <option>2019-10-01</option>
-                                                                        <option>나라이름2</option>
-                                                                        <option>나라이름3</option>
+                                                                        <option>2019-10-01</option>                                                                      
                                                                     <select> 
                                                             </div> 
                                                             <div class="col-md-6">
-                                                                    <i class="icon checkin txt_hidden"></i><label class="txt_hidden">시간선택</label>                                                                                                                             
-                                                                    <select class="form-control">
-                                                                        <option>13:00</option>
-                                                                        <option>도시이름</option>
-                                                                        <option>도시이름</option>
-                                                                    <select>
-                                                            </div> 
+                                                                    <div class="row">
+                                                                            <div class="col-md-6">
+                                                                                <i class="icon checkin txt_hidden"></i><label class="txt_hidden">시간 선택</label>                                                                                                                             
+                                                                                <select class="form-control">
+                                                                                    <option>13시</option>                                                                   
+                                                                                <select>
+                                                                            </div> 
+                                                                            <div class="col-md-6">
+                                                                                <i class="icon checkin txt_hidden"></i><label class="txt_hidden">분 선택</label>                                                                                                                             
+                                                                                <select class="form-control">
+                                                                                    <option>10분</option>                                                                                                                                                
+                                                                                <select>
+                                                                            </div>  
+                                                                    </div>  
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     </div>
@@ -203,4 +214,26 @@
 <% include inc/footer %>
 <% include inc/modal %>
 <% include inc/bottom %>
+
+<script type='text/javascript'>
+
+    $(function(){
+
+        $('.input-group.date').datepicker({
+
+            calendarWeeks: false,
+
+            todayHighlight: true,
+
+            autoclose: true,
+
+            format: "yyyy/mm/dd"
+
+        });
+
+    });
+
+    </script>
+
+
 

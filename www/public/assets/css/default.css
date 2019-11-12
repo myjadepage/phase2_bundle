@@ -296,7 +296,7 @@ input:focus {
 }
 
 
-.sidebar .nav.disable li > a {
+.sidebar .nav.disable li > a, .sidebar .nav.disable li > a:hover {
     color: #FFFFFF;
     opacity: .3;
 }

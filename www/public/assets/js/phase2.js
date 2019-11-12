@@ -152,7 +152,7 @@ function debounce(func, wait, immediate) {
 var title ='phase2';
 var newDescription = '모바일도어락, 페이즈2,';
 document.title = title;
-$('.logo a.simple-text').val(title);
+$('.logo a.simple-text').text(title);
 $('meta[name="description"]').attr("content", newDescription);
 
 
@@ -248,15 +248,18 @@ function chkword(obj, maxlength) {
     }
 
     /**
-     * 상세주소 특수기호(-(하이픈), .(마침표), ,(콤마), ()(괄호), [](중괄호), {}(대괄호) 제외), 이모티콘 입력 불가
+     * 상세주소 특수기호(-(하이픈), .(마침표), ,(콤마), ()(괄호), [](중괄호), {}(대괄호) )
      */
 
 function characterCheck(obj) {
-    var RegExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;//정규식 구문   
-    if (RegExp.test(obj)) {
-        alert("특수문자는 입력하실 수 없습니다.");
-        obj = obj.substring(0, obj.length - 1);//특수문자를 지우는 구문
+    var t;
+    var RegExp = /[\/?;:|*~`!^\_+┼<>@\#$%&\'\"\\\=]/g;//정규식 구문   
+    if (RegExp.test(obj)) {             
+        t = obj.replace(RegExp, "");        
+    }else{
+        return obj;
     }
+    return t;
 }
 
 /* 

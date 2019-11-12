@@ -64,17 +64,8 @@
                                                         </thead>                                                         
                                                       <tbody>
                                                             <tr>
-                                                                <td>빌딩 주 출입구 A</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>빌딩 주 출입구 B</td>                                                                
-                                                            </tr>
-                                                            <tr>
-                                                                <td>빌딩 주 출입구 C</td>                                                               
-                                                            </tr>
-                                                            <tr>
-                                                                <td>빌딩 주 출입구 D</td>                                                               
-                                                            </tr>                                                                                       
+                                                                <td>빌딩 주 출입구 A</td>                                                            </tr>
+                                                                                                                                          
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -95,24 +86,26 @@
 <% include inc/footer %>
 <% include inc/modal %>
 <% include inc/bottom %>
-<script>    
+
+
+<script type='text/javascript'>    
     //프라퍼티 상세보기
         $(function(){   
-            var API_KEY = localStorage.getItem('api_key');           
+            var API_KEY = localStorage.getItem('api_key');                   
+            var id = "<%= id %>";           
                 $.ajax({                   
                     //property 상세보기 api
-                    url:'https://development.api.allegion.imgate.co.kr/v1/properties/'+property_id,
+                    url:'https://development.api.allegion.imgate.co.kr/v1/properties/'+ id ,
                     method:'get',
                     contentType: "application/json; charset=utf-8",
                     data:{
-                        property_id : property_id
+                        property_id : id
                     },
                     headers : {
                         "Authorization": "Bearer " + API_KEY
                     }
                 })
-                .done(function(res) {     
-                    var result = JSON.parse(res);
+                .done(function(result) { 
                     $('p[name="viewName"').text(result.name);
                     $('p[name="viewCountry"').text(result.country_code);
                     $('p[name="viewCity"').text(result.city);

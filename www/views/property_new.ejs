@@ -29,13 +29,14 @@
                                                             </div> 
                                                             <div class="col-md-6 pr-1">
                                                                 <label class="txt_hidden">도시입력<i class="text-danger" role="presentation"></i></label>
-                                                                <input type="text" class="form-control" placeholder="도시 입력 예)서울" name="city" >                                                               
+                                                                <input type="text" class="form-control" placeholder="도시명 입력 예)서울" name="city" >                                                               
                                                             </div> 
                                                             <div class="col-md-12 pl-1 pr-1">                                                                        
                                                                 <select class="form-control" name="timezone" required></select>                                                                                                                                                                                            
                                                             </div>
                                                             <div class="col-md-12 pl-1">                                                                        
-                                                                <input type="text" class="form-control" placeholder="상세 주소 입력" name="address" onkeyup="chkword(this,200);">
+                                                                <input type="text" class="form-control" placeholder="상세 주소 입력(특수문자 - . , () [] {}만 사용)" name="address" onkeyup="chkword(this,200);">
+                                                                
                                                             </div>
                                                          </div>  
                                                 </div>
@@ -45,7 +46,7 @@
                                                     <div class="form-group">
                                                         <label for="propertyType">단지 타입 선택</label>
                                                         <select class="form-control" name="type">
-                                                            <option selected="true" disabled>단지 타입 선택</option>
+                                                            <option value="0" selected="true" disabled>단지 타입 선택</option>
                                                             <option>Residential</option>
                                                             <option>B&B Hotel</option>
                                                             <option>Hospitality</option>
@@ -69,7 +70,7 @@
                                                         <!-- 이미지등록 알아볼것 -->
                                                         <input type="file" class="form-control" id="hotel_logo" placeholder="배경 이밎 첨부파일 등록 [png,jpg]">
 
-                                                        <div class="img_insert">
+                                                        <!-- <div class="img_insert">
                                                             <i class="icon image_state"></i>                                                            
                                                             <span>
                                                                 imagenamadadadasdasdasdasdadasdase.png<br><small>100.1MB</small>
@@ -77,7 +78,7 @@
                                                             <button type="button" rel="이미지삭제" title="Remove" class="btn btn-simple btn-link">
                                                                 <i class="icon trash"></i>
                                                             </button>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                 </div>
                                             </div>  
@@ -93,54 +94,58 @@
                                     </div> 
                                     <div class="card-body">
                                             <div class="table-full-width">                                               
-                                                   <table class="table" id="newDoorList">
-                                                        <colgroup>
-                                                            <col width="10%">
-                                                            <col width="*">
-                                                            <col width="25%">
-                                                        </colgroup>
-                                                        <thead>
-                                                            <tr>
-                                                                <th colspan="2" >
-                                                                    <div class="form-check">
-                                                                        <label class="form-check-label" style="line-height: 20px;">
-                                                                            <input class="form-check-input" type="checkbox" value="" disabled>
-                                                                            <span class="form-check-sign"></span>                                                                            
-                                                                        </label>
-                                                                        <span>1 selected</span>
-                                                                        <button type="button" title="Remove" id="delTrash" class="btn btn-simple btn-link" onClick="fn_delRow('chkObject');">
-                                                                            <i class="icon trash"></i>
-                                                                        </button>
-                                                                    </div>                                                                   
-                                                                </th>                                                               
-                                                                <th class="text-right">total: <strong class="text-primary">0</strong></th>
-                                                            </tr>
-                                                        </thead> 
-                                                        
-                                                        <tbody>
-                                                                <tr class="diplayone">
-                                                                    <td colspan="3">
-                                                                        <div class="con_default">
-                                                                            <i class="icon m_issuekey"></i>
-                                                                            <h4 class="text-center text-info">
-                                                                                ‘ 아직 등록된 공용 도어가 없습니다 ’<br>
-                                                                                <span>도어락 정보를 등록하여 서비스를 시작해 보세요. </span>
-                                                                            </h4>
-                                                                        </div>                                                                 
-                                                                    </td>
-                                                                </tr>
-                                                        </tbody>
+                                                   <table class="table" id="noDoorList"> 
+                                                        <tr>
+                                                            <td>
+                                                                <div class="con_default">
+                                                                    <i class="icon m_issuekey"></i>
+                                                                    <h4 class="text-center text-info">
+                                                                        ‘등록된 공용 도어가 없습니다 ’<br>
+                                                                        <span>도어락 정보를 등록하여 서비스를 시작해 보세요. </span>
+                                                                    </h4>
+                                                                </div>                                                                 
+                                                            </td>
+                                                        </tr>
                                                     </table>
+
+                                                    <table class="table" id="newDoorList" style="display: none;">
+                                                            <colgroup>
+                                                                <col width="10%">
+                                                                <col width="*">
+                                                                <col width="25%">
+                                                            </colgroup>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th colspan="2" >
+                                                                        <div class="form-check">
+                                                                            <label class="form-check-label" style="line-height: 20px;">
+                                                                                <input class="form-check-input" type="checkbox" value="">
+                                                                                <span class="form-check-sign"></span>                                                                            
+                                                                            </label>
+                                                                            <span>1 selected</span>
+                                                                            <button type="button" title="Remove" id="delTrash" class="btn btn-simple btn-link" onClick="fn_delRow('chkObject');">
+                                                                                <i class="icon trash"></i>
+                                                                            </button>
+                                                                        </div>                                                                   
+                                                                    </th>                                                               
+                                                                    <th class="text-right">total: <strong class="text-primary" id="doorCnt"></strong></th>
+                                                                </tr>
+                                                            </thead> 
+                                                            <tbody></tbody>
+                                                    </table>
+
+
+
+
                                                 </div>
                                     </div>
                                     <div class="card-footer ">
                                             <hr>
                                             <div class="state form-inline">                                                  
-                                               <input type="text" class="form-control" id="newDoorName" placeholder="공용도어 이름 입력">                                                            
-                                               <button type="button" class="btn btn-primary" id="btnDoorName">공용도어 추가</button>
-                                               <!-- <a role="button" data-toggle="modal" data-target="#newDoorDone" class="btn btn-primary" id="newPropertyDoor">공용도어 추가</a> -->
+                                               <input type="text" class="form-control" id="newDoorName" placeholder="공용도어 이름 입력" onkeyup="chkword(this,100);">                                                            
+                                               <button type="button" class="btn btn-primary" id="btnDoorName">공용도어 추가</button>                                             
                                             </div>
-                                        </div>
+                                    </div>
                                 </div>
                         </div>
                     </form>
@@ -158,11 +163,10 @@
 
 <script>    
     navTitle('단지생성','');
+    var API_KEY = localStorage.getItem('api_key');
 
      //단지생성하기
      $('#btnItem').on('click',function(){
-        var API_KEY = localStorage.getItem('api_key');  
-        
         var name = $('input[name="name"]').val();
         var country_code =  $('select[name="country_code"] option:selected').val();        
         var timezone = $('select[name="timezone"]  option:selected').val();  
@@ -171,45 +175,64 @@
         var day_type_offset =$('select[name="day_type_offset"] option:selected').val();   
         var image_url = $('#hotel_logo').val();
 
-        //단지정보입력 여부 체크
-        if(name ==""){
-            alert("단지이름을 입력해 주세요");            
-        }else if(name){
-            var chkAdd = chkAdd(name, address);
-        }else if(country_code == "" ){
-            alert("국가코드를 선택해 주세요");
-        }else if(timezone == ""){
+        commonArray();
+        var commonrooms = []
+
+        //단지정보입력 여부 체크  
+        if(country_code == 0){
+                alert("국가코드를 선택해 주세요");
+        }else if(timezone == 0){
             alert("타임존을 선택해 주세요")
         }else if(city == ""){
-            alert("도시를 입력해 주세요")
+            alert("도시명를 입력해 주세요")
         }else if(address == ""){
             alert("상세주소를 입력해 주세요")
         }else if(address){
-            characterCheck(address);
+            $('input[name="address"]').val(characterCheck(address));
+        }else if(name ==""){
+            alert("단지이름을 입력해 주세요");    
+        }else{               
+            chkAdd(name, address);
         }
-
-        var formArray =$("#item_form").serialize();       
-        var returnArray = {};
-        for (var i = 0; i < formArray.length; i++){
-            returnArray[formArray[i]['name']] = formArray[i]['value'];
-            console.log('테스트',returnArray);
+        //입력박스 체크 뒤 api 호출 
+        var data ={};
+        if(!(name == "")){
+            data.name = name;
         }
-  
+        if(!(country_code == 0)){
+            data.country_code = country_code;
+        }
+        if(!(timezone == 0 )){
+            data.timezone = timezone;
+        }
+        if(!(city == "")){
+            data.city = city;
+        }
+        // if(!(day_type_offset == "")){
+        //     data.day_type_offset = day_type_offset;
+        // }
+        if(!(image_url == "")){
+            data.image_url = image_url;
+        }
+        console.log(data);
+        console.log(JSON.stringify(data));
+             
         $.ajax({
             url :'https://development.api.allegion.imgate.co.kr/v1/properties',
             contentType: "application/json; charset=utf-8",
             type:'POST',           
-            headers : {
-            "Authorization": "Bearer " + API_KEY
-            },
-            data:$("#item_form").serialize()
+            headers : {                   
+                "Authorization": "Bearer " + API_KEY
+            },                
+            data:JSON.stringify(data)
         }) 
         .done(function (res) {
             console.log(res);
         })
         .fail(function(jqXHR, textStatus, errorThrown){
                 console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
-        })         
+        })  
+             
     });
 
      //동일한 단지이름과 상세주소 있는지 체크
@@ -222,10 +245,10 @@
                         "Authorization": "Bearer " + API_KEY
                     }
                 })
-                .done(function(result) {        
+                .done(function(result) {                           
                     if(result){            
                         for(var i=0; i<result.length; i++){                
-                            if(name == result[i].name && address == result[i].address){
+                            if(this.name == result[i].name && this.address == result[i].address){
                                 alert("단지 이름과 상세 주소가 동일한 정보가 있습니다.");
                             }
                         }                             
@@ -240,7 +263,7 @@
 
     //국가코드선택
     $('select[name="country_code"]').empty();
-    $('select[name="country_code"]').append('<option selected="true" disabled>국가 선택</option>');
+    $('select[name="country_code"]').append('<option  value="0" selected="true" disabled>국가 코드 선택</option>');
     $('select[name="country_code"]').prop('selectedIndex', 0);  
     $.ajax({
         url : '/countries', //json 불러오기 router이용해서 불러옴
@@ -258,7 +281,7 @@
 
     // 타임존선택 timeZone
     $('select[name="timezone"]').empty();
-    $('select[name="timezone"]').append('<option selected="true" disabled>타임존 선택</option>');
+    $('select[name="timezone"]').append('<option  value="0" selected="true" disabled>타임존 선택</option>');
     $('select[name="timezone"]').prop('selectedIndex', 0);  
     $.ajax({
         url : '/timezone', //json 불러오기 router이용해서 불러옴
@@ -282,13 +305,12 @@
     }
 
     // 공용도어락 추가
-    $('#btnDoorName').click(function(){
-        var doorname = $('#newDoorName').val();   
-        if(doorname !== ""){  
-            chkword(doorname, 100);  
-
+    var doorname;
+    $('#btnDoorName').click(function(){        
+        doorname = $('#newDoorName').val();   
+        if(doorname !== ""){               
             chkDoorName(doorname);
-            function chkDoorName(){
+            function chkDoorName(doorname){
                 $.ajax({
                     url:'https://development.api.allegion.imgate.co.kr/v1/properties',
                     method:'get',
@@ -312,17 +334,22 @@
                     console.log(msg);                           
                 }) 
             }
+
+            $("#newDoorDone").modal('show');  
+            $('#noDoorList').hide();  
+            $('#newDoorList').show(); 
             
-
-
-            $("#newDoorDone").modal('show');
-            $('#newDoorList > tbody >tr.diplayone').remove();        
-            var rowItem = '<tr>'
-            rowItem += '<td scope="col"><div class="form-check"><label class="form-check-label"><input class="form-check-input" type="checkbox" name="chkObject" value=""><span class="form-check-sign"></span></label></div></td><td>'
-            + doorname + '</td><td class="td-actions text-right"><button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-target="#Editpropertyerror" class="btn btn-info btn-simple btn-link"><i class="fa fa-edit"></i></button></td>'
-            rowItem += '<tr>';
-            $('#newDoorList >tbody').append(rowItem);
+            var rowItem = '<tr><td scope="col"><div class="form-check"><label class="form-check-label"><input class="form-check-input" type="checkbox" name="chkObject" value=""><span class="form-check-sign"></span></label></div></td>';
+            rowItem += '<td class="commonDoor">'+ doorname + '</td><td class="td-actions text-right">';
+            rowItem += '<button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-target="#Editpropertyerror" class="btn btn-info btn-simple btn-link"><i class="fa fa-edit"></i></button></td></tr>';
+            $('#newDoorList tbody').prepend(rowItem);
             $('#newDoorName').val('');
+
+            // 테이블에 tr행 개수 
+            var doorCnt = $('#newDoorList tbody tr').length;
+            if(doorCnt > 0){
+                $('#doorCnt').text(doorCnt);
+            }
         }else{
             alert("공용도어의 이름을 입력해 주세요");
         }
@@ -332,12 +359,31 @@
         if ($("input[name="+chkObjNm+"]").is(":checked")){ 
             if (confirm("삭제 하시겠습니까?")) { 
                 for(var i=$("[name='"+chkObjNm+"']:checked").length-1; i>-1; i--){ 
-                   $("[name='"+chkObjNm+"']:checked").eq(i).closest("tr").remove();
+                   $("[name='"+chkObjNm+"']:checked").eq(i).closest("tr").remove();                   
                 } 
+
+                // 등록한 도어락 모두 삭제경우                
+                var doorCnt = $('#newDoorList tbody tr').length;  
+                console.log(doorCnt);
+                if(doorCnt == 0){
+                    $('#noDoorList').show(); 
+                    $('#newDoorList').hide(); 
+                }else{
+                    $('#doorCnt').text(doorCnt);                           
+                }
             } 
          } else { 
             alert("선택된 데이터가 없습니다.");  
          }       
+    }
+
+    function commonArray(){
+        var commonDoorName = $('#newDoorList tbody tr td.commonDoor').text(); 
+        $('#newDoorList tbody tr').each(function(tr){
+            var temp = $('.commonDoor').text();
+            commonArray.push(temp);            
+        });          
+        console.log(commonArray)
     }
 
 

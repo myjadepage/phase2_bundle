@@ -83,3 +83,17 @@
 <% include inc/modal %>
 <% include inc/bottom %>
 
+<script>
+    navTitle('단지선택','');
+    var API_KEY = localStorage.getItem('api_key');
+
+    $.ajax({
+        url:'https://development.api.allegion.imgate.co.kr/v1​/properties​/{property_id}​/staffs',
+        method:'get',
+        contentType: "application/json; charset=utf-8",
+        headers : {
+            "Authorization": "Bearer " + API_KEY
+        }
+    });
+</script>
+

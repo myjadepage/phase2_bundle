@@ -98,56 +98,7 @@
                                                                         <i class="fa fa-edit"></i>
                                                                     </button>                                                                                              
                                                                 </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td scope="col">
-                                                                    <div class="form-check">
-                                                                        <label class="form-check-label">
-                                                                            <input class="form-check-input" type="checkbox" value="" checked>
-                                                                            <span class="form-check-sign"></span>
-                                                                        </label>
-                                                                    </div>
-                                                                </td>
-                                                                <td>빌딩 주 출입구 B</td>
-                                                                <td class="td-actions text-right">
-                                                                    <button type="button" rel="tooltip" title="수정하기" class="btn btn-info btn-simple btn-link">
-                                                                        <i class="fa fa-edit"></i>
-                                                                    </button>                                                                                             
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td scope="col">
-                                                                    <div class="form-check">
-                                                                        <label class="form-check-label">
-                                                                            <input class="form-check-input" type="checkbox" value="" checked>
-                                                                            <span class="form-check-sign"></span>
-                                                                        </label>
-                                                                    </div>
-                                                                </td>
-                                                                <td>빌딩 주 출입구 C</td>
-                                                                <td class="td-actions text-right">
-                                                                    <button type="button" rel="tooltip" title="수정하기" class="btn btn-info btn-simple btn-link">
-                                                                        <i class="fa fa-edit"></i>
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="form-check">
-                                                                        <label class="form-check-label">
-                                                                            <input class="form-check-input" type="checkbox" checked>
-                                                                            <span class="form-check-sign"></span>
-                                                                        </label>
-                                                                    </div>
-                                                                </td>
-                                                                <td>빌딩 주 출입구 D</td>
-                                                                <td class="td-actions text-right">
-                                                                    <button type="button" rel="tooltip" title="수정하기" class="btn btn-info btn-simple btn-link">
-                                                                        <i class="fa fa-edit"></i>
-                                                                    </button>
-                                                                   
-                                                                </td>
-                                                            </tr>                                                                                       
+                                                            </tr>                                                                                                                                             
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -214,22 +165,22 @@
 
         //프라퍼티 상세보기
             $(function(){    
+                var id = "<%= id %>";   
                 var API_KEY = localStorage.getItem('api_key');              
                 $.ajax({
                     //property 상세보기 api
-                    url:'https://development.api.allegion.imgate.co.kr/v1/properties/'+ property_id,
+                    url:'https://development.api.allegion.imgate.co.kr/v1/properties/'+ id,
                     method:'get',
                     contentType: "application/json; charset=utf-8",
                     dataType:"json",
                     data:{
-                        property_id : property_id
+                        property_id : id
                     },
                     headers : {
                         "Authorization": "Bearer " + API_KEY
                     }
                 })
-                .done(function(res) {     
-                    var result = JSON.parse(res);
+                .done(function(result) {    
                     $('input[name="viewName"').val(result.name);
                     $('input[name="viewCountry"').val(result.country_code);
                     $('input[name="viewCity"').val(result.city);

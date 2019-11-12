@@ -59,9 +59,10 @@
     })
     .done(function(result) {  
         var liHtml=''; 
-        if(result){
+        console.log(result);
+        if(result.items){
             $('.slide_wrap').show();
-            for(var data of result){
+            for(var data of result.items){
                 liHtml ='<li class="col-md-4"><div class="card shadow card-s2"><div class="image">';                        
                 liHtml+='<img src="assets/img/img_building.jpg" alt=""></div><div class="content">';                      
                 liHtml+='<a href="/property_read/' + data.id + '"> <h4 class="title">'+ data.name +'</h4></a>';
@@ -85,7 +86,7 @@
     $('#propertySetting').on('show.bs.modal', function(e) {        
          var id = $(e.relatedTarget).data('property_id');//해당 프라퍼티 아이디 가지고 오기
          $(e.currentTarget).find('.pro_edit').prop('href','/property_edit/'+ id );
-         $(e.currentTarget).find('.pro_del').prop('href','/property_del/'+ id);
+         $(e.currentTarget).find('.pro_del').prop('href','/property_del/'+id);
      });                  
 </script>     
 
