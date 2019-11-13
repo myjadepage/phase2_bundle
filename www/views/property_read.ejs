@@ -50,8 +50,22 @@
                                         <h5 class="card-title">공용도어 정보</h5>                                      
                                     </div> 
                                     <div class="card-body">
-                                            <div class="table-full-width">                                               
-                                                   <table class="table">
+                                            <div class="table-full-width">
+                                                <table class="table" id="noDoorList" style="display: none;"> 
+                                                    <tr>
+                                                        <td>
+                                                            <div class="con_default">
+                                                                <i class="icon m_issuekey"></i>
+                                                                <h4 class="text-center text-info">
+                                                                    ‘등록된 공용 도어가 없습니다 ’<br>
+                                                                    <span>도어락 정보를 등록하여 서비스를 시작해 보세요. </span>
+                                                                </h4>
+                                                            </div>                                                                 
+                                                        </td>
+                                                    </tr>
+                                                </table>
+
+                                                   <table class="table" id="readDoorList">
                                                         <colgroup>
                                                             <col width="10%">
                                                             <col width="*">
@@ -59,14 +73,10 @@
                                                         </colgroup>
                                                         <thead>
                                                             <tr>                                                            
-                                                                <th class="text-right">total: <strong class="text-primary">4</strong></th>
+                                                                <th class="text-right">total: <strong class="text-primary" id="doorCnt"></strong></th>
                                                             </tr>
                                                         </thead>                                                         
-                                                      <tbody>
-                                                            <tr>
-                                                                <td>빌딩 주 출입구 A</td>                                                            </tr>
-                                                                                                                                          
-                                                        </tbody>
+                                                      <tbody></tbody>
                                                     </table>
                                                 </div>
                                     </div>
@@ -91,27 +101,40 @@
 <script type='text/javascript'>    
     //프라퍼티 상세보기
         $(function(){   
-            var API_KEY = localStorage.getItem('api_key');                   
+            var API_KEY = localStorage.getItem('api_key'); 
+            var url = 'properties/';                  
             var id = "<%= id %>";           
                 $.ajax({                   
                     //property 상세보기 api
-                    url:'https://development.api.allegion.imgate.co.kr/v1/properties/'+ id ,
+                    url : endUrl(url)+ id ,
                     method:'get',
                     contentType: "application/json; charset=utf-8",
                     data:{
                         property_id : id
                     },
-                    headers : {
-                        "Authorization": "Bearer " + API_KEY
-                    }
+                    headers : headers()
                 })
                 .done(function(result) { 
+                    navTitle(result.name,result.address);    
                     $('p[name="viewName"').text(result.name);
                     $('p[name="viewCountry"').text(result.country_code);
                     $('p[name="viewCity"').text(result.city);
                     $('p[name="viewTimeZone"').text(result.timezone);
                     $('p[name="viewAddress"').text(result.address);
-                    navTitle(result.name,result.address);                   
+                    for(var i in result.commonrooms){
+                        var id = result.commonrooms[i].id;
+                        var name = result.commonrooms[i].name;  
+                        var rowItem = '<tr><td>' + name + '</td>tr>';
+                        $('#readDoorList tbody').append(rowItem);
+                    }
+                     // 테이블에 tr행 개수 
+                    var doorCnt = $('#readDoorList tbody tr').length;
+                    if(doorCnt > 0){
+                        $('#doorCnt').text(doorCnt);
+                    }else if(doorCnt == 0){
+                        $('#noDoorList').show(); 
+                        $('#readDoorList').hide(); 
+                    }
                 })
                 .fail(function (request, status, error){  
                     msg = request.status + "<br>" + request.responseText + "<br>" + error;

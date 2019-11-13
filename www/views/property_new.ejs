@@ -11,7 +11,7 @@
                                         <h5 class="card-title">신규 단지 정보 입력</h5>
                                     </div> 
                                     <div class="card-body">
-                                        <form id="item_form" data-parsley-validate>
+                                      
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
@@ -25,18 +25,17 @@
                                                         <div class="row form-group">
                                                             <div class="col-md-6">
                                                                 <label>단지 지역 정보 입력<i class="text-danger">*</i></label>
-                                                                <select class="form-control"  name="country_code" required></select> 
+                                                                <select class="form-control"  name="country_code" ></select> 
                                                             </div> 
                                                             <div class="col-md-6 pr-1">
                                                                 <label class="txt_hidden">도시입력<i class="text-danger" role="presentation"></i></label>
                                                                 <input type="text" class="form-control" placeholder="도시명 입력 예)서울" name="city" >                                                               
                                                             </div> 
                                                             <div class="col-md-12 pl-1 pr-1">                                                                        
-                                                                <select class="form-control" name="timezone" required></select>                                                                                                                                                                                            
+                                                                <select class="form-control" name="timezone" ></select>                                                                                                                                                                                            
                                                             </div>
                                                             <div class="col-md-12 pl-1">                                                                        
                                                                 <input type="text" class="form-control" placeholder="상세 주소 입력(특수문자 - . , () [] {}만 사용)" name="address" onkeyup="chkword(this,200);">
-                                                                
                                                             </div>
                                                          </div>  
                                                 </div>
@@ -133,10 +132,6 @@
                                                             </thead> 
                                                             <tbody></tbody>
                                                     </table>
-
-
-
-
                                                 </div>
                                     </div>
                                     <div class="card-footer ">
@@ -147,8 +142,7 @@
                                             </div>
                                     </div>
                                 </div>
-                        </div>
-                    </form>
+                        </div>                 
                         <div class="col-md-12">
                             <button type="reset" class="btn btn-default btn-fill shadow pull-left">취소</button>
                             <button  class="btn btn-primary btn-fill pull-right shadow" id="btnItem">단지 생성하기</a>                            
@@ -164,6 +158,7 @@
 <script>    
     navTitle('단지생성','');
     var API_KEY = localStorage.getItem('api_key');
+    var url = 'properties';
 
      //단지생성하기
      $('#btnItem').on('click',function(){
@@ -173,10 +168,9 @@
         var city = $('input[name="city"]').val();
         var address =$('input[name="address"]').val();
         var day_type_offset =$('select[name="day_type_offset"] option:selected').val();   
-        var image_url = $('#hotel_logo').val();
-
-        commonArray();
-        var commonrooms = []
+        var image_url = $('#hotel_logo').val();   
+        var commonrooms =[];
+        commonrooms =  commonArray();
 
         //단지정보입력 여부 체크  
         if(country_code == 0){
@@ -195,107 +189,82 @@
             chkAdd(name, address);
         }
         //입력박스 체크 뒤 api 호출 
-        var data ={};
+        var params ={};
         if(!(name == "")){
-            data.name = name;
+            params.name = name;
         }
         if(!(country_code == 0)){
-            data.country_code = country_code;
+            params.country_code = country_code;
         }
         if(!(timezone == 0 )){
-            data.timezone = timezone;
+            params.timezone = timezone;
+        }
+        if(!(address == "")){
+            params.address = address;
         }
         if(!(city == "")){
-            data.city = city;
+            params.city = city;
         }
         // if(!(day_type_offset == "")){
-        //     data.day_type_offset = day_type_offset;
+        //     params.day_type_offset = day_type_offset;
         // }
         if(!(image_url == "")){
-            data.image_url = image_url;
+            params.image_url = image_url;
         }
-        console.log(data);
-        console.log(JSON.stringify(data));
-             
+        if(!(commonrooms == "")){
+            params.commonrooms = commonrooms;
+        }
+
+        console.log(JSON.stringify(params));                   
         $.ajax({
-            url :'https://development.api.allegion.imgate.co.kr/v1/properties',
+            url : endUrl(url),            
             contentType: "application/json; charset=utf-8",
             type:'POST',           
-            headers : {                   
-                "Authorization": "Bearer " + API_KEY
-            },                
-            data:JSON.stringify(data)
+            headers : headers(),              
+            data:JSON.stringify(params)
         }) 
         .done(function (res) {
             console.log(res);
+            location.href='/propery_new_done';
+
         })
         .fail(function(jqXHR, textStatus, errorThrown){
-                console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
+            console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
         })  
              
     });
 
      //동일한 단지이름과 상세주소 있는지 체크
-     function chkAdd(name,address){
-                $.ajax({
-                    url:'https://development.api.allegion.imgate.co.kr/v1/properties',
-                    method:'get',
-                    contentType: "application/json; charset=utf-8",
-                    headers : {
-                        "Authorization": "Bearer " + API_KEY
+     function chkAdd(name,address){       
+        $.ajax({
+            url : endUrl(url),
+            method:'get',
+            contentType: "application/json; charset=utf-8",
+            headers : headers()
+        })
+        .done(function(result) {                           
+            if(result){            
+                for(var i=0; i<result.length; i++){                
+                    if(this.name == result[i].name && this.address == result[i].address){
+                        alert("단지 이름과 상세 주소가 동일한 정보가 있습니다.");
                     }
-                })
-                .done(function(result) {                           
-                    if(result){            
-                        for(var i=0; i<result.length; i++){                
-                            if(this.name == result[i].name && this.address == result[i].address){
-                                alert("단지 이름과 상세 주소가 동일한 정보가 있습니다.");
-                            }
-                        }                             
-                    }
-                    return false;                                                                           
-                })
-                .fail(function (request, status, error){  
-                    msg = request.status + "<br>" + request.responseText + "<br>" + error;
-                    console.log(msg);                           
-                }) 
+                }                             
+            }
+            return false;                                                                           
+        })
+        .fail(function (request, status, error){  
+            msg = request.status + "<br>" + request.responseText + "<br>" + error;
+            console.log(msg);                           
+        }) 
     }
 
-    //국가코드선택
-    $('select[name="country_code"]').empty();
-    $('select[name="country_code"]').append('<option  value="0" selected="true" disabled>국가 코드 선택</option>');
-    $('select[name="country_code"]').prop('selectedIndex', 0);  
-    $.ajax({
-        url : '/countries', //json 불러오기 router이용해서 불러옴
-        dataType :'json',
-        success : function (data) {
-            console.log(data);
-            $.each(data, function (key, entry) {                
-                $('select[name="country_code"]').append($('<option></option>').attr('value', key).text(entry.name + ' / ' + key ));                             
-            })
-        },
-        error: function(jqXHR, textStatus, errorThrown){
-          console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
-        }    
-    });
-
-    // 타임존선택 timeZone
-    $('select[name="timezone"]').empty();
-    $('select[name="timezone"]').append('<option  value="0" selected="true" disabled>타임존 선택</option>');
-    $('select[name="timezone"]').prop('selectedIndex', 0);  
-    $.ajax({
-        url : '/timezone', //json 불러오기 router이용해서 불러옴
-        dataType :'json',
-        success : function (data) {
-            console.log(data);
-            $.each(data, function (key, entry) { 
-                $('select[name="timezone"]').append($('<option></option>').attr('value', entry.code).text('['+entry.code+'] '+entry.ko)); 
-            })
-        },
-        error: function(jqXHR, textStatus, errorThrown){
-          console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
-        }    
-    });
+   
+    
+    countryCodejson();//국가코드 선택  
+    $('select[name="country_code"]').on("change", function(){ 
+        $(this).val().replace(/\D/g,'');
+    }); 
+    timeZone();// 타임존선택 timeZone
 
     //day-type-offset option
     $('select[name="day_type_offset"]').empty();
@@ -312,12 +281,10 @@
             chkDoorName(doorname);
             function chkDoorName(doorname){
                 $.ajax({
-                    url:'https://development.api.allegion.imgate.co.kr/v1/properties',
+                    url : endUrl(url),
                     method:'get',
                     contentType: "application/json; charset=utf-8",
-                    headers : {
-                        "Authorization": "Bearer " + API_KEY
-                    }
+                    headers : headers()
                 })
                 .done(function(result) {        
                     if(result){            
@@ -349,6 +316,9 @@
             var doorCnt = $('#newDoorList tbody tr').length;
             if(doorCnt > 0){
                 $('#doorCnt').text(doorCnt);
+            }else if(doorCnt == 0){
+                $('#noDoorList').show(); 
+                $('#newDoorList').hide(); 
             }
         }else{
             alert("공용도어의 이름을 입력해 주세요");
@@ -377,16 +347,12 @@
          }       
     }
 
-    function commonArray(){
-        var commonDoorName = $('#newDoorList tbody tr td.commonDoor').text(); 
-        $('#newDoorList tbody tr').each(function(tr){
-            var temp = $('.commonDoor').text();
-            commonArray.push(temp);            
-        });          
-        console.log(commonArray)
+    //commondoor 이름 읽기
+    function commonArray(){           
+        var commonrooms = $("#newDoorList > tbody").find('tr').map(function(){      
+            return $(this).find('.commonDoor').text();
+            }).get();
+        return commonrooms;
     }
 
-
-   
-   
 </script>

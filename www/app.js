@@ -9,6 +9,9 @@ var flash = require('connect-flash');
 var indexRouter = require('./routes/index');
 var buildingRouter = require('./routes/building');
 var doorlockRouter = require('./routes/doorlock');
+var issuekeyRouter = require('./routes/issuekey');
+var staffRouter = require('./routes/staff');
+var reportRouter = require('./routes/report');
 
 
 var app = express();
@@ -38,6 +41,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/property_del/:id',express.static(path.join(__dirname, 'public')));
 app.use('/property_read/:id',express.static(path.join(__dirname, 'public')));
 app.use('/property_edit/:id',express.static(path.join(__dirname, 'public')));
+app.use('/property_category/:id',express.static(path.join(__dirname, 'public')));
+app.use('/building_list/:id',express.static(path.join(__dirname, 'public')));
+app.use('/doorlock_list/:id',express.static(path.join(__dirname, 'public')));
+app.use('/issuekey/:id',express.static(path.join(__dirname, 'public')));
+app.use('/staff_list/:id',express.static(path.join(__dirname, 'public')));
+app.use('/report/:id',express.static(path.join(__dirname, 'public')));
 
 //logout 후 뒤로가기 시 방문했던 화면 보이던 것 처리
 app.use(function(req, res, next) {
@@ -53,6 +62,9 @@ app.use(function(req, res, next) {
 app.use('/', indexRouter);
 app.use('/building_list', buildingRouter);
 app.use('/doorlock_list', doorlockRouter);
+app.use('/issuekey', issuekeyRouter);
+app.use('/staff_list', staffRouter);
+app.use('/report', reportRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

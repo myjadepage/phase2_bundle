@@ -23,7 +23,7 @@
                         </div>
                         <br>
                         <a href="/" class="btn btn-default btn-fill btn-wd shadow" role="button">나가기</a>
-                        <a href="/building_new" class="btn btn-primary btn-fill btn-wd shadow" role="button">빌딩 생성하기</a>
+                        <a href="/:id/building_new" class="btn btn-primary btn-fill btn-wd shadow" role="button">빌딩 생성하기</a>
                     </div>
                 </div>
             </div>
@@ -32,4 +32,6 @@
 <% include inc/footer %>
 <% include inc/modal %>
 <% include inc/bottom %>
-
+<script>
+    navTitle('단지생성 완료','');
+</script>

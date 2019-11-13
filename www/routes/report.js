@@ -4,12 +4,12 @@ var router = express.Router();
 var common = require('../lib/common');
 var passport = require('../lib/passport');
 
-router.get('/:id/',common.ensureAuthenticated, function(req, res) {
+router.get('/:id/',common.ensureAuthenticated,function(req, res) {
     var id = req.params.id;
-	res.render('staff_list',{		
+	res.render('report',{		
 		date:common.currDateTime(),
-        path:'/staff_list',
-        id :id
+        path:'/report',
+        id:id
 	});	
 });
 

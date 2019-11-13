@@ -47,36 +47,35 @@
 
 <script>  
     navTitle('단지선택','');
-    var API_KEY = localStorage.getItem('api_key');
     //property list api
+    var url ='properties'    
     $.ajax({
-        url:'https://development.api.allegion.imgate.co.kr/v1/properties',
+        url: endUrl(url),
         method:'get',
         contentType: "application/json; charset=utf-8",
-        headers : {
-            "Authorization": "Bearer " + API_KEY
-        }
+        headers : headers()
     })
     .done(function(result) {  
         var liHtml=''; 
         console.log(result);
-        if(result.items){
+        if(result.total > 0){
             $('.slide_wrap').show();
             for(var data of result.items){
                 liHtml ='<li class="col-md-4"><div class="card shadow card-s2"><div class="image">';                        
-                liHtml+='<img src="assets/img/img_building.jpg" alt=""></div><div class="content">';                      
+                liHtml+='<a href="/property_category/'+ data.id +'"><img src="assets/img/img_building.jpg" alt=""></a></div><div class="content">';                      
                 liHtml+='<a href="/property_read/' + data.id + '"> <h4 class="title">'+ data.name +'</h4></a>';
                 liHtml+='<p class="description">'+ data.address +'</p></div>';
                 liHtml+='<a class="setting icon"  data-property_id="' + data.id + '" data-toggle="modal" data-target="#propertySetting" class="open-properDial" role="button" ></a>';
                 liHtml+='</li>';
-                $('#property_list').prepend(liHtml);
+                $('#property_list').prepend(liHtml);            
             }                
-            propertyList();//슬라이드 
-          
-        }else if(result == null || result == undefined){
+            propertyList();//슬라이드         
+        
+        }else if(result.total <= 0){
             $('.con_default').show();
+            $('.slide_wrap').hide();
         }                                                                                     
-     })
+    })
     .fail(function (request, status, error){  
         msg = request.status + "<br>" + request.responseText + "<br>" + error;
         console.log(msg);                           

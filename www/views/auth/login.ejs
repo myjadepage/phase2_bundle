@@ -8,7 +8,7 @@
                     <form id="loginForm" action="/login" method="POST" >
                         <div class="form-group">
                             <!-- 국가번호 -->
-                            <select class="form-control" id="CountryCode" name="CountryCode"></select>
+                            <select class="form-control" id="CountryCode" name="country_code"></select>
                             <!-- 핸폰번호 -->
                             <input 
                                 class="form-control" id="phone-number-check" name="phone"
@@ -32,3 +32,130 @@
 
 <% include ../inc/modal %>
 <% include ../inc/bottom %>   
+<script>
+    
+    $('p.desc > span').hide();
+    phoneNumCheck();
+
+    var phone_number;//국가코드 + 핸폰번호(0제거한) 
+    var code;//인증코드
+    var AuthTimer;//3분 인증 제한시간
+    var countryCode;
+    countryCodejson();//국가코드 선택  
+    $('select[name="country_code"]').on("change", function(){ 
+          countryCode = $(this).val().replace(/\D/g,'');
+    });     
+  
+    //인증번호 요청 api
+    $('button#reqAuthen').click(function(){   
+        var userNumber = $('input[name=phone]').val().replace(/(^0+)/, "");  //맨 앞 "0"제거
+        phone_number = countryCode + userNumber; 
+        var url = "user/verification_code";         
+        if(countryCode && userNumber){         
+           $.ajax({
+                method: "POST",  
+                url: endUrl(url),
+                contentType: "application/json; charset=utf-8",
+                data:JSON.stringify({
+                    "phone_number": phone_number,
+                    "need_signedup": true,                                     
+                    "is_test_mode": true                   
+                }),
+                beforeSend : function(){
+                    $('#loading').modal('show');
+                }  
+            }) 
+            .done(function(res) { 
+                console.log(res)
+                alert("인증번호가 발송되었습니다. 문자를 확인해 주세요");                        
+                code = res.verification_code;  
+                var endSeconds = Math.floor(new Date(res.expired_at) / 1000);
+                var startSeconds = Math.floor(Date.now() / 1000);
+                var expired_at = endSeconds - startSeconds;
+
+                $('button#reqAuthen').addClass('active');
+                $('button#reqAuthen').attr('disabled', true);
+                $('#authTime').show();    
+                
+                AuthTimer = new $ComTimer()
+                AuthTimer.comSecond = expired_at;//(180초 : 3 분)
+                AuthTimer.timer =  setInterval(function(){                    
+                    AuthTimer.fnTimer();                
+                }, 1000);
+                AuthTimer.domId = $("#authDo"); 
+                // //인증번호 버튼 재 클릭시 가속도 붙는거땜에 넣어줘야함
+                $('button#reqAuthen.active').click(function(){
+                    AuthTimer.fnStop();                     
+                    $('button#reqAuthen').removeClass('active');
+                });
+            })
+            .fail(function (request, status, error){                          
+                var msg = "ERROR<br><br>"
+                msg += request.status + "<br>" + request.responseText + "<br>" + error;
+                console.log(msg);    
+                $('#phoneError').modal('show'); 
+                $('#phone-number-check').val('');
+            })   
+        }else{
+            $('p.desc > span').show(); 
+        }              
+        //2단계 : 인증 및 로그인 api   
+        $('#authDo').click(function(){ 
+            var url = "user/session";                                                                           
+            var verification_code = $('#resAuthen').val();
+            if(verification_code == code){                   
+                AuthTimer.fnStop();//인증코드 입력하면 카운트다운 스탑
+                $.ajax({
+                    method: "POST",
+                    url: endUrl(url),
+                    contentType: "application/json; charset=utf-8",  
+                    data:JSON.stringify({
+                            "phone_number": phone_number,
+                            "verification_code": verification_code
+                    })
+                })  
+                .done(function(res) {  
+                    console.log(res);                       
+                    $('#sendPhone').val(res.phone_number); 
+                    $('#sendName').val(res.name)
+                    localStorage.setItem('api_key',res.api_key);
+                    $('#loginForm').submit();
+                }) 
+               .fail(function (request, status, error){  
+                    msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                    console.log(msg);                           
+                })                     
+         }else if(!verification_code){
+                $('#resAuthen').attr('placeholder', '전달 받은 인증번호를 입력해 주세요').val('');  
+         }else {
+                $('#resAuthen').attr('placeholder', '인증번호가 틀렸습니다. 다시 입력해 주세요').val('');                       
+         }                         
+        });
+    });        
+ 
+ /*
+ *  인증용 카운트다운 함수및 객체
+ */
+ function $ComTimer(){}
+ $ComTimer.prototype = {     
+     comSecond : "",         
+     timer : "",
+     domId : "",
+     fnTimer : function(){
+         var m = Math.floor(this.comSecond / 60) + " : " + (this.comSecond % 60);	// 남은 시간 계산   
+         console.log(m);
+         this.domId.addClass('btn-info').html( m + " 인증번호 확인");
+         if (this.comSecond < 0) {			// 시간이 종료 되었으면..             
+             $('#authDo').removeClass('btn-info').html("인증하기");
+             $('#resAuthen').val('');
+             $('#authTime').html('인증요청시간이 지났습니다. 다시 인증번호를 요청해 주세요'); 
+             $('#reqAuthen').html('인증번호 재요청'); 
+             clearInterval(this.timer);		// 타이머 해제  
+         }
+         this.comSecond--;				// 1초씩 감소    
+     },
+     fnStop : function(){                               
+        clearInterval(this.timer);        
+     }
+ }  
+</script>

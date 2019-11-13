@@ -85,6 +85,13 @@ router.get('/property_new',common.ensureAuthenticated,function(req, res) {
 		path:'/'
 	});
   });
+
+  router.get('/propery_new_done',common.ensureAuthenticated,function(req, res) {
+	res.render('propery_new_done',{
+		date:common.currDateTime(),		
+		path:'/'
+	});
+  });
   
 
 router.post('/properties',common.ensureAuthenticated, function(req, res) {
@@ -110,7 +117,7 @@ router.get('/property_read/:id',common.ensureAuthenticated, function(req, res) {
 		id : id 
 	});
 });
-router.get('/property_edit/:id',common.ensureAuthenticated, function(req, res) {
+router.put('/property_edit/:id',common.ensureAuthenticated, function(req, res) {
 	var id = req.params.id;
 	res.render('property_edit',{
 		date:common.currDateTime(),	
@@ -120,23 +127,13 @@ router.get('/property_edit/:id',common.ensureAuthenticated, function(req, res) {
 });
 
 
-router.get('/issuekey',common.ensureAuthenticated, function(req, res) {
-	res.render('issuekey',{		
-		date:common.currDateTime(),
-		path:'/issuekey'
-	});	
-});
-router.get('/staff_list',common.ensureAuthenticated, function(req, res) {
-	res.render('staff_list',{		
-		date:common.currDateTime(),
-		path:'/staff_list'
-	});	
-});
-router.get('/report',common.ensureAuthenticated,function(req, res) {
-	res.render('report',{		
-		date:common.currDateTime(),
-		path:'/report'
-	});	
+router.get('/property_category/:id',common.ensureAuthenticated, function(req, res) {
+	var id = req.params.id;
+	res.render('property_category',{
+		date:common.currDateTime(),	
+		path:'/property_category',
+		id : id     
+	});
 });
 
 module.exports = router;

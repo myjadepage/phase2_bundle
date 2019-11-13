@@ -429,6 +429,7 @@ ul.room_name_item  .form-check.border span.room_name{
 /* property카테고리 */
 .category ul{
     overflow: hidden;
+    padding-left:0;
 }
 .category ul:after{
     content: "";
@@ -437,8 +438,8 @@ ul.room_name_item  .form-check.border span.room_name{
     clear: both;
 }
 .category li{
-    float: left;
-    margin-left: 30px; 
+    display: inline-block;   
+    margin-right: 30px; 
     margin-top: 10px;
     list-style: none;
 }   

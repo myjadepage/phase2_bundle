@@ -12,7 +12,7 @@
                                         <h5 class="card-title">단지정보 수정</h5>
                                     </div> 
                                     <div class="card-body">
-                                        <form id="item_edit_form" data-parsley-validate>
+                                       
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
@@ -26,23 +26,49 @@
                                                             <div class="row form-group">
                                                                 <div class="col-md-6">
                                                                     <label>단지 지역 정보 입력</label>
-                                                                    <select class="form-control" id="CountryName" name="viewCountry"></select> 
+                                                                    <select class="form-control" id="CountryName" name="country_code"></select> 
                                                                 </div> 
                                                                 <div class="col-md-6 pr-1">
-                                                                    <label class="txt_hidden">도시선택</label>
+                                                                    <label class="txt_hidden">도시입력</label>
                                                                     <input type="text" class="form-control" id="local" name="viewCity">                                                                  
                                                                 </div> 
                                                                 <div class="col-md-12 pl-1 pr-1">                                                                        
-                                                                    <select class="form-control" id="timeZone" name="viewTimeZone"></select>                                                                                                                                                                                            
+                                                                    <select class="form-control"  name="timezone"></select>                                                                                                                                                                                            
                                                                 </div>
                                                                 <div class="col-md-12 pl-1">                                                                        
-                                                                    <input type="text" class="form-control" id="address" name="viewAddress">
+                                                                    <input type="text" class="form-control" id="address" name="address" onkeyup="chkword(this,200);">
                                                                 </div>
                                                              </div>  
                                                     </div>
-                                                </div>                                                                                            
-                                                                                    
-                                        </form>
+                                                </div> 
+                                                <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="day_type_offset">일 단위 타입 선택</label>
+                                                                <select class="form-control"  name="day_type_offset"></select>                                                               
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">  
+                                                                <label>단지 이미지 등록</label>
+                                                                <!-- 이미지등록 알아볼것 -->
+                                                                <input type="file" class="form-control" id="hotel_logo" placeholder="배경 이밎 첨부파일 등록 [png,jpg]">
+        
+                                                                <!-- <div class="img_insert">
+                                                                    <i class="icon image_state"></i>                                                            
+                                                                    <span>
+                                                                        imagenamadadadasdasdasdasdadasdase.png<br><small>100.1MB</small>
+                                                                    </span>
+                                                                    <button type="button" rel="이미지삭제" title="Remove" class="btn btn-simple btn-link">
+                                                                        <i class="icon trash"></i>
+                                                                    </button>
+                                                                </div> -->
+                                                            </div>
+                                                        </div>
+                                                    </div>                                                                                           
+                                        
                                     </div>
                                 </div>
                         </div>
@@ -106,8 +132,7 @@
                                     <div class="card-footer ">
                                             <hr>
                                             <div class="state form-inline">                                                  
-                                               <input type="text" class="form-control" placeholder="공용도어 이름 입력">                                                            
-                                               <!-- <button type="submit" class="btn btn-primary">공용도어 추가</button> -->
+                                               <input type="text" class="form-control" placeholder="공용도어 이름 입력">  
                                                <a role="button" data-toggle="modal" data-target="#newPropertyDone" class="btn btn-primary">공용도어 추가</a>
                                             </div>
                                         </div>
@@ -127,65 +152,34 @@
 <% include inc/bottom %>
 
 <script>
-    //국가선택 
-    $('#CountryName').empty();
-    $('#CountryName').append('<option selected="true" disabled>국가 선택</option>');
-    $('#CountryName').prop('selectedIndex', 0);  
-    $.ajax({
-        url : '/countries', //json 불러오기 router이용해서 불러옴
-        dataType :'json',
-        success : function (data) {
-            console.log(data);
-            $.each(data, function (key, entry) {                
-                $('#CountryName').append($('<option></option>').attr('value', key).text(entry.name + ' / ' + key ));                             
-            })
-        },
-        error: function(jqXHR, textStatus, errorThrown){
-        console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
-        }    
+     countryCodejson();//국가코드 선택  
+    $('select[name="country_code"]').on("change", function(){ 
+        $(this).val().replace(/\D/g,'');
     });
-
-     // 타임존선택 timeZone
-    $('#timeZone').empty();
-    $('#timeZone').append('<option selected="true" disabled>타임존 선택</option>');
-    $('#timeZone').prop('selectedIndex', 0);  
-    $.ajax({
-        url : '/timezone', //json 불러오기 router이용해서 불러옴
-        dataType :'json',
-        success : function (data) {
-            console.log(data);
-            $.each(data, function (key, entry) { 
-                $('#timeZone').append($('<option></option>').attr('value', entry.code).text('['+entry.code+'] '+entry.ko)); 
-            })
-        },
-        error: function(jqXHR, textStatus, errorThrown){
-          console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
-        }    
-    });
+    timeZone(); // 타임존선택 timeZone
 
         //프라퍼티 상세보기
             $(function(){    
                 var id = "<%= id %>";   
-                var API_KEY = localStorage.getItem('api_key');              
+                var API_KEY = localStorage.getItem('api_key');  
+                var url = 'properties/';         
                 $.ajax({
                     //property 상세보기 api
-                    url:'https://development.api.allegion.imgate.co.kr/v1/properties/'+ id,
-                    method:'get',
+                    url: endUrl(url) + id,                    
+                    method:'put',
                     contentType: "application/json; charset=utf-8",
                     dataType:"json",
                     data:{
                         property_id : id
                     },
-                    headers : {
-                        "Authorization": "Bearer " + API_KEY
-                    }
+                    headers : headers()
                 })
                 .done(function(result) {    
                     $('input[name="viewName"').val(result.name);
-                    $('input[name="viewCountry"').val(result.country_code);
+                    $('input[name="country_code"').val(result.country_code);
                     $('input[name="viewCity"').val(result.city);
-                    $('input[name="viewTimeZone"').val(result.timezone);
-                    $('input[name="viewAddress"').val(result.address);
+                    $('input[name="timezone"').val(result.timezone);
+                    $('input[name="address"').val(result.address);
                     navTitle(result.name,result.address); 
                 })
                 .fail(function (request, status, error){  

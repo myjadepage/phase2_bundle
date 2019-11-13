@@ -14,7 +14,7 @@
                                 <img src="assets/img/img_building.jpg" alt="">
                             </div>
                             <div class="content">
-                                <a href="/property_read"><h4 class="title"></h4></a>
+                                <h4 class="title"></h4>
                                 <p class="description"></p>                                                              
                             </div>                                  
                         </div>                       
@@ -32,32 +32,78 @@
 <% include inc/bottom %>
 
 <script>
+    // property 내용보기
+    var id = "<%= id %>"; 
+    var API_KEY = localStorage.getItem('api_key'); 
+    var url ='properties/';
     $(function(){     
-        var API_KEY = localStorage.getItem('api_key');  
         $.ajax({
             //property 상세보기 api
-            url:'https://development.api.allegion.imgate.co.kr/v1/properties/'+ property_id,
+            url: endUrl(url) + id,
             method:'get',
             contentType: "application/json; charset=utf-8",
-            dataType:"json",
             data:{
-                property_id : property_id
+                property_id : id
             },
-            headers : {
-                "Authorization": "Bearer " + API_KEY
-            }
+            headers : headers()
         })
-        .done(function(res) {     
-            var result = JSON.parse(res);
+        .done(function(result) {                
             $('h4.title').text(result.name);
             $('p.description').text(result.address);
+            $('#del_property').attr('data-property-name', result.name);            
             navTitle(result.name,result.address); 
          })
         .fail(function (request, status, error){  
             msg = request.status + "<br>" + request.responseText + "<br>" + error;
             console.log(msg);                           
         })    
-
     });
 
+// property 삭제하기
+$('#del_property').click(function(){
+    $.ajax({
+        url: endUrl(url) + id,
+        method:'delete',
+        contentType: "application/json; charset=utf-8",
+        data:JSON.stringify({
+            property_id : id
+        }),
+        headers : headers()
+    })
+    .done(function(res) {                
+        console.log(res); 
+        if(res.code == 200){
+            $('#Delproperty').on('show.bs.modal', function(e) {        
+                $(this).$('h6').text();         
+            }); 
+            location.href='/';
+        }else{
+            alert("삭제 실패");
+        }
+        
+     })
+    .fail(function (request, status, error){  
+        msg = request.status + "<br>" + request.responseText + "<br>" + error;
+        console.log(msg);                           
+    })   
+});
+
+
+// 단지삭제
+$('#del_property').on('click', function(e) {
+    var $modalDiv = $(e.delegateTarget);
+    var id = $(this).data('recordId');
+    // $.ajax({url: '/api/record/' + id, type: 'DELETE'})
+    // $.post('/api/record/' + id).then()
+    $modalDiv.addClass('loading');
+    setTimeout(function() {
+        $modalDiv.modal('hide').removeClass('loading');
+    }, 1000)
+});
+// $('#confirm-delete').on('show.bs.modal', function(e) {
+//     var data = $(e.relatedTarget).data();
+//     $('.title', this).text(data.recordTitle);
+//     $('.btn-ok', this).data('recordId', data.recordId);
+// });
+    
 </script>
