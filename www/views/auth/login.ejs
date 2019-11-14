@@ -1,9 +1,9 @@
 <%- include('../inc/head') %> 
-<body class="nav-md">
+
 
 <div class="wrapper login_page"> 
             <div class="container">
-                <h1 class="logo"><img src="assets/img/logo_schlage.png"></h1>
+                <h1 class="logo"><img src="/assets/img/logo_schlage.png"></h1>
                 <div class="col-md-4 col-xs-push-4"> 
                     <form id="loginForm" action="/login" method="POST" >
                         <div class="form-group">
@@ -30,8 +30,8 @@
 </div>
 
 
-<% include ../inc/modal %>
-<% include ../inc/bottom %>   
+<%- include ../inc/modal %>
+<%- include ../inc/bottom %>   
 <script>
     
     $('p.desc > span').hide();

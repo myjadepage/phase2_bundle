@@ -29,24 +29,26 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   cookie: {
-     maxAge: 1000 * 60 * 60 * 1// 쿠키 유효기간 10시간->(1000 * 60 * 60 * 10)
+     maxAge: 1000 * 60 * 60 * 10// 쿠키 유효기간 10시간->(1000 * 60 * 60 * 10)
    }
 }));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 //하위경로에서 static파일 읽기
-app.use('/property_del/:id',express.static(path.join(__dirname, 'public')));
-app.use('/property_read/:id',express.static(path.join(__dirname, 'public')));
-app.use('/property_edit/:id',express.static(path.join(__dirname, 'public')));
-app.use('/property_category/:id',express.static(path.join(__dirname, 'public')));
-app.use('/building_list/:id',express.static(path.join(__dirname, 'public')));
-app.use('/doorlock_list/:id',express.static(path.join(__dirname, 'public')));
-app.use('/issuekey/:id',express.static(path.join(__dirname, 'public')));
-app.use('/staff_list/:id',express.static(path.join(__dirname, 'public')));
-app.use('/report/:id',express.static(path.join(__dirname, 'public')));
+app.use('/property_del',express.static(path.join(__dirname, 'public')));
+app.use('/property_read',express.static(path.join(__dirname, 'public')));
+app.use('/property_edit',express.static(path.join(__dirname, 'public')));
+app.use('/property_category',express.static(path.join(__dirname, 'public')));
+app.use('/properties/:id/building_list',express.static(path.join(__dirname, 'public')));
+app.use('/properties/:id/building_new',express.static(path.join(__dirname, 'public')));
+app.use('/properties/:id/doorlock_list',express.static(path.join(__dirname, 'public')));
+app.use('/properties/:id/issuekey',express.static(path.join(__dirname, 'public')));
+app.use('/properties/:id/staff_list',express.static(path.join(__dirname, 'public')));
+app.use('/properties/:id/report',express.static(path.join(__dirname, 'public')));
 
 //logout 후 뒤로가기 시 방문했던 화면 보이던 것 처리
 app.use(function(req, res, next) {
@@ -60,11 +62,11 @@ app.use(function(req, res, next) {
 }); 
 
 app.use('/', indexRouter);
-app.use('/building_list', buildingRouter);
-app.use('/doorlock_list', doorlockRouter);
-app.use('/issuekey', issuekeyRouter);
-app.use('/staff_list', staffRouter);
-app.use('/report', reportRouter);
+app.use('/properties/:id/building', buildingRouter);
+app.use('/properties/:id/doorlock', doorlockRouter);
+app.use('/properties/:id/issuekey', issuekeyRouter);
+app.use('/properties/:id/staff', staffRouter);
+app.use('/properties/:id/report', reportRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

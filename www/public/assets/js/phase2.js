@@ -149,11 +149,13 @@ function debounce(func, wait, immediate) {
 /**
  *   웹전체 이름 / 설명
  */
-var title ='phase2';
-var newDescription = '모바일도어락, 페이즈2,';
-document.title = title;
-$('.logo a.simple-text').text(title);
-$('meta[name="description"]').attr("content", newDescription);
+$(document).ready(function() {
+    var title ='phase2';
+    var newDescription = '모바일도어락, 페이즈2,';
+    document.title = title;
+    $('.logo a.simple-text').text(title);
+    $('meta[name="description"]').attr("content", newDescription);
+})
 
 
 /**
@@ -183,10 +185,9 @@ $('.timezone').text('[ '+ d + ' ]');
  *   모든 페이지에 들어가는 상단네비 타이틀 함수
  */
 function navTitle(big, small){
-    $('.nav_title').text(big);
-    $('.nav_stitle').text(small);
+      $('span.nav_title').text(big),
+      $('small.nav_stitle').text(small)    
 }
-
 
 /* 
  *로그인 폰번호 체크 "-" 제외
@@ -315,6 +316,20 @@ function timeZone(){
     });
 }
 
+/**
+ *      day-type-offset option
+ */
+function dayTimeset(){
+    $('select[name="day_type_offset"]').empty();
+    $('select[name="day_type_offset"]').append('<option selected="true" disabled>일단위 시간 선택</option>')
+    for(var i=0; i<10 ;i++){
+        $('select[name="day_type_offset"]').append($('<option></option>').attr('value', "0"+ i +"00").text("0"+ i +" : 00"));         
+    }   
+    for(var i=10; i<24 ;i++){
+        $('select[name="day_type_offset"]').append($('<option></option>').attr('value', i + "00").text( i + " : 00"));         
+    }
+}
+
 /*
  *  로그아웃 api
  */    
@@ -365,4 +380,3 @@ function propertyList(){
 
 // 단지정보입력 여부 체크
 
-                
