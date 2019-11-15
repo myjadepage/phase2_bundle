@@ -14,10 +14,23 @@
                                     <input type="text" class="form-control" placeholder="Search for keyword">
                             </div><!-- /input-group -->                   
 
-                            <h4>빌딩리스트 <span class="text-info">[ 10개 ]</span></h4>
+                            <h4>빌딩리스트 <span class="text-info" id="cntBuilding"></span></h4>
                             <div class="card">                                   
                                     <div class="content table-responsive  table-full-width">
-                                        <table class="table table-hover">
+                                        <table class="table" id="noBuildingList" style="display: none;"> 
+                                            <tr>
+                                                <td style="border: 0;">
+                                                    <div class="con_default">
+                                                        <i class="icon m_issuekey"></i>
+                                                        <h4 class="text-center text-info">
+                                                            ‘등록된 빌딩정보가 없습니다 ’<br>
+                                                            <span>빌딩을 등록하여 서비스를 시작해 보세요. </span>
+                                                        </h4>
+                                                    </div>                                                                 
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <table class="table table-hover" id="buildingList" style="display: none;"> 
                                             <colgroup>
                                                 <col width="20%">
                                                 <col width="*">
@@ -30,40 +43,13 @@
                                                 <th>상태정보요약</th>
                                                 <th>정렬:생성일 기준</th>
                                             </thead>
-                                            <tbody>
-                                                <tr>                                                  
-                                                    <td>DD-MM-YYYY  HH:MM</td>
-                                                    <td><a href="/room_list">Residence A</a></td>
-                                                    <td>Room : 20  / Common : 2</td>
-                                                    <td>
-                                                        <button onclick="location.href='building_edit' " type="button"  title="수정하기" class="btn btn-simple btn-link">
-                                                            <i class="icon edit"></i>
-                                                        </button>
-                                                        <button type="button" title="삭제하기" class="btn btn-simple btn-link">
-                                                            <i class="icon trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>                                                  
-                                                    <td>DD-MM-YYYY  HH:MM</td>
-                                                    <td><a href="/room_list">Residence B</a></td>
-                                                    <td>Room : 20  / Common : 2</td>
-                                                    <td>
-                                                        <button onclick="location.href='building_edit' " type="button"  title="수정하기" class="btn btn-simple btn-link">
-                                                            <i class="icon edit"></i>
-                                                        </button>
-                                                        <button type="button" title="삭제하기" class="btn btn-simple btn-link">
-                                                            <i class="icon trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
+                                            <tbody></tbody>
                                         </table>        
                                     </div>
                             </div>
 
                             <button class="btn btn-default btn-fill shadow pull-left">취소</button>
-                            <button onclick="location='building_new'" class="btn btn-primary btn-fill shadow pull-right">단지 생성하기</button>
+                            <button onclick="location='/properties/<%=id%>/building_new'" class="btn btn-primary btn-fill shadow pull-right">빌딩 생성하기</button>
                            
                     </div>
                 </div>
@@ -74,3 +60,80 @@
 <%- include inc/modal %>
 <%- include inc/bottom %>
 
+<script>
+    var API_KEY = localStorage.getItem('api_key');   
+    var id = "<%= id%>";
+    var url = "properties/" + id + "/buildings";
+    $.ajax({
+        method: "get",
+        url : endUrl(url),
+        contentType: "application/json; charset=utf-8",
+        headers : headers(),
+        data:{
+            property_id : id
+        }
+    })                                                                               
+    .done(function(res) {            
+        console.log(res);  
+        trHtml ="";
+        $('#cntBuilding').text('[ ' + res.total +'개 ]');
+        if(res.total > 0){
+            $('#noBuildingList').hide(); 
+            $('#buildingList').show(); 
+            res.items.forEach(function(item, i, array){    
+                var date =new Date(item.created_at);        
+                trHtml += "<tr><td>" + formatDate(date) + "</td><td><a href='/properties/" + id + "/room'>" + item.name+ "</a></td>";
+                trHtml += "<td>Room : "+item.room_counts + " / Common : " + item.commonrooms.length + "</td>";
+                trHtml += "<td><button onclick='location.href='/building_edit'' type='button'  title='수정하기' class='btn btn-simple btn-link'><i class='icon edit'></i></button>";
+                trHtml += "<button type='button' title='삭제하기' class='btn btn-simple btn-link'  data-building_id='" + item.id + "'id='btnDelBuilding'><i class='icon trash'></i></button></td>";
+                trHtml += "</tr>";            
+            });       
+            $('#buildingList tbody').append(trHtml);
+            
+        }else if(res.total == 0){
+            $('#noBuildingList').show(); 
+            $('#buildingList').hide(); 
+        }
+    })
+    .fail(function (request, status, error){  
+        msg = request.status + "<br>" + request.responseText + "<br>" + error;
+        console.log(msg); 
+        alert("건물 목록을 불러 올 수 없습니다.");                          
+    })  
+
+
+         //빌딩삭제하기        
+         $('#buildingList').on('click','#btnDelBuilding', function(){
+            var building_id = $(this).data('building_id');
+            console.log(building_id);
+            $.ajax({
+                url: endUrl(url) + building_id,
+                method:'delete',
+                contentType: "application/json; charset=utf-8",                
+                headers : headers()
+            })
+            .done(function(res) {                
+                console.log(res);                 
+                if(res.code == 200){
+                    $('#Delproperty').on('show.modal');                    
+                }else{
+                    alert("삭제 실패");
+                }            
+            })
+            .fail(function (request, status, error){  
+                msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                console.log(msg);  
+            })   
+        });
+
+    //리스트에 보이는 날짜포맷 변경
+    function formatDate(date) {
+        var month = date.toLocaleString('en', {month :'short'});
+        var day = date.getDate();
+        var year = date.getFullYear();
+        var hh = date.getHours();
+        var mm = date.getMinutes();
+        return day + "-" + month + "-" + year + "  " + hh + ":" + mm
+}
+
+</script>

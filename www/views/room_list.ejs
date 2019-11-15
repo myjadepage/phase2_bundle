@@ -30,6 +30,19 @@
                             </h4>
                             <div class="card">                                   
                                     <div class="content table-responsive table-full-width">
+                                        <table class="table" id="noBuildingList" style="display: none;"> 
+                                            <tr>
+                                                <td colspan="3">
+                                                    <div class="con_default">
+                                                        <i class="icon room"></i>
+                                                        <h4 class="text-center text-info">
+                                                            ‘ 아직 생성된 객실 정보가 없습니다 ’<br>
+                                                            <span>객실 정보를 등록하여 서비스를 시작해 보세요. </span>
+                                                        </h4>
+                                                    </div>
+                                                </td>                                                                      
+                                            </tr>
+                                        </table>
                                         <table class="table table-hover">
                                             <colgroup>
                                                 <col width="20%">
@@ -44,9 +57,9 @@
                                             <tbody>
                                                 <tr>                                                  
                                                     <td>DD-MMM-YYYY  HH:MM</td>
-                                                    <td><a href="room_default.html">Residence A</a></td>                                                    
+                                                    <td><a href="/room_default">Residence A</a></td>                                                    
                                                     <td>
-                                                        <button onclick="location.href='building_edit.html' " type="button"  title="수정하기" class="btn btn-simple btn-link">
+                                                        <button onclick="location.href='/building_edit' " type="button"  title="수정하기" class="btn btn-simple btn-link">
                                                             <i class="icon edit"></i>
                                                         </button>
                                                         <button type="button" title="삭제하기" class="btn btn-simple btn-link">
@@ -56,9 +69,9 @@
                                                 </tr>
                                                 <tr>                                                  
                                                     <td>DD-MMM-YYYY  HH:MM</td>
-                                                    <td><a href="room_new.html">Residence B</a></td>                                                  
+                                                    <td><a href="">Residence B</a></td>                                                  
                                                     <td>
-                                                        <button onclick="location.href='building_edit.html' " type="button"  title="수정하기" class="btn btn-simple btn-link">
+                                                        <button onclick="location.href='/building_edit' " type="button"  title="수정하기" class="btn btn-simple btn-link">
                                                             <i class="icon edit"></i>
                                                         </button>
                                                         <button type="button" title="삭제하기" class="btn btn-simple btn-link">
@@ -72,14 +85,13 @@
                             </div>
 
                             <button class="btn btn-default btn-fill shadow pull-left">취소</button>
-                            <button onclick="location='building_new.html'" class="btn btn-primary btn-fill shadow pull-right">신규 객실 생성</button>
-                            
+                            <button onclick="location='/properties/<%=id%>/room_new'" class="btn btn-primary btn-fill shadow pull-right">신규 객실 생성</button>
                     </div>
                 </div>
             </div>
         </div>
 
-<% include inc/footer %>
-<% include inc/modal %>
-<% include inc/bottom %>
+<%- include inc/footer %>
+<%- include inc/modal %>
+<%- include inc/bottom %>
 

@@ -51,6 +51,16 @@ router.get('/timezone', function(req, res) {
     res.send(result);
 })
 
+// 빌딩타입
+router.get('/building_type', function(req, res) {
+    var filePath = path.join(__dirname, '/../data/building_type.json');
+    var file = fs.readFileSync(filePath, 'utf8');
+    var result = JSON.parse(file);
+    res.send(result);
+})
+
+
+
 router.get('/login', function(req, res) {	
 	if(req.user) res.redirect('/');
 	res.render('auth/login');
@@ -86,7 +96,8 @@ router.get('/property_new',common.ensureAuthenticated,function(req, res) {
 	});
   });
 
-  router.get('/propery_new_done',common.ensureAuthenticated,function(req, res) {
+
+router.get('/propery_new_done',common.ensureAuthenticated,function(req, res) {
 	res.render('propery_new_done',{
 		date:common.currDateTime(),		
 		path:'/'
@@ -109,6 +120,7 @@ router.get('/property_del/:id',common.ensureAuthenticated, function(req, res) {
 		id : id
 	});
 });
+
 router.get('/property_read/:id',common.ensureAuthenticated, function(req, res) {
 	var id = req.params.id;
 	res.render('property_read',{
@@ -117,7 +129,7 @@ router.get('/property_read/:id',common.ensureAuthenticated, function(req, res) {
 		id : id 
 	});
 });
-router.put('/property_edit/:id',common.ensureAuthenticated, function(req, res) {
+router.get('/property_edit/:id',common.ensureAuthenticated, function(req, res) {
 	var id = req.params.id;
 	res.render('property_edit',{
 		date:common.currDateTime(),	
@@ -134,6 +146,78 @@ router.get('/property_category/:id',common.ensureAuthenticated, function(req, re
 		path:'/property_category',
 		id : id     
 	});
+});
+
+router.get('/properties/:id/building',common.ensureAuthenticated, function(req, res) {   
+	var id = req.params.id;
+	res.render('building_list',{	  
+	  date:common.currDateTime(),
+	  path:'/building_list',
+	  id:id
+	});	
+});
+
+router.get('/properties/:id/building_new',common.ensureAuthenticated, function(req, res) {   
+	var id = req.params.id;
+	res.render('building_new',{	  
+	  date:common.currDateTime(),
+	  path:'/building_list',
+	  id:id
+	});	
+});
+
+router.get('/properties/:id/room',common.ensureAuthenticated, function(req, res) {
+	var id = req.params.id;
+	res.render('room_list',{		
+		date:common.currDateTime(),
+		path:'/building_list',
+		id: id
+	});	
+});
+
+router.get('/properties/:id/room_new',common.ensureAuthenticated, function(req, res) {
+	var id = req.params.id;
+	res.render('room_new',{		
+		date:common.currDateTime(),
+		path:'/building_list',
+		id: id
+	});	
+});
+
+router.get('/properties/:id/doorlock/',common.ensureAuthenticated, function(req, res) {
+	var id = req.params.id;
+	res.render('doorlock_list',{		
+		date:common.currDateTime(),
+		path:'/doorlock_list',
+		id: id
+	});	
+});
+
+router.get('/properties/:id/issuekey/',common.ensureAuthenticated, function(req, res) {
+    var id = req.params.id;
+	res.render('issuekey',{		
+		date:common.currDateTime(),
+        path:'/issuekey',
+        id :id
+	});	
+});
+
+router.get('/properties/:id/staff/',common.ensureAuthenticated, function(req, res) {
+    var id = req.params.id;
+	res.render('staff_list',{		
+		date:common.currDateTime(),
+        path:'/staff_list',
+        id :id
+	});	
+});
+
+router.get('/properties/:id/report/',common.ensureAuthenticated,function(req, res) {
+    var id = req.params.id;
+	res.render('report',{		
+		date:common.currDateTime(),
+        path:'/report',
+        id:id
+	});	
 });
 
 module.exports = router;

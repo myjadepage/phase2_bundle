@@ -134,7 +134,7 @@
                                                                                 <span class="form-check-sign"></span>                                                                            
                                                                             </label>
                                                                             <span>1 selected</span>
-                                                                            <button type="button" title="Remove" id="delTrash" class="btn btn-simple btn-link" onClick="fn_delRow('chkObject');">
+                                                                            <button type="button" title="삭제하기" id="delTrash" class="btn btn-simple btn-link" onClick="fn_delRow('chkObject');">
                                                                                 <i class="icon trash"></i>
                                                                             </button>
                                                                         </div>                                                                   
@@ -198,8 +198,10 @@
         commonrooms =  commonArray();
 
         //단지정보입력 여부 체크  
-        if(country_code == 0){
-                alert("국가코드를 선택해 주세요");
+        if(name ==""){
+            alert("단지이름을 입력해 주세요");    
+        }else if(country_code == 0){
+            alert("국가코드를 선택해 주세요");
         }else if(timezone == 0){
             alert("타임존을 선택해 주세요")
         }else if(city == ""){
@@ -208,8 +210,6 @@
             alert("상세주소를 입력해 주세요")
         }else if(address){
             $('input[name="address"]').val(characterCheck(address));
-        }else if(name ==""){
-            alert("단지이름을 입력해 주세요");    
         }else{               
             chkAdd(name, address);
         }

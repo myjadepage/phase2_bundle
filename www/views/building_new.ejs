@@ -26,11 +26,7 @@
                                                         <div class="row form-group">
                                                             <div class="col-md-12">
                                                                 <label>빌딩 타입 선택</label>
-                                                                <select class="form-control">
-                                                                    <option>콘도미디엄</option>
-                                                                    <option>빌라</option>
-                                                                    <option>카라반</option>
-                                                                <select> 
+                                                                <select class="form-control" name="buildingtype"><select> 
                                                             </div>                                                                                                                 
                                                          </div>  
                                                 </div>
@@ -118,38 +114,80 @@
 <% include inc/footer %>
 <% include inc/modal %>
 <% include inc/bottom %>
-
+<!-- 93d8265dd0e2f63b41abb6a46ce9b67ef6133403 -->
+<!-- Bearer 24a21f9c9277eecd030336364b658f75d3cb4017 -->
 <script>   
-    var API_KEY = localStorage.getItem('api_key');
-    var id = "<%= id %>";   
-    var url = '/properties/id/buildings';
+    var API_KEY = localStorage.getItem('api_key');   
+    var id = "<%= id %>";
+    var url = "properties/" + id + "/buildings";
+    console.log('id', id);
 
-     //단지생성하기
-     $('#btnNewBuilding').on('click',function(){
+    // 빌딩타입 불러오기    
+    var url2 ="properties/" + id + "/buildingtypes"   
+    $.ajax({
+        method: "get",
+        url : endUrl(url2),
+        contentType: "application/json; charset=utf-8",
+        headers : headers(),
+        data:{
+            property_id : id,
+            language_code : "ko"
+        }
+    })                                                                               
+    .done(function(res) {                         
+        console.log(res);        
+        $('select[name="buildingtype"]').empty();
+        $('select[name="buildingtype"]').append('<option  value="0" value="0" selected="true">빌딩 타입 선택</option>');
+        $('select[name="buildingtype"]').prop('selectedIndex', 0); 
+        for(var i of res.items){
+            $('select[name="buildingtype"]').append($('<option></option>').attr('value', i.id).text(i.name)); 
+        }
+           
+                                                                      
+    })
+    .fail(function (request, status, error){  
+        msg = request.status + "<br>" + request.responseText + "<br>" + error;
+        console.log(msg); 
+        alert("빌딩타입을 불러 올 수 없습니다.");                          
+    })  
+
+    //day-type-offset option
+    dayTimeset();
+
+     //빌딩생성하기
+     $('#btnNewBuilding').on('click',function(){       
         var name = $('input[name="name"]').val();
-        var day_type_offset =$('select[name="day_type_offset"] option:selected').val();            
+        var day_type_offset =$('select[name="day_type_offset"] option:selected').val();     
+        var buildingtype_id =$('select[name="buildingtype"] option:selected').val();       
         var commonrooms =[];
         commonrooms =  commonArray();
 
-        //단지정보입력 여부 체크  
-        if(day_type_offset == 0){
-                alert("국가코드를 선택해 주세요");
-        }else if(name ==""){
+        //빌딩정보입력 여부 체크  
+        // if(day_type_offset == "0"){
+        //         alert("핀코드 일단위를 선택해 주세요");
+        // }else 
+        if(name == ""){
             alert("빌딩이름을 입력해 주세요");    
+        }else if(buildingtype_id == "0"){
+            alert("빌딩타입을 선택해 주세요");    
+
         }
         //입력박스 체크 뒤 api 호출 
         var params ={};
         if(!(name == "")){
             params.name = name;
         }
-        if(!(day_type_offset == "")){
+        if(!(day_type_offset == "0")){
             params.day_type_offset = day_type_offset;
+        }
+        if(!(buildingtype_id == "0")){
+            params.buildingtype_id = buildingtype_id;
         }
         if(!(commonrooms == "")){
             params.commonrooms = commonrooms;
         }
 
-        console.log(JSON.stringify(params));                   
+        console.log(JSON.stringify(params));
         $.ajax({
             url : endUrl(url),            
             contentType: "application/json; charset=utf-8",
@@ -159,17 +197,14 @@
         }) 
         .done(function (res) {
             console.log(res);
-            location.href='';
-
+            location.href='/properties/'+id+'/building';
+           
         })
         .fail(function(jqXHR, textStatus, errorThrown){
             console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
         })  
              
     });
-
-    //day-type-offset option
-    dayTimeset();
 
     // 공용도어락 추가
     var doorname;
@@ -253,111 +288,7 @@
         return commonrooms;
     }
 
-    var buildingType = [  
-        {  
-        "ko":"아파트",
-        "code":"Apartment / Flat"
-        },
-        {  
-        "ko":"스튜디오 아파트(원룸)",
-        "code":"Apartment / Flat"
-        },
-        {  
-        "ko":"빌라",
-        "code":"Villa"
-        },
-        {   
-        "ko":"맨션",
-        "code":"Mansion"
-        },
-        {  
-        "ko":"타운하우스",
-        "code":"Townhouse"
-        },
-        {  
-        "ko":"테라스하우스",
-        "code":"Terraced house"
-        },
-        {  
-        "ko":"호스텔",
-        "code":"Common lodging-house(Hostel)"
-        },
-        {  
-        "ko":"오피스텔",
-        "code":"Officetel"
-        },
-        {  
-        "ko":"아파텔",
-        "code":"Apatel"
-        },{  
-        "ko":"다세대 주택",
-        "code":"Semi-detached house"
-        },
-        {  
-        "ko":"단독주택",
-        "code":"Single family home (Detached)"
-        },
-        {  
-        "ko":"듀플렉스 (연립주택)",
-        "code":"Duplex"
-        },
-        {  
-        "ko":"호텔",
-        "code":"Hotel"
-        },
-        {  
-        "ko":"모텔",
-        "code":"Motel"
-        },
-        {  
-        "ko":"콘도미니엄",
-        "code":"Condominium/Condo"
-        },
-        {  
-        "ko":"방갈로",
-        "code":"Bungalow"
-        },
-        {  
-        "ko":"카라반",
-        "code":"Caravan"
-        },
-        {  
-        "ko":"코티지",
-        "code":"Cottage"
-        },
-        {  
-        "ko":"기숙사",
-        "code":"Dormitory/dorm"
-        },
-        {  
-        "ko":"팜하우스",
-        "code":"Farmhouse"
-        },
-        {  
-        "ko":"하우스보트",
-        "code":"Houseboat"
-        },
-        {  
-        "ko":"오두막",
-        "code":"Hut"
-        },
-        {  
-        "ko":"이글루",
-        "code":"igloo"
-        },
-        {  
-        "ko":"하숙집/숙소",
-        "code":"Lodge"
-        },
-        {  
-        "ko":"로그캐빈",
-        "code":"Log Cabin"
-        },
-        {  
-        "ko":"매놀",
-        "code":"Manor"
-        }
-]
+ 
 
    
     

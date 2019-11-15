@@ -289,7 +289,8 @@ function countryCodejson(){
             })
         },
         error: function(jqXHR, textStatus, errorThrown){
-          console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
+          console.log('Error: ' + textStatus + ' - ' + errorThrown);   
+          alert("국가코드의 내용을 불러 올 수 없습니다.");                   
         }    
     });      
 }
@@ -311,7 +312,8 @@ function timeZone(){
             })
         },
         error: function(jqXHR, textStatus, errorThrown){
-          console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
+          console.log('Error: ' + textStatus + ' - ' + errorThrown);  
+          alert("타임존의 내용을 불러 올 수 없습니다.");                    
         }    
     });
 }
@@ -321,7 +323,7 @@ function timeZone(){
  */
 function dayTimeset(){
     $('select[name="day_type_offset"]').empty();
-    $('select[name="day_type_offset"]').append('<option selected="true" disabled>일단위 시간 선택</option>')
+    $('select[name="day_type_offset"]').append('<option selected="true" value="0">일단위 시간 선택</option>')
     for(var i=0; i<10 ;i++){
         $('select[name="day_type_offset"]').append($('<option></option>').attr('value', "0"+ i +"00").text("0"+ i +" : 00"));         
     }   
@@ -329,6 +331,32 @@ function dayTimeset(){
         $('select[name="day_type_offset"]').append($('<option></option>').attr('value', i + "00").text( i + " : 00"));         
     }
 }
+
+/**
+ *      빌딩 타입
+ */
+
+// function buildingtype(){
+//     $('select[name="buildingtype"]').empty();
+//     $('select[name="buildingtype"]').append('<option  value="0" value="0" selected="true">빌딩 타입 선택</option>');
+//     $('select[name="buildingtype"]').prop('selectedIndex', 0);  
+//     $.ajax({
+//         url : '/building_type', //json 불러오기 router이용해서 불러옴
+//         dataType :'json',
+//         success : function (data) {
+//             console.log(data);
+//             $.each(data, function (entry) { 
+//                 $('select[name="buildingtype"]').append($('<option></option>').attr('value', entry.ko).text(entry.ko)); 
+//             })
+//         },
+//         error: function(jqXHR, textStatus, errorThrown){
+//           console.log('Error: ' + textStatus + ' - ' + errorThrown);
+//           alert("빌딩타입의 내용을 불러 올 수 없습니다.");                     
+//         }    
+//     });
+// }
+
+
 
 /*
  *  로그아웃 api
