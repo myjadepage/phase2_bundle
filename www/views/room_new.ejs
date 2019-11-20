@@ -1,6 +1,6 @@
 <%- include('inc/head') %> 
 <%- include('inc/sidebar') %>
-<%- include('inc/nav'}) %>
+<%- include('inc/nav') %>
 
 <div class="content">
         <div class="">
@@ -20,8 +20,6 @@
                                 <div class="col-md-3">                                       
                                     <select class="form-control">
                                         <option>빌딩이름</option>
-                                        <option>빌라</option>
-                                        <option>카라반</option>
                                     <select>                                             
                                 </div>              
                                 <button type="submit" class="btn btn-primary">빌딩 선택하기</button>                                                                                                   
@@ -31,7 +29,7 @@
                         <div class="col-md-8">
                                 <div class="card">
                                         <div class="card-header">
-                                            <h5 class="card-title">객실 정보 입력</h5>                                      
+                                            <h5 class="card-title"></h5>                                      
                                         </div> 
                                         <div class="card-body">
                                                 <div class="table-full-width">                                               
@@ -45,117 +43,19 @@
                                                                                 <span class="form-check-sign"></span>                                                                            
                                                                             </label>
                                                                             <span>1 selected</span>                                                                             
-                                                                            <button role="button" data-toggle="modal" data-target="#Delproperty"  class="btn btn-simple btn-link">
+                                                                            <button role="button" data-toggle="modal" class="btn btn-simple btn-link" name="btnDelRoom"  onClick="fn_delRow('chkObject');">
                                                                                     <i class="icon trash"></i>
                                                                             </button>
                                                                         </div>                                                                           
                                                                     </th>                                                               
-                                                                    <th class="text-right">total: <strong class="text-primary">4</strong></th>
+                                                                    <th class="text-right">total: <strong class="text-primary" id="cntRoom"></strong></th>
                                                                 </tr>
                                                             </thead> 
                                                             
                                                           <tbody>
                                                                 <tr>
                                                                     <td colspan="3">
-                                                                        <ul class="room_name_item">
-                                                                            <li>
-                                                                                <div class="form-check border">
-                                                                                        <label class="form-check-label">
-                                                                                            <input class="form-check-input" type="checkbox" value="">
-                                                                                            <span class="form-check-sign"></span>
-                                                                                        </label>
-                                                                                        <span class="room_name">room101</span>
-                                                                                        <button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-target="#EditRoom" class="btn btn-info btn-simple btn-link">
-                                                                                            <i class="icon edit"></i>
-                                                                                        </button>  
-                                                                                    </div>
-
-                                                                            </li>
-                                                                            <li>
-                                                                                    <div class="form-check border">
-                                                                                            <label class="form-check-label">
-                                                                                                <input class="form-check-input" type="checkbox" value="">
-                                                                                                <span class="form-check-sign"></span>
-                                                                                            </label>
-                                                                                            <span class="room_name">room101</span>
-                                                                                            <button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-target="#EditRoom" class="btn btn-info btn-simple btn-link">
-                                                                                                <i class="icon edit"></i>
-                                                                                            </button>  
-                                                                                        </div>
-
-                                                                            </li>
-                                                                            <li>
-                                                                                    <div class="form-check border">
-                                                                                            <label class="form-check-label">
-                                                                                                <input class="form-check-input" type="checkbox" value="">
-                                                                                                <span class="form-check-sign"></span>
-                                                                                            </label>
-                                                                                            <span class="room_name">room101</span>
-                                                                                            <button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-target="#EditRoom" class="btn btn-info btn-simple btn-link">
-                                                                                                <i class="icon edit"></i>
-                                                                                            </button>  
-                                                                                        </div>
-
-                                                                            </li>
-
-                                                                            <li style="float: left; list-style: none; width: 33%;">
-                                                                                    <div class="form-check border">
-                                                                                            <label class="form-check-label">
-                                                                                                <input class="form-check-input" type="checkbox" value="">
-                                                                                                <span class="form-check-sign"></span>
-                                                                                            </label>
-                                                                                            <span class="room_name">room101</span>
-                                                                                            <button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-target="#EditRoom" class="btn btn-info btn-simple btn-link">
-                                                                                                <i class="icon edit"></i>
-                                                                                            </button>  
-                                                                                        </div>
-
-                                                                            </li>
-                                                                            <li>
-                                                                                    <div class="form-check border">
-                                                                                            <label class="form-check-label">
-                                                                                                <input class="form-check-input" type="checkbox" value="">
-                                                                                                <span class="form-check-sign"></span>
-                                                                                            </label>
-                                                                                            <span class="room_name">room101</span>
-                                                                                            <button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-target="#EditRoom" class="btn btn-info btn-simple btn-link">
-                                                                                                <i class="icon edit"></i>
-                                                                                            </button>  
-                                                                                        </div>
-
-                                                                                </li>
-                                                                                <li>
-                                                                                        <div class="form-check border">
-                                                                                                <label class="form-check-label">
-                                                                                                    <input class="form-check-input" type="checkbox" value="">
-                                                                                                    <span class="form-check-sign"></span>
-                                                                                                </label>
-                                                                                                <span class="room_name">room101</span>
-                                                                                                <button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-target="#EditRoom" class="btn btn-info btn-simple btn-link">
-                                                                                                    <i class="icon edit"></i>
-                                                                                                </button>  
-                                                                                            </div>
-
-                                                                                </li>
-                                                                                <li>
-                                                                                        <div class="form-check border">
-                                                                                                <label class="form-check-label">
-                                                                                                    <input class="form-check-input" type="checkbox" value="">
-                                                                                                    <span class="form-check-sign"></span>
-                                                                                                </label>
-                                                                                                <span class="room_name">room101</span>
-                                                                                                <button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-target="#EditRoom" class="btn btn-info btn-simple btn-link">
-                                                                                                    <i class="icon edit"></i>
-                                                                                                </button>  
-                                                                                            </div>
-
-                                                                                </li>    
-
-
-
-
-                                                                        </ul>
-                                                                
+                                                                        <ul class="room_name_item"></ul>
                                                                     </td>                                                                       
                                                                 </tr> 
                                                                                                                                        
@@ -175,9 +75,9 @@
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="form-group">                                                                
-                                                            <input type="text" class="form-control" placeholder="신규 객실 이름 입력" value="">                                                                
+                                                            <input type="text" class="form-control" placeholder="신규 객실 이름 입력" name="newRoom">                                                                
                                                         </div>
-                                                        <button type="submit" class="col-md-12 btn btn-primary">객실 추가하기</button>      
+                                                        <button type="button" class="col-md-12 btn btn-primary" id="btnAddRoom">객실 추가하기</button>      
                                                     </div>                                   
                                                 </div>                                                                                       
                                             </form>
@@ -197,4 +97,116 @@
 <%- include inc/footer %>
 <%- include inc/modal %>
 <%- include inc/bottom %>
+
+<script>
+    var API_KEY = localStorage.getItem('api_key');   
+    var id = "<%= id %>";
+    var bid ="<%= bid %>"
+    var url = "properties/" + id + "/rooms";
+
+    // 객실추가하기
+    $('#btnAddRoom').on('click', function(){
+        var name =$('input[name="newRoom"').val();
+        $.ajax({
+            url : endUrl(url),
+            contentType: "application/json; charset=utf-8",
+            method : "post",
+            headers : headers(),
+            data:JSON.stringify({
+                name : name,
+                building_id : bid
+            })
+        })
+        .done(function(res){
+            console.log(res);
+            $('#newRoomDone').modal('show');  
+        })
+        .fail(function(){
+            msg = request.status + "<br>" + request.responseText + "<br>" + error;
+            console.log(msg); 
+            alert("객실을 불러 올 수 없습니다.");  
+        })
+        .always(function(){ 
+            setTimeout(function(){
+                location.reload();
+            },1500);
+         })
+    })
+
+    //객실리스트
+    $.ajax({
+            url : endUrl(url),
+            contentType: "application/json; charset=utf-8",
+            method : "get",
+            headers : headers(),
+            data:{               
+                building_id : bid
+            }        
+        })
+        .done(function(res){
+            console.log(res);            
+            $('#cntRoom').text(res.total);
+            if(res.total > 0){
+            $('#noRoomList').hide(); 
+            $('#roomList').show(); 
+            var liHtml ="";
+            res.items.forEach(function(item, i, array){  
+                liHtml += '<li><div class="form-check border"><label class="form-check-label"><input class="form-check-input" type="checkbox" name="chkObjNm"><span class="form-check-sign"></span></label>';
+                liHtml += '<span class="room_name">'+ item.name+'</span>';
+                liHtml += '<button type="button" rel="tooltip" title="editRoom"  data-toggle="modal" data-target="#EditRoom" data-room_id ="' + item.id + '" class="btn btn-info btn-simple btn-link"><i class="icon edit"></i></button>';
+                liHtml += '</div></li>';  
+            });       
+            $('.room_name_item').append(liHtml);
+            
+            }else if(res.total == 0){
+                $('#noRoomList').show(); 
+                $('#roomList').hide(); 
+            }
+        })
+        .fail(function(){
+            msg = request.status + "<br>" + request.responseText + "<br>" + error;
+            console.log(msg); 
+            alert("객실목록을 불러 올 수 없습니다.");  
+        })
+
+
+        //객실 삭제하기       
+        function fn_delRow(chkObjNm) { 
+            var temp =$("input[name='chkObjNm']:checked");
+            if (temp){ 
+                for(var i=temp.length-1; i>-1; i--){ 
+                    temp.eq(i).closest("li").remove();      
+                    var rid = temp.eq(i).closest("[data-room_id]");    
+                    console.log(rid)         
+            } 
+           
+            console.log(rid);
+            if (confirm("삭제 하시겠습니까?")) {    
+                $.ajax({
+                            url : endUrl(url) + "/" + rid,
+                            contentType: "application/json; charset=utf-8",
+                            method : "delete",
+                            headers : headers()                                        
+                        })
+                        .done(function(res){
+                            console.log(res);
+                            // $('#DelRoom').modal('show');                           
+                            // $(this).parent('li').remove();
+                        })
+                        .fail(function(){
+                            msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                            console.log(msg); 
+                            alert("객실을 삭제할 수 없습니다.");  
+                        })
+                        .always(function(){ 
+                            setTimeout(function(){
+                                location.reload();
+                            },1500);
+                        })
+            } 
+         } else { 
+            alert("선택된 데이터가 없습니다.");  
+         }       
+    }
+</script>
 

@@ -30,7 +30,7 @@
                             </h4>
                             <div class="card">                                   
                                     <div class="content table-responsive table-full-width">
-                                        <table class="table" id="noBuildingList" style="display: none;"> 
+                                        <table class="table" id="noRoomList" style="display: none;"> 
                                             <tr>
                                                 <td colspan="3">
                                                     <div class="con_default">
@@ -43,7 +43,7 @@
                                                 </td>                                                                      
                                             </tr>
                                         </table>
-                                        <table class="table table-hover">
+                                        <table class="table table-hover" id="roomList" style="display: none;">
                                             <colgroup>
                                                 <col width="20%">
                                                 <col width="*">
@@ -54,38 +54,14 @@
                                                 <th>객실이름</th>                                                
                                                 <th>정렬:생성일 기준</th>
                                             </thead>
-                                            <tbody>
-                                                <tr>                                                  
-                                                    <td>DD-MMM-YYYY  HH:MM</td>
-                                                    <td><a href="/room_default">Residence A</a></td>                                                    
-                                                    <td>
-                                                        <button onclick="location.href='/building_edit' " type="button"  title="수정하기" class="btn btn-simple btn-link">
-                                                            <i class="icon edit"></i>
-                                                        </button>
-                                                        <button type="button" title="삭제하기" class="btn btn-simple btn-link">
-                                                            <i class="icon trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>                                                  
-                                                    <td>DD-MMM-YYYY  HH:MM</td>
-                                                    <td><a href="">Residence B</a></td>                                                  
-                                                    <td>
-                                                        <button onclick="location.href='/building_edit' " type="button"  title="수정하기" class="btn btn-simple btn-link">
-                                                            <i class="icon edit"></i>
-                                                        </button>
-                                                        <button type="button" title="삭제하기" class="btn btn-simple btn-link">
-                                                            <i class="icon trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
+                                            <tbody></tbody>
                                         </table>        
                                     </div>
                             </div>
 
                             <button class="btn btn-default btn-fill shadow pull-left">취소</button>
-                            <button onclick="location='/properties/<%=id%>/room_new'" class="btn btn-primary btn-fill shadow pull-right">신규 객실 생성</button>
+                            <button onclick="location='/properties/<%= id %>/room_new/<%= bid %>'" class="btn btn-primary btn-fill shadow pull-right">신규 객실 생성</button>                           
+                            
                     </div>
                 </div>
             </div>
@@ -94,4 +70,84 @@
 <%- include inc/footer %>
 <%- include inc/modal %>
 <%- include inc/bottom %>
+<script>
+    var API_KEY = localStorage.getItem('api_key');   
+    var id = "<%= id %>";
+    var bid ="<%= bid %>"
+    var url = "properties/" + id + "/rooms";
+     //객실리스트
+     $.ajax({
+            url : endUrl(url),
+            contentType: "application/json; charset=utf-8",
+            method : "get",
+            headers : headers(),
+            data:{               
+                building_id : bid
+            }
+        })
+        .done(function(res){
+            console.log(res);            
+            $('#cntRoom').text(res.total);
+            if(res.total > 0){
+            $('#noRoomList').hide(); 
+            $('#roomList').show(); 
+            var trHtml ="";
+            res.items.forEach(function(item, i, array){  
+                var date =new Date(item.created_at);  
+                trHtml += "<tr><td>" + formatDate(date) + "</td><td><a href='/properties/" + id + "/room/" + item.id + "'>" + item.name+ "</a></td>";               
+                trHtml += "<td><button onclick='location.href='/room_edit'' type='button'  title='수정하기' class='btn btn-simple btn-link'><i class='icon edit'></i></button>";
+                trHtml += "<button type='button' title='삭제하기' class='btn btn-simple btn-link'  data-room_id='" + item.id + "'id='btnDelRoom'><i class='icon trash'></i></button></td>";
+                trHtml += "</tr>";                                             
+                                                  
+            });       
+            $('#roomList tbody').append(trHtml);
+            
+            }else if(res.total == 0){
+                $('#noRoomList').show(); 
+                $('#roomList').hide(); 
+            }
+        })
+        .fail(function(){
+            msg = request.status + "<br>" + request.responseText + "<br>" + error;
+            console.log(msg); 
+            alert("객실목록을 불러 올 수 없습니다.");  
+        })
+
+          //객실삭제하기        
+          $('#roomList').on('click','#btnDelRoom', function(){
+            var room_id = $(this).data('room_id');
+            console.log(room_id);
+            $.ajax({
+                url: endUrl(url) + room_id,
+                method:'delete',
+                contentType: "application/json; charset=utf-8",                
+                headers : headers()
+            })
+            .done(function(res) {                
+                console.log(res);                 
+                if(res.code == 200){
+                    $('#Delproperty').on('show.modal');                    
+                }else{
+                    alert("삭제 실패");
+                }            
+            })
+            .fail(function (request, status, error){  
+                msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                console.log(msg);  
+            })   
+        });
+
+
+
+        //리스트에 보이는 날짜포맷 변경
+     function formatDate(date) {
+        var month = date.toLocaleString('en', {month :'short'});
+        var day = date.getDate();
+        var year = date.getFullYear();
+        var hh = date.getHours();
+        var mm = date.getMinutes();
+        return day + "-" + month + "-" + year + "  " + hh + ":" + mm
+}
+
+</script>
 
