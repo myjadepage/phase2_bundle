@@ -26,53 +26,40 @@
                             </h4>
                             <div class="card">                                   
                                     <div class="content table-responsive table-full-width">
-                                        <table class="table table-hover">
+                                        <table class="table" id="noStaffList" style="display: none;"> 
+                                            <tr>
+                                                <td style="border: 0;">
+                                                    <div class="con_default">
+                                                        <i class="icon m_staff"></i>
+                                                        <h4 class="text-center text-info">
+                                                            ‘ 아직 등록된 스텝 정보가 없습니다 ’<br>
+                                                            <span>스텝 정보를 등록하여 서비스를 시작해 보세요. </span>
+                                                        </h4>
+                                                    </div>                                                                 
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <table class="table table-hover" id="staffList" style="display: none;"> 
                                             <colgroup>
                                                 <col width="20%">
                                                 <col width="*">
-                                                <col width="25%">
+                                                <col width="35%">
                                                 <col width="15%">
                                             </colgroup>
                                             <thead>                                               
                                                 <th>생성일</th>
-                                                <th>객실이름</th>   
+                                                <th>스텝이름</th>   
                                                 <th>등급</th>                                             
                                                 <th>정렬:생성일 기준</th>
                                             </thead>
-                                            <tbody>
-                                                <tr>                                                  
-                                                    <td>DD-MMM-YYYY  HH:MM</td>
-                                                    <td><a data-target="#viewStaff" data-toggle="modal" role="button">Staff name 1A</a></td>  
-                                                    <td>마스터 [ 보유키 : 2개 ]</td>                                                  
-                                                    <td>
-                                                        <button onclick="location.href='staff_key' " type="button"  title="키발급하기" class="btn btn-simple btn-link">
-                                                            <i class="icon key"></i>
-                                                        </button>
-                                                        <button type="button" data-target="#DelstaffError" data-toggle="modal" title="삭제하기" class="btn btn-simple btn-link">
-                                                            <i class="icon trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>                                                  
-                                                    <td>26-SEP-2019  11:01</td>
-                                                    <td><a data-target="#viewStaff" data-toggle="modal" role="button">Staff name 1A</a></td>  
-                                                    <td>하우스키핑 [ 보유키 : 1 개 ]</td>                                             
-                                                    <td>
-                                                        <button onclick="location.href='staff_key' " type="button"  title="키발급하기" class="btn btn-simple btn-link">
-                                                            <i class="icon key"></i>
-                                                        </button>
-                                                        <button type="button" data-target="#Delstaff" data-toggle="modal" title="삭제하기" class="btn btn-simple btn-link">
-                                                            <i class="icon trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
+                                            <tbody></tbody>
                                         </table>        
                                     </div>
                             </div>
 
                             <button class="btn btn-default btn-fill shadow pull-left">나가기</button>
-                            <button onclick="location='staff_new'" class="btn btn-primary btn-fill shadow pull-right">스텝 등록하기</button>
+                            <button onclick="location='/properties/<%= id %>/staff_new'" class="btn btn-primary btn-fill shadow pull-right">스텝 등록하기</button>
                             
 
                     </div>    
@@ -81,19 +68,164 @@
         </div>
 <% include inc/footer %>
 <% include inc/modal %>
+<!--스텝정보상세보기Modal -->
+<div class="modal fade modal-primary" id="viewStaff" tabindex="-1" role="dialog" aria-labelledby="viewStaff" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                   <h5>스텝 정보 상세</h5>
+                </div>
+                <div class="modal-body">                      
+                    <dl>
+                        <dt>Staff name</dt>
+                        <dd>
+                            <label>연락처</label>
+                            <span>+82-10-9999-8888</span>
+                        </dd>
+                        <dd>
+                            <label>스텝 레벨</label>
+                            <span>Master</span>
+                        </dd>
+                        <dd>
+                            <label>등록일</label>
+                            <span>2019-10-01</span>
+                        </dd>
+                        <dd>
+                            <label>보유키</label>
+                            <span>
+                                <strong>마스터키(사용기간 : 2019-10-01 ~ 2099-10-01)</strong>
+                                <strong>스텝키(사용기간 : 2019-10-01 ~ 2099-10-01)</strong>                                
+                            </span>
+                        </dd>
+                        <dd>
+                            <label>메모</label>
+                            <span>미국 시설 단지 마스터</span>
+                        </dd>
+                    </dl>
+                                  
+                </div>
+                <div class="modal-footer">                   
+                    <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--  End Modal -->
 <% include inc/bottom %>
 
 <script>
-    navTitle('단지선택','');
-    var API_KEY = localStorage.getItem('api_key');
+    var API_KEY = localStorage.getItem('api_key'); 
+    var id = "<%= id%>";
+    var url = "properties/" + id + "/staffs";
 
     $.ajax({
-        url:'https://development.api.allegion.imgate.co.kr/v1​/properties​/{property_id}​/staffs',
+        url : endUrl(url),       
         method:'get',
         contentType: "application/json; charset=utf-8",
         headers : {
             "Authorization": "Bearer " + API_KEY
         }
-    });
+    })
+    .done(function(res) {            
+        console.log(res);  
+        trHtml ="";       
+        if(res.total > 0){
+            $('#noStaffList').hide(); 
+            $('#staffList').show(); 
+            res.items.forEach(function(item, i, array){    
+                var date =new Date(item.created_at);        
+                trHtml +='<tr><td>' + formatDate(date) + '</td><td><a data-toggle="modal" data-target="#viewStaff" data-staff_id="'+ item.id +'" role="button">' + item.name + '</a></td>';
+                trHtml +='<td>' + item.role + ' [ 보유키 : 2개 ]</td>';
+                trHtml +='<td><button onclick="location.href=staff_key" type="button"  title="키발급하기" class="btn btn-simple btn-link"><i class="icon key"></i></button>';
+                trHtml +='<button type="button" id="btnDelStaff" data-staff_id="' + item.id + '" data-target="#Delstaff" data-toggle="modal" title="삭제하기" class="btn btn-simple btn-link"><i class="icon trash"></i></button></td></tr>';
+            });       
+            $('#staffList tbody').append(trHtml);
+            
+        }else if(res.total == 0){
+            $('#noStaffList').show(); 
+            $('#staffList').hide(); 
+        }
+    })
+    .fail(function (request, status, error){  
+        msg = request.status + "<br>" + request.responseText + "<br>" + error;
+        console.log(msg); 
+        alert("건물 목록을 불러 올 수 없습니다.");                          
+    }) 
+
+    // 스텝 상세조회 (모달)    
+    $('#viewStaff').on('show.bs.modal', function(e) { 
+         var staff_id = $(e.relatedTarget).data('staff_id');
+         console.log(staff_id);
+         $.ajax({
+            url : endUrl(url) + "/"+ staff_id,       
+            method:'get',
+            contentType: "application/json; charset=utf-8",
+            headers : {
+                "Authorization": "Bearer " + API_KEY
+            }
+        })
+        .done(function(res) {  
+            console.log(res);
+            $('#viewStaff .modal-body').empty();
+            if(res.desc == null){
+                res.desc = "-";
+            }
+            var date = simpleDate(res.created_at);
+            dlHtml="";
+            dlHtml +='<dl><dt>' + res.name + '</dt><dd><label>연락처</label><span>' + res.phone_number + '</span></dd>';
+            dlHtml +='<dd><label>스텝 레벨</label><span>' + res.role + '</span></dd>';
+            dlHtml +='<dd><label>등록일</label><span>' + date + '</span></dd><dd><label>보유키</label>';
+            dlHtml +='<span><strong>마스터키(사용기간 : 2019-10-01 ~ 2099-10-01)</strong><strong>스텝키(사용기간 : 2019-10-01 ~ 2099-10-01)</strong></span></dd>';
+            dlHtml +='<dd><label>메모</label><span>' + res.desc + '</span></dd></dl>';
+            $('#viewStaff .modal-body').append(dlHtml);
+        })
+        .fail(function (request, status, error){  
+            msg = request.status + "<br>" + request.responseText + "<br>" + error;
+            console.log(msg);                           
+        })
+     });  
+
+     //스텝삭제하기
+     $('#staffList').on('click','#btnDelStaff', function(){
+            var staff_id = $(this).data('staff_id');
+            console.log(staff_id);
+            $.ajax({
+                url: endUrl(url) + "/" + staff_id,
+                method:'delete',
+                contentType: "application/json; charset=utf-8",                
+                headers : headers()
+            })
+            .done(function(res) {                
+                console.log(res);                 
+                if(res.code == 200){
+                   console.log(res);                   
+                }else{
+                   $('#DelstaffError').modal('show');
+                }            
+            })
+            .fail(function (request, status, error){  
+                msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                console.log(msg);  
+            })   
+        });
+
+
+    
+    //리스트에 보이는 날짜포맷 변경
+    function simpleDate(date){
+        var date = new Date(date);
+        var year = date.getFullYear();
+        var month = date.getMonth()+1;
+        var day = date.getDate();
+        return year + "-" + month + "-" + day
+    }
+    function formatDate(date) {
+        var month = date.toLocaleString('en', {month :'short'});
+        var day = date.getDate();
+        var year = date.getFullYear();
+        var hh = date.getHours();
+        var mm = date.getMinutes();
+        return day + "-" + month + "-" + year + "  " + hh + ":" + mm
+    }
 </script>
 

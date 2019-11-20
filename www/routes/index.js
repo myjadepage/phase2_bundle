@@ -214,6 +214,14 @@ router.get('/properties/:id/staff/',common.ensureAuthenticated, function(req, re
         id :id
 	});	
 });
+router.get('/properties/:id/staff_new',common.ensureAuthenticated, function(req, res) {
+    var id = req.params.id;
+	res.render('staff_new',{		
+		date:common.currDateTime(),
+        path:'/staff_list',
+        id :id
+	});	
+});
 
 router.get('/properties/:id/report/',common.ensureAuthenticated,function(req, res) {
     var id = req.params.id;
