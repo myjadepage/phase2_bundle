@@ -39,11 +39,11 @@
                                                                     <th colspan="2">
                                                                         <div class="form-check">
                                                                             <label class="form-check-label">
-                                                                                <input class="form-check-input" type="checkbox" value="">
+                                                                                <input class="form-check-input" type="checkbox" value="" id="checkAll" >
                                                                                 <span class="form-check-sign"></span>                                                                            
                                                                             </label>
-                                                                            <span>1 selected</span>                                                                             
-                                                                            <button role="button" data-toggle="modal" class="btn btn-simple btn-link" name="btnDelRoom"  onClick="fn_delRow('chkObject');">
+                                                                            <span class="check_cnt"><i></i> selected</span>                                                                             
+                                                                            <button role="button" data-toggle="modal" class="btn btn-simple btn-link" name="btnDelRoom" id="btnDelRoom">
                                                                                     <i class="icon trash"></i>
                                                                             </button>
                                                                         </div>                                                                           
@@ -151,9 +151,10 @@
             $('#roomList').show(); 
             var liHtml ="";
             res.items.forEach(function(item, i, array){  
-                liHtml += '<li><div class="form-check border"><label class="form-check-label"><input class="form-check-input" type="checkbox" name="chkObjNm"><span class="form-check-sign"></span></label>';
+                liHtml += '<li><div class="form-check border"><label class="form-check-label">';
+                liHtml += '<input class="form-check-input" type="checkbox"  name="checkRow" value="'+item.id+'"><span class="form-check-sign"></span></label>';
                 liHtml += '<span class="room_name">'+ item.name+'</span>';
-                liHtml += '<button type="button" rel="tooltip" title="editRoom"  data-toggle="modal" data-target="#EditRoom" data-room_id ="' + item.id + '" class="btn btn-info btn-simple btn-link"><i class="icon edit"></i></button>';
+                liHtml += '<button type="button" rel="tooltip" title="editRoom"  data-toggle="modal" data-target="#EditRoom"  class="btn btn-info btn-simple btn-link"><i class="icon edit"></i></button>';
                 liHtml += '</div></li>';  
             });       
             $('.room_name_item').append(liHtml);
@@ -170,43 +171,50 @@
         })
 
 
-        //객실 삭제하기       
-        function fn_delRow(chkObjNm) { 
-            var temp =$("input[name='chkObjNm']:checked");
-            if (temp){ 
-                for(var i=temp.length-1; i>-1; i--){ 
-                    temp.eq(i).closest("li").remove();      
-                    var rid = temp.eq(i).closest("[data-room_id]");    
-                    console.log(rid)         
-            } 
-           
-            console.log(rid);
-            if (confirm("삭제 하시겠습니까?")) {    
-                $.ajax({
-                            url : endUrl(url) + "/" + rid,
-                            contentType: "application/json; charset=utf-8",
-                            method : "delete",
-                            headers : headers()                                        
-                        })
-                        .done(function(res){
-                            console.log(res);
-                            // $('#DelRoom').modal('show');                           
-                            // $(this).parent('li').remove();
-                        })
-                        .fail(function(){
-                            msg = request.status + "<br>" + request.responseText + "<br>" + error;
-                            console.log(msg); 
-                            alert("객실을 삭제할 수 없습니다.");  
-                        })
-                        .always(function(){ 
-                            setTimeout(function(){
-                                location.reload();
-                            },1500);
-                        })
-            } 
-         } else { 
-            alert("선택된 데이터가 없습니다.");  
-         }       
-    }
-</script>
+        //객실 하나 선택하기  
+        var check_row =$('ul.room_name_item > li input[name="checkRow"]'); 
+        $(check_row).on('click',function(e) {
+            for(var i=0; i < check_row.length; i++){
+                var checkCnt = $('ul.room_name_item > li input[name="checkRow"]:checked').length;
+                $('.check_cnt i').text("1");
+            }  
+        });
 
+     
+        //선택된(하나) 삭제 api   
+        
+        $('#btnDelRoom').click(function(){                        
+            if(confirm("삭제하시겠습니까?")){
+                var rid="";
+                var check_row =$('ul.room_name_item > li input[name="checkRow"]');   
+                for(var i=0; i<check_row.length; i++){
+                    rid=$('ul.room_name_item > li input[name="checkRow"]:checked').val();                   
+                }
+
+                $.ajax({
+                    url : endUrl(url) + "/" + rid,
+                    contentType: "application/json; charset=utf-8",
+                    method : "delete",
+                    headers : headers()                                        
+                })
+                .done(function(res){
+                    console.log(res);                   
+                    $('#DelRoom').modal('show');                           
+                    
+                })
+                .fail(function(){
+                    msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                    console.log(msg); 
+                    alert("객실을 삭제할 수 없습니다.");  
+                }) 
+                .always(function(){ 
+                    setTimeout(function(){
+                        location.reload();
+                    },1500);
+                })                
+            }else{
+                return false;
+            }
+        });
+   
+</script>

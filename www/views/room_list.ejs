@@ -32,7 +32,7 @@
                                     <div class="content table-responsive table-full-width">
                                         <table class="table" id="noRoomList" style="display: none;"> 
                                             <tr>
-                                                <td colspan="3">
+                                                <td colspan="3" style="border: none;">
                                                     <div class="con_default">
                                                         <i class="icon room"></i>
                                                         <h4 class="text-center text-info">
@@ -118,7 +118,7 @@
             var room_id = $(this).data('room_id');
             console.log(room_id);
             $.ajax({
-                url: endUrl(url) + room_id,
+                url: endUrl(url) + "/" +room_id,
                 method:'delete',
                 contentType: "application/json; charset=utf-8",                
                 headers : headers()
@@ -126,7 +126,7 @@
             .done(function(res) {                
                 console.log(res);                 
                 if(res.code == 200){
-                    $('#Delproperty').on('show.modal');                    
+                    $('#Delproperty').modal('show');                    
                 }else{
                     alert("삭제 실패");
                 }            
@@ -134,9 +134,13 @@
             .fail(function (request, status, error){  
                 msg = request.status + "<br>" + request.responseText + "<br>" + error;
                 console.log(msg);  
-            })   
+            })  
+            .always(function(){ 
+                setTimeout(function(){
+                location.reload();
+                },1500);
+            }) 
         });
-
 
 
         //리스트에 보이는 날짜포맷 변경

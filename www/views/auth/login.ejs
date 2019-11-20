@@ -67,12 +67,19 @@
             }) 
             .done(function(res) { 
                 console.log(res)
-                alert("인증번호가 발송되었습니다. 문자를 확인해 주세요");                        
-                code = res.verification_code;  
-                var endSeconds = Math.floor(new Date(res.expired_at) / 1000);
+                alert("인증번호가 발송되었습니다. 문자를 확인해 주세요"); 
+                code = res.verification_code;
+                //3분유효시간
+                var endSeconds;          
+                if(res.expired_at){
+                    endSeconds = Math.floor(new Date(res.expired_at) / 1000);
+                }else{
+                    endSeconds = Math.floor(new Date() / 1000) + 178;
+                }
+                console.log('endSeconds',endSeconds);
+                
                 var startSeconds = Math.floor(Date.now() / 1000);
                 var expired_at = endSeconds - startSeconds;
-
                 $('button#reqAuthen').addClass('active');
                 $('button#reqAuthen').attr('disabled', true);
                 $('#authTime').show();    
