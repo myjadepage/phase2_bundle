@@ -145,6 +145,19 @@ function debounce(func, wait, immediate) {
         };
 };
 
+/**
+ * 
+ * 
+ * 
+ * 
+ * custom common 시작
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+
 
 /**
  *   웹전체 이름 / 설명
@@ -269,6 +282,7 @@ function characterCheck(obj) {
     }else{
         return obj;
     }
+    alert("사용할 수 없는 특수기호는 삭제합니다."); 
     return t;
 }
 
@@ -323,13 +337,13 @@ function timeZone(){
  */
 function dayTimeset(){
     $('select[name="day_type_offset"]').empty();
-    $('select[name="day_type_offset"]').append('<option selected="true" value="0">일단위 시간 선택</option>')
+    $('select[name="day_type_offset"]').append('<option selected="true" value="1200">12 : 00</option>')
     for(var i=0; i<10 ;i++){
         $('select[name="day_type_offset"]').append($('<option></option>').attr('value', "0"+ i +"00").text("0"+ i +" : 00"));         
     }   
     for(var i=10; i<24 ;i++){
         $('select[name="day_type_offset"]').append($('<option></option>').attr('value', i + "00").text( i + " : 00"));         
-    }
+    }    
 }
 
 /**

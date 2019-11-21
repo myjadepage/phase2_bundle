@@ -10,9 +10,7 @@
                         <h4 class="text-info">선택된 단지를 삭제 하시겠습니까?</h4>
                         <p>단지에 사용중인 키가 있을 경우<br> 사용중인 키를 제거 후 삭제를 진행해 주십시오</p>                       
                         <div class="card shadow  card-s2">
-                            <div class="image">
-                                <img src="assets/img/img_building.jpg" alt="">
-                            </div>
+                            <div class="image"><img src="" alt=""></div>
                             <div class="content">
                                 <h4 class="title"></h4>
                                 <p class="description"></p>                                                              
@@ -20,8 +18,7 @@
                         </div>                       
                         <br>
                         <a href="/" class="btn btn-default btn-fill btn-wd shadow" role="button">나가기</a>
-                        <!-- <a data-toggle="modal" data-target="#Delproperty"class="btn btn-primary btn-fill btn-wd shadow" role="button">단지 삭제하기</a> -->
-                        <button type="button" class="btn btn-primary btn-fill btn-wd shadow"  id="del_property">단지 삭제하기</button>
+                        <button type="button" class="btn btn-primary btn-fill btn-wd shadow" id="del_property">단지 삭제하기</button>
                     </div>
                 </div>
             </div>
@@ -47,11 +44,17 @@
             },
             headers : headers()
         })
-        .done(function(result) {                
-            $('h4.title').text(result.name);
-            $('p.description').text(result.address);
-            $('#del_property').attr('data-property-name', result.name);            
-            navTitle(result.name,result.address); 
+        .done(function(res) {     
+            navTitle(res.name,res.address);            
+            var image = res.image_url;
+            if(image == null){
+                $('.card .image img').prop('src', '/assets/img/img_building.jpg').prop('alt', res.name);
+            }else{
+                $('.card .image img').prop('src', res.image_url).prop('alt', res.name);
+            }
+            $('.card .title').text(res.name);
+            $('.card .description').text(res.address);  
+            $('#del_property').data('property_name',res.name); 
          })
         .fail(function (request, status, error){  
             msg = request.status + "<br>" + request.responseText + "<br>" + error;
@@ -73,10 +76,13 @@ $('#del_property').click(function(){
     .done(function(res) {                
         console.log(res); 
         if(res.code == 200){
-            $('#Delproperty').on('show.bs.modal', function(e) {        
-                $(this).$('h6').text();         
+            $('#Delproperty').modal('show', function(e) { 
+                var name = $(e.relatedTarget).data('property_name');
+                $(this).$('h6').text(name);         
             }); 
-            location.href='/';
+            setTimeout(function(){
+                location.href='/';
+            },2000);
         }else{
             alert("삭제 실패");
         }
@@ -85,7 +91,7 @@ $('#del_property').click(function(){
     .fail(function (request, status, error){  
         msg = request.status + "<br>" + request.responseText + "<br>" + error;
         console.log(msg);                           
-    })   
+    })       
 });
 
 

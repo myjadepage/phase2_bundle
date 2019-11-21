@@ -2,44 +2,46 @@
 <%- include('inc/sidebar') %>
 <%- include('inc/nav') %>
 
-          <div class="content">
-              <div class="row">    
-                    <div class="col-md-12">                                  
-                      <%- include('inc/search') %><!-- 검색 -->
-                     
-                      <div class="slide_wrap" style="display: none;">
-                        <ul id="property_list">                            	                                                  
-                            <li  class="col-md-4">
-                                    <div class="card card_default card-s2">
-                                        <div class="image">
-                                            <i class="icon"></i>
-                                        </div>
-                                        <div class="content">
-                                            <h4 class="title">
-                                                <a href="/property_new"  class="icon"></a>
-                                            </h4>
-                                            <p class="description">
-                                                새로운 단지를 신규로 생성합니다.
-                                            </p>                                 
-                                        </div>
-                                    </div>
-                            </li>
-                        </ul>  
-                        <nav class="bx-control">
-                            <a href='#' class='bxPrev'></a>
-                            <a href='#' class='bxNext'></a>
-                        </nav>
-                      </div>
-                     
-                      <div class="con_default" style="display:none">
-                        <i class="icon building"></i>
-                        <h4 class="text-info">'아직 생성된 단지 정보가 없습니다.'</h4>
-                        <p>단지를 생성하여 놀라운 서비스를 시작해 보세요. </p>
-                        <a href="/property_new" class="btn btn-primary btn-fill btn-wd shadow" role="button">단지 생성하기</a>
-                      </div>
-                </div>
-              </div>
-          </div>     
+<div class="content">
+    <div class="row">    
+        <div class="col-md-12">                                  
+          <%- include('inc/search') %><!-- 검색 -->
+         
+            <!-- 단지가 있을 경우 -->
+            <div class="slide_wrap" style="display: none;">
+                <ul id="property_list">                            	                                                  
+                    <li  class="col-md-4">
+                        <div class="card card_default card-s2">
+                            <div class="image">
+                                <i class="icon"></i>
+                            </div>
+                            <div class="content">
+                                <h4 class="title">
+                                    <a href="/property_new"  class="icon"></a>
+                                </h4>
+                                <p class="description">
+                                    새로운 단지를 신규로 생성합니다.
+                                </p>                                 
+                            </div>
+                        </div>
+                    </li>
+                </ul>  
+                <nav class="bx-control">
+                    <a href='#' class='bxPrev'></a>
+                    <a href='#' class='bxNext'></a>
+                </nav>
+            </div>
+         
+            <!-- 단지가 없을 경우 -->
+            <div class="con_default" style="display:none">
+                <i class="icon building"></i>
+                <h4 class="text-info">'아직 생성된 단지 정보가 없습니다.'</h4>
+                <p>단지를 생성하여 놀라운 서비스를 시작해 보세요. </p>
+                <a href="/property_new" class="btn btn-primary btn-fill btn-wd shadow" role="button">단지 생성하기</a>
+            </div>
+      </div>
+    </div>
+</div>     
          
 <%- include inc/footer %>
 <%- include inc/modal %>   
@@ -49,36 +51,48 @@
    
     //property list api
     var url ='properties'  
-        $.ajax({
+    $.ajax({
         url: endUrl(url),
         method:'get',
         contentType: "application/json; charset=utf-8",
         headers : headers()
     })
-    .done(function(result) {  
+    .done(function(res) {  
         var liHtml=''; 
-        console.log(result);
-        if(result.total > 0){
-            $('.slide_wrap').show();
-            for( i of result.items){
+        console.log(res);
+        if(res.total > 0){
+            $('.slide_wrap').show();           
+            for(var i=0; i<res.items.length; i++){
                 liHtml ='<li class="col-md-4"><div class="card shadow card-s2"><div class="image">';                        
-                liHtml+='<a href="/property_category/'+ i.id +'"><img src="/assets/img/img_building.jpg" alt=""></a></div><div class="content">';                      
-                liHtml+='<a href="/property_read/' + i.id + '"> <h4 class="title">'+ i.name +'</h4></a>';
-                liHtml+='<p class="description">'+ i.address +'</p></div>';
-                liHtml+='<a class="setting icon"  data-property_id="' + i.id + '" data-toggle="modal" data-target="#propertySetting" class="open-properDial" role="button" ></a>';
+                liHtml+='<a href="/property_category/'+ res.items[i].id +'"><img src="/assets/img/img_building.jpg" alt=""></a></div><div class="content">';                      
+                liHtml+='<a href="/property_read/' + res.items[i].id + '"> <h4 class="title" style="line-height: 40px;">'+ res.items[i].name +'</h4></a>';
+                liHtml+='<p class="description">'+ res.items[i].address +'</p></div>';
+                liHtml+='<a class="setting icon"  data-property_id="' + res.items[i].id + '" data-toggle="modal" data-target="#propertySetting" class="open-properDial" role="button" ></a>';
+                var role = res.items[i].staff.role;
+                switch (role){
+                    case 'supervisor' : //수퍼바이저일 경우 
+                        liHtml+= '<div class="alert alert-info" style="top:10px; padding:5px 15px;">'+ role +'</div>';break;
+                    case 'master' :     //마스터일 경우
+                        liHtml+= '<div class="alert alert-success" style="top:10px; padding:5px 15px;">'+ role +'</div>';break;
+                    case 'manager' :    //매니져일 경우
+                        liHtml+= '<div class="alert alert-warning" style="top:10px; padding:5px 15px;">'+ role +'</div>';break;
+                    case 'housekeeping' : //하우스키핑 경우
+                        liHtml+= '<div class="alert alert-danger" style="top:10px; padding:5px 15px;">'+ role +'</div>';break;
+                }               
                 liHtml+='</li>';
                 $('#property_list').prepend(liHtml);            
             }            
             propertyList();//슬라이드         
         
-        }else if(result.total <= 0){
+        }else if(res.total <= 0){
             $('.con_default').show();
             $('.slide_wrap').hide();
         }                                                                                     
     })
     .fail(function (request, status, error){  
         msg = request.status + "<br>" + request.responseText + "<br>" + error;
-        console.log(msg);                           
+        console.log(msg);  
+        alert("단지를 불러 올수가 없습니다.");                         
     }) 
  
 

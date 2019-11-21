@@ -8,7 +8,7 @@
                         <div class="col-md-6">
                                 <div class="card card-h2">
                                     <div class="card-header">
-                                        <h5 class="card-title">신규 단지 정보 입력</h5>
+                                        <h5 class="card-title">신규 단지 정보 입력 <i class="text-danger">*</i><small> 표시는 필수로 입력해야 합니다!</small></h5>
                                     </div> 
                                     <div class="card-body">
                                       <form>
@@ -43,32 +43,30 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="propertyType">단지 타입 선택</label>
+                                                        <label for="propertyType">단지 타입 선택<i class="text-danger">*</i></label>
                                                         <select class="form-control" name="type">
                                                             <option value="0" selected="true" disabled>단지 타입 선택</option>
-                                                            <option>Residential</option>
-                                                            <option>B&B Hotel</option>
-                                                            <option>Hospitality</option>
-                                                            <option>Office</option>
+                                                            <option value="Residential">Residential</option>
+                                                            <option value="B&B Hotel">B&B Hotel</option>
+                                                            <option value="Hospitality">Hospitality</option>
+                                                            <option value="Office">Office</option>
                                                         </select>                                                               
                                                     </div>
                                                 </div>
                                             </div> 
                                             <div class="row">
                                                 <div class="col-md-12">
-
-                                                                    
-                                                                <!-- <div class="input-group date form_date" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                                                                    <input class="form-control" size="16" type="text" value="">
                                                                    
-                                                                    <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
-                                                                </div>
-                                                                <input type="hidden" id="dtp_input2" value="" /><br/>
-                                                            </div> -->
+                                                    <!-- <div class="input-group date form_date" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                                            <input class="form-control" size="16" type="text" value="">
                                                            
-
+                                                            <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+                                                        </div>
+                                                        <input type="hidden" id="dtp_input2" value="" /><br/>
+                                                    </div> -->
+ 
                                                     <div class="form-group">
-                                                        <label for="day_type_offset">일 단위 타입 선택</label>
+                                                        <label for="day_type_offset">일 단위 타입 선택<i class="text-danger">*</i></label>
                                                         <select class="form-control"  name="day_type_offset"></select>  
                                                         <small class="text-info"> ※  일단위 출입코드 발급시 선택한 기간내에서 설정 시각을 기준으로 출입코드를 사용할 수 있습니다.</small>                                                   
                                                     </div>
@@ -181,170 +179,140 @@
 
 </script>
 <script>    
-    navTitle('단지생성','');
-    var API_KEY = localStorage.getItem('api_key');
-    var url = 'properties';
+     navTitle('단지생성','');
+     var API_KEY = localStorage.getItem('api_key');
+     var url = 'properties';
 
+     countryCodejson();//국가코드 선택  
+     $('select[name="country_code"]').on("change", function(){ 
+        $(this).val().replace(/\D/g,'');
+     }); 
+     timeZone();// 타임존선택 timeZone    
+     dayTimeset();////day-type-offset option
+
+     var commonrooms =[]; //공용도어 배열
      //단지생성하기
      $('#btnItem').on('click',function(){
-        var name = $('input[name="name"]').val();
-        var country_code =  $('select[name="country_code"] option:selected').val();        
-        var timezone = $('select[name="timezone"]  option:selected').val();  
-        var city = $('input[name="city"]').val();
-        var address =$('input[name="address"]').val();
-        var day_type_offset =$('select[name="day_type_offset"] option:selected').val();   
-        var image_url = $('#hotel_logo').val();   
-        var commonrooms =[];
-        commonrooms =  commonArray();
-
+         //  input 변수
+        var name = $('input[name="name"]').val(); //필수
+        var country_code =  $('select[name="country_code"] option:selected').val();  //필수
+        var timezone = $('select[name="timezone"]  option:selected').val();  //필수
+        var city = $('input[name="city"]').val(); //필수
+        var address =$('input[name="address"]').val(); //필수
+        var day_type_offset =$('select[name="day_type_offset"] option:selected').val(); //필수  
+        var type = $('select[name="type"] option:selected').val(); //필수  
+        var image_url = $('#hotel_logo').val(); 
+        commonrooms =  commonArray();           
+       
         //단지정보입력 여부 체크  
         if(name ==""){
             alert("단지이름을 입력해 주세요");    
         }else if(country_code == 0){
             alert("국가코드를 선택해 주세요");
-        }else if(timezone == 0){
-            alert("타임존을 선택해 주세요")
         }else if(city == ""){
-            alert("도시명를 입력해 주세요")
+            alert("도시명를 입력해 주세요");
+        }else if(timezone == 0){
+            alert("타임존을 선택해 주세요");
         }else if(address == ""){
-            alert("상세주소를 입력해 주세요")
+            alert("상세주소를 입력해 주세요");
         }else if(address){
             $('input[name="address"]').val(characterCheck(address));
-        }else{               
-            chkAdd(name, address);
-        }
-        //입력박스 체크 뒤 api 호출 
-        var params ={};
-        if(!(name == "")){
-            params.name = name;
-        }
-        if(!(country_code == 0)){
-            params.country_code = country_code;
-        }
-        if(!(timezone == 0 )){
-            params.timezone = timezone;
-        }
-        if(!(address == "")){
-            params.address = address;
-        }
-        if(!(city == "")){
-            params.city = city;
-        }
-        if(!(day_type_offset == "")){
-            params.day_type_offset = day_type_offset;
-        }
-        if(!(image_url == "")){
-            params.image_url = image_url;
-        }
-        if(!(commonrooms == "")){
-            params.commonrooms = commonrooms;
-        }
+            if(type == 0){
+                alert("단지 타입을 선택해 주세요");  
+            }else{
+                chkAdd(name,address);//같은 단지 다른주소 생성 체크(같은 단지 같은 주소 안됨)
 
-        console.log(JSON.stringify(params));                   
-        $.ajax({
-            url : endUrl(url),            
-            contentType: "application/json; charset=utf-8",
-            type:'POST',           
-            headers : headers(),              
-            data:JSON.stringify(params)
-        }) 
-        .done(function (res) {
-            console.log(res);
-            location.href='/propery_new_done';
-
-        })
-        .fail(function(jqXHR, textStatus, errorThrown){
-            console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
-        })  
-             
+                 //입력박스 체크 뒤 api 호출 
+                var params ={};
+                if(!(name == "")) params.name = name;
+                if(!(country_code == 0)) params.country_code = country_code;
+                if(!(timezone == 0 )) params.timezone = timezone;
+                if(!(address == "")) params.address = address;
+                if(!(city == "")) params.city = city;        
+                if(!(image_url == "")) params.image_url = image_url;
+                if(!(commonrooms == "")) params.commonrooms = commonrooms; 
+                
+                //단지 생성 API         
+                $.ajax({
+                    url : endUrl(url),            
+                    contentType: "application/json; charset=utf-8",
+                    type:'POST',           
+                    headers : headers(),              
+                    data:JSON.stringify(params)
+                }) 
+                .done(function (res) {
+                    console.log(res);
+                    location.href='/propery_new_done/'+ res.id;
+                })
+                .fail(function(jqXHR, textStatus, errorThrown){
+                    console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
+                })  
+            }
+        }
     });
 
-     //동일한 단지이름과 상세주소 있는지 체크
-     function chkAdd(name,address){       
-        $.ajax({
-            url : endUrl(url),
-            method:'get',
-            contentType: "application/json; charset=utf-8",
-            headers : headers()
-        })
-        .done(function(result) {                           
-            if(result){            
-                for(var i=0; i<result.length; i++){                
-                    if(this.name == result[i].name && this.address == result[i].address){
-                        alert("단지 이름과 상세 주소가 동일한 정보가 있습니다.");
+
+// 공용도어입력       
+    $('#btnDoorName').click(function(){          
+        var doorCnt = $('#newDoorList tbody tr').length;
+        var doorname = $('#newDoorName').val();  //공용도어추가 input 필드 
+
+        if(doorname !== ""){ 
+            if(commonrooms.length > 0){  
+                console.log("총길이",commonrooms.length)                             
+                for(var i=0; i< commonrooms.length;i++){
+                    if(doorname == commonrooms[i]){
+                        alert("동일한 이름의 공용도어가 존재합니다. 다른 이름을 입력해 주세요");                   
+                        $('#newDoorName').val('');                        
+                        return false;
                     }
-                }                             
-            }
-            return false;                                                                           
-        })
-        .fail(function (request, status, error){  
-            msg = request.status + "<br>" + request.responseText + "<br>" + error;
-            console.log(msg);                           
-        }) 
-    }
+                }
+                $("#newDoorDone").modal('show');  
+                var rowItem = '<tr><td scope="col"><div class="form-check"><label class="form-check-label"><input class="form-check-input" type="checkbox" name="chkObject" value=""><span class="form-check-sign"></span></label></div></td>';
+                rowItem += '<td class="commonDoor">'+ doorname + '</td><td class="td-actions text-right">';
+                rowItem += '<button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-target="#Editpropertyerror" class="btn btn-info btn-simple btn-link"><i class="fa fa-edit"></i></button></td></tr>';
+                $('#newDoorList tbody').append(rowItem);
+                $('#newDoorName').val('');  
+                commonrooms =  commonArray(); 
 
-   
-    
-    countryCodejson();//국가코드 선택  
-    $('select[name="country_code"]').on("change", function(){ 
-        $(this).val().replace(/\D/g,'');
-    }); 
-    timeZone();// 타임존선택 timeZone
-
-    //day-type-offset option
-    dayTimeset();
-
-    // 공용도어락 추가
-    var doorname;
-    $('#btnDoorName').click(function(){        
-        doorname = $('#newDoorName').val();   
-        if(doorname !== ""){               
-            chkDoorName(doorname);
-            function chkDoorName(doorname){
-                $.ajax({
-                    url : endUrl(url),
-                    method:'get',
-                    contentType: "application/json; charset=utf-8",
-                    headers : headers()
-                })
-                .done(function(result) {        
-                    if(result){            
-                        for(var i=0; i<result.length; i++){                
-                            if(doorname == result[i].commonrooms){
-                                alert("동일한 이름의 공용도어가 존재합니다.");
-                            }
-                        }                             
-                    }
-                    return false;                                                                           
-                })
-                .fail(function (request, status, error){  
-                    msg = request.status + "<br>" + request.responseText + "<br>" + error;
-                    console.log(msg);                           
-                }) 
-            }
-
-            $("#newDoorDone").modal('show');  
-            $('#noDoorList').hide();  
-            $('#newDoorList').show(); 
-            
-            var rowItem = '<tr><td scope="col"><div class="form-check"><label class="form-check-label"><input class="form-check-input" type="checkbox" name="chkObject" value=""><span class="form-check-sign"></span></label></div></td>';
-            rowItem += '<td class="commonDoor">'+ doorname + '</td><td class="td-actions text-right">';
-            rowItem += '<button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-target="#Editpropertyerror" class="btn btn-info btn-simple btn-link"><i class="fa fa-edit"></i></button></td></tr>';
-            $('#newDoorList tbody').append(rowItem);
-            $('#newDoorName').val('');
-
+            } else if(commonrooms.length == 0){ 
+                $("#newDoorDone").modal('show');  
+                $('#noDoorList').hide();  
+                $('#newDoorList').show(); 
+                var rowItem = '<tr><td scope="col"><div class="form-check"><label class="form-check-label"><input class="form-check-input" type="checkbox" name="chkObject" value=""><span class="form-check-sign"></span></label></div></td>';
+                rowItem += '<td class="commonDoor">'+ doorname + '</td><td class="td-actions text-right">';
+                rowItem += '<button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-target="#Editpropertyerror" class="btn btn-info btn-simple btn-link"><i class="fa fa-edit"></i></button></td></tr>';
+                $('#newDoorList tbody').append(rowItem);
+                $('#newDoorName').val('');  
+                commonrooms =  commonArray(); 
+                console.log(commonrooms)
+            }      
             // 테이블에 tr행 개수 
-            var doorCnt = $('#newDoorList tbody tr').length;
-            if(doorCnt > 0){
-                $('#doorCnt').text(doorCnt);
-            }else if(doorCnt == 0){
-                $('#noDoorList').show(); 
-                $('#newDoorList').hide(); 
-            }
+            // if(doorCnt > 0){
+            //     $('#doorCnt').text(doorCnt);
+            // }else if(doorCnt == 0){
+            //     $('#noDoorList').show(); 
+            //     $('#newDoorList').hide(); 
+            // }
         }else{
             alert("공용도어의 이름을 입력해 주세요");
-        }
+        }        
     });
+
+    //commondoor 이름 읽기
+    function commonArray(){           
+        var commonrooms = $("#newDoorList > tbody").find('tr').map(function(){      
+            return $(this).find('.commonDoor').text();
+            }).get();
+        return commonrooms;
+    }
+
+
+
+
+
+  
+   
     // 공용도어락 삭제
     function fn_delRow(chkObjNm) { 
         if ($("input[name="+chkObjNm+"]").is(":checked")){ 
@@ -368,12 +336,40 @@
          }       
     }
 
-    //commondoor 이름 읽기
-    function commonArray(){           
-        var commonrooms = $("#newDoorList > tbody").find('tr').map(function(){      
-            return $(this).find('.commonDoor').text();
-            }).get();
-        return commonrooms;
+
+
+
+
+
+
+
+
+
+     //같은 단지 다른주소 생성 체크(같은 단지 같은 주소 안됨)
+     function chkAdd(name,address){            
+         $.ajax({
+            url : endUrl(url),
+            method:'get',
+            contentType: "application/json; charset=utf-8",
+            headers : headers()
+        })
+        .done(function(res) {  
+            console.log(res); 
+            for(var i=0; i<res.items.length; i++){                
+                if(name == res.items[i].name && address == res.items[i].address){
+                    alert("동일한 단지에 동일한 주소가 존재합니다. 다른 주소를 입력해 주세요");
+                    $('input[name="address"]').focus();
+                    $('input[name="address"]').val("");
+                }
+            }             
+        })
+        .fail(function (request, status, error){  
+            msg = request.status + "<br>" + request.responseText + "<br>" + error;
+            console.log(msg);                           
+        }) 
     }
 
+ 
+ 
+   
 </script>

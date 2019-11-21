@@ -114,16 +114,16 @@
                     },
                     headers : headers()
                 })
-                .done(function(result) { 
-                    navTitle(result.name,result.address);    
-                    $('p[name="viewName"').text(result.name);
-                    $('p[name="viewCountry"').text(result.country_code);
-                    $('p[name="viewCity"').text(result.city);
-                    $('p[name="viewTimeZone"').text(result.timezone);
-                    $('p[name="viewAddress"').text(result.address);
-                    for(var i in result.commonrooms){
-                        var id = result.commonrooms[i].id;
-                        var name = result.commonrooms[i].name;  
+                .done(function(res) { 
+                    navTitle(res.name,res.address);    
+                    $('[name="viewName"').text(res.name);
+                    $('[name="viewCountry"').text(res.country_code);
+                    $('[name="viewCity"').text(res.city);
+                    $('[name="viewTimeZone"').text(res.timezone);
+                    $('[name="viewAddress"').text(res.address);
+                    for(var i in res.commonrooms){
+                        var id = res.commonrooms[i].id;
+                        var name = res.commonrooms[i].name;  
                         var rowItem = '<tr><td>' + name + '</td>tr>';
                         $('#readDoorList tbody').append(rowItem);
                     }

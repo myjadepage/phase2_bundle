@@ -12,7 +12,7 @@
                                         <h5 class="card-title">단지정보 수정</h5>
                                     </div> 
                                     <div class="card-body">
-                                       
+                                        <form>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
@@ -68,7 +68,7 @@
                                                             </div>
                                                         </div>
                                                     </div>                                                                                           
-                                        
+                                        </form>
                                     </div>
                                 </div>
                         </div>
@@ -79,8 +79,22 @@
                                         <h5 class="card-title">공용도어 정보 입력</h5>                                      
                                     </div> 
                                     <div class="card-body">
-                                            <div class="table-full-width">                                               
-                                                   <table class="table">
+                                            <div class="table-full-width"> 
+                                                    <table class="table" id="noDoorList" style="display: none;"> 
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="con_default">
+                                                                        <i class="icon m_issuekey"></i>
+                                                                        <h4 class="text-center text-info">
+                                                                            ‘등록된 공용 도어가 없습니다 ’<br>
+                                                                            <span>도어락 정보를 등록하여 서비스를 시작해 보세요. </span>
+                                                                        </h4>
+                                                                    </div>                                                                 
+                                                                </td>
+                                                            </tr>
+                                                    </table>
+
+                                                   <table class="table" id="readDoorList">
                                                         <colgroup>
                                                             <col width="10%">
                                                             <col width="*">
@@ -104,28 +118,11 @@
                                                                     </div>
                                                                    
                                                                 </th>                                                               
-                                                                <th class="text-right">total: <strong class="text-primary">4</strong></th>
+                                                                <th class="text-right">total: <strong class="text-primary" id="doorCnt"></strong></th>
                                                             </tr>
                                                         </thead> 
                                                         
-                                                      <tbody>
-                                                            <tr>
-                                                                <td scope="col">
-                                                                    <div class="form-check">
-                                                                        <label class="form-check-label">
-                                                                            <input class="form-check-input" type="checkbox" value="" id="doorCheck">
-                                                                            <span class="form-check-sign"></span>
-                                                                        </label>
-                                                                    </div>
-                                                                </td>
-                                                                <td>빌딩 주 출입구 A</td>
-                                                                <td class="td-actions text-right">
-                                                                    <button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-target="#Editpropertyerror" class="btn btn-info btn-simple btn-link">
-                                                                        <i class="fa fa-edit"></i>
-                                                                    </button>                                                                                              
-                                                                </td>
-                                                            </tr>                                                                                                                                             
-                                                        </tbody>
+                                                      <tbody></tbody>
                                                     </table>
                                                 </div>
                                     </div>
@@ -157,35 +154,51 @@
         $(this).val().replace(/\D/g,'');
     });
     timeZone(); // 타임존선택 timeZone
-
-        //프라퍼티 상세보기
-            $(function(){    
-                var id = "<%= id %>";   
-                var API_KEY = localStorage.getItem('api_key');  
-                var url = 'properties/';         
-                $.ajax({
+    dayTimeset();////day-type-offset option
+  //프라퍼티 상세보기
+  $(function(){   
+            var API_KEY = localStorage.getItem('api_key'); 
+            var url = 'properties/';                  
+            var id = "<%= id %>";           
+                $.ajax({                   
                     //property 상세보기 api
-                    url: endUrl(url) + id,                    
-                    method:'put',
+                    url : endUrl(url)+ id ,
+                    method:'get',
                     contentType: "application/json; charset=utf-8",
-                    dataType:"json",
                     data:{
                         property_id : id
                     },
                     headers : headers()
                 })
-                .done(function(result) {    
-                    $('input[name="viewName"').val(result.name);
-                    $('input[name="country_code"').val(result.country_code);
-                    $('input[name="viewCity"').val(result.city);
-                    $('input[name="timezone"').val(result.timezone);
-                    $('input[name="address"').val(result.address);
-                    navTitle(result.name,result.address); 
+                .done(function(res) { 
+                    navTitle(res.name,res.address);    
+                    $('[name="viewName"]').val(res.name);
+                    $('[name="country_code"]').val(res.country_code);
+                    $('[name="viewCity"]').val(res.city);
+                    $('[name="timezone"]').val(res.timezone);
+                    $('[name="address"]').val(res.address);
+                    $('[name="day_type_offset"]').val(res.day_type_offset);
+                    for(var i in res.commonrooms){
+                        var id = res.commonrooms[i].id;
+                        var name = res.commonrooms[i].name;  
+                        var rowItem = '<tr><td scope="col"><div class="form-check"><label class="form-check-label"><input class="form-check-input" type="checkbox" name="chkObject" value=""><span class="form-check-sign"></span></label></div></td>';
+                rowItem += '<td class="commonDoor">'+ name + '</td><td class="td-actions text-right">';
+                rowItem += '<button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-target="#Editpropertyerror" class="btn btn-info btn-simple btn-link"><i class="fa fa-edit"></i></button></td></tr>';
+                        $('#readDoorList tbody').append(rowItem);
+                    }
+                     // 테이블에 tr행 개수 
+                    var doorCnt = $('#readDoorList tbody tr').length;
+                    if(doorCnt > 0){
+                        $('#doorCnt').text(doorCnt);
+                    }else if(doorCnt == 0){
+                        $('#noDoorList').show(); 
+                        $('#readDoorList').hide(); 
+                    }
                 })
                 .fail(function (request, status, error){  
                     msg = request.status + "<br>" + request.responseText + "<br>" + error;
                     console.log(msg);                           
-                })    
-            });
+                })   
+        });
         
     </script>

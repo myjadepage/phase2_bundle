@@ -65,12 +65,10 @@ router.get('/property_new',common.ensureAuthenticated,function(req, res) {
   });
 
 
-router.get('/propery_new_done/:id',common.ensureAuthenticated,function(req, res) {
-	var id = req.params.id;
+router.get('/propery_new_done',common.ensureAuthenticated,function(req, res) {
 	res.render('propery_new_done',{
 		date:common.currDateTime(),		
-		path:'/',
-		id : id
+		path:'/'
 	});
   });
   

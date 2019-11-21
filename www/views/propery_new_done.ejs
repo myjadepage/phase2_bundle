@@ -11,19 +11,15 @@
                         <p>빌딩 / 객실 상세 시설 정보를 등록해 주세요</p>                       
                        
                         <div class="card shadow card-s2">
-                                <div class="image">
-                                    <img src="assets/img/img_building.jpg" alt="">
-                                </div>
+                                <div class="image"><img src="" alt=""></div>
                                 <div class="content">
-                                    <h4 class="title">센트럴 아이파크2</h4>
-                                    <p class="description">
-                                        대한민국/경기도 산척동/화성동탄2 택지개발지구 내 A77-2블록/
-                                    </p>                                 
+                                    <h4 class="title"></h4>
+                                    <p class="description"></p>                                 
                                 </div>                               
                         </div>
                         <br>
                         <a href="/" class="btn btn-default btn-fill btn-wd shadow" role="button">나가기</a>
-                        <a href="/:id/building_new" class="btn btn-primary btn-fill btn-wd shadow" role="button">빌딩 생성하기</a>
+                        <a href="/properties/<%=id%>/building_new" class="btn btn-primary btn-fill btn-wd shadow" role="button">빌딩 생성하기</a>
                     </div>
                 </div>
             </div>
@@ -34,4 +30,36 @@
 <% include inc/bottom %>
 <script>
     navTitle('단지생성 완료','');
+
+     //프라퍼티 상세보기
+     $(function(){   
+            var API_KEY = localStorage.getItem('api_key'); 
+            var url = 'properties/';                  
+            var id = "<%= id %>";           
+                $.ajax({                   
+                    //property 상세보기 api
+                    url : endUrl(url)+ id ,
+                    method:'get',
+                    contentType: "application/json; charset=utf-8",
+                    data:{
+                        property_id : id
+                    },
+                    headers : headers()
+                })
+                .done(function(res) {      
+                    var image = res.image_url;
+                    if(image == null){
+                        $('.card .image img').prop('src', '/assets/img/img_building.jpg').prop('alt', res.name);
+                    }else{
+                        $('.card .image img').prop('src', res.image_url).prop('alt', res.name);
+                    }
+                    $('.card .title').text(res.name);
+                    $('.card .description').text(res.address);  
+                })
+                .fail(function (request, status, error){  
+                    msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                    console.log(msg);   
+                    alert("단지를 불러올 수 없습니다.");                        
+                })   
+        });
 </script>
