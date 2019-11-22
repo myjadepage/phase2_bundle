@@ -108,10 +108,7 @@
                     //property 상세보기 api
                     url : endUrl(url)+ id ,
                     method:'get',
-                    contentType: "application/json; charset=utf-8",
-                    data:{
-                        property_id : id
-                    },
+                    contentType: "application/json; charset=utf-8",                   
                     headers : headers()
                 })
                 .done(function(res) { 

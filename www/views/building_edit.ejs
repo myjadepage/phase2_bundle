@@ -17,7 +17,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label>빌딩 이름 수정</label>
-                                                        <input type="text" class="form-control" placeholder="" value="푸르지오1단지">
+                                                        <input type="text" class="form-control" placeholder="" name="name"/>
                                                     </div>
                                                 </div>                                                        
                                             </div>
@@ -26,11 +26,7 @@
                                                         <div class="row form-group">
                                                             <div class="col-md-12">
                                                                 <label>빌딩 타입 수정</label>
-                                                                <select class="form-control">
-                                                                    <option>콘도미디엄</option>
-                                                                    <option>빌라</option>
-                                                                    <option>카라반</option>
-                                                                <select> 
+                                                                <select class="form-control" name="buildingtype"></select> 
                                                             </div>                                                                                                                 
                                                          </div>  
                                                 </div>
@@ -61,87 +57,16 @@
                                                                             <input class="form-check-input" type="checkbox" value="">
                                                                             <span class="form-check-sign"></span>                                                                            
                                                                         </label>
-                                                                        <span>1 selected</span>
-                                                                        <!-- <button type="button" rel="이미지삭제" title="Remove" class="btn btn-simple btn-link">
-                                                                            <i class="icon trash"></i>
-                                                                        </button> -->
+                                                                        <span>1 selected</span>                                                                       
                                                                         <button role="button" data-toggle="modal" data-target="#Delproperty"  class="btn btn-simple btn-link">
                                                                                 <i class="icon trash"></i>
                                                                         </button>
-                                                                    </div>
-                                                                   
+                                                                    </div>                                                                   
                                                                 </th>                                                               
-                                                                <th class="text-right">total: <strong class="text-primary">4</strong></th>
+                                                                <th class="text-right">total: <strong class="text-primary" id="doorCnt"></strong></th>
                                                             </tr>
-                                                        </thead> 
-                                                        
-                                                      <tbody>
-                                                            <tr>
-                                                                <td scope="col">
-                                                                    <div class="form-check">
-                                                                        <label class="form-check-label">
-                                                                            <input class="form-check-input" type="checkbox" value="">
-                                                                            <span class="form-check-sign"></span>
-                                                                        </label>
-                                                                    </div>
-                                                                </td>
-                                                                <td>빌딩 주 출입구 A</td>
-                                                                <td class="td-actions text-right">
-                                                                    <button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-target="#Editpropertyerror" class="btn btn-info btn-simple btn-link">
-                                                                        <i class="fa fa-edit"></i>
-                                                                    </button>                                                                                              
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td scope="col">
-                                                                    <div class="form-check">
-                                                                        <label class="form-check-label">
-                                                                            <input class="form-check-input" type="checkbox" value="" checked>
-                                                                            <span class="form-check-sign"></span>
-                                                                        </label>
-                                                                    </div>
-                                                                </td>
-                                                                <td>빌딩 주 출입구 B</td>
-                                                                <td class="td-actions text-right">
-                                                                    <button type="button" rel="tooltip" title="수정하기" class="btn btn-info btn-simple btn-link">
-                                                                        <i class="fa fa-edit"></i>
-                                                                    </button>                                                                                             
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td scope="col">
-                                                                    <div class="form-check">
-                                                                        <label class="form-check-label">
-                                                                            <input class="form-check-input" type="checkbox" value="" checked>
-                                                                            <span class="form-check-sign"></span>
-                                                                        </label>
-                                                                    </div>
-                                                                </td>
-                                                                <td>빌딩 주 출입구 C</td>
-                                                                <td class="td-actions text-right">
-                                                                    <button type="button" rel="tooltip" title="수정하기" class="btn btn-info btn-simple btn-link">
-                                                                        <i class="fa fa-edit"></i>
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="form-check">
-                                                                        <label class="form-check-label">
-                                                                            <input class="form-check-input" type="checkbox" checked>
-                                                                            <span class="form-check-sign"></span>
-                                                                        </label>
-                                                                    </div>
-                                                                </td>
-                                                                <td>빌딩 주 출입구 D</td>
-                                                                <td class="td-actions text-right">
-                                                                    <button type="button" rel="tooltip" title="수정하기" class="btn btn-info btn-simple btn-link">
-                                                                        <i class="fa fa-edit"></i>
-                                                                    </button>
-                                                                   
-                                                                </td>
-                                                            </tr>                                                                                       
-                                                        </tbody>
+                                                        </thead>                                                         
+                                                      <tbody></tbody>
                                                     </table>
                                                 </div>
                                     </div>
@@ -149,21 +74,87 @@
                                             <hr>
                                             <div class="state form-inline">                                                  
                                                <input type="text" class="form-control" placeholder="공용도어 이름 입력">                                                            
-                                               <!-- <button type="submit" class="btn btn-primary">공용도어 추가</button> -->
                                                <a role="button" data-toggle="modal" data-target="#propertyDone" class="btn btn-primary">공용도어 추가</a>
                                             </div>
                                         </div>
                                 </div>
                         </div>
                         <div class="col-md-12">
-                            <button type="reset" class="btn btn-default btn-fill shadow pull-left">나가기</button>
-                            <button type="button" data-toggle="modal" data-target="#editBuilingDone" class="btn btn-primary  btn-fill pull-right">빌딩 정보 수정</button>
+                            <button type="reset" class="btn btn-default btn-fill shadow pull-left" onclick="location='javascript:history.back()'">뒤로가기</button>
+                            <button type="button" data-toggle="modal" data-target="#editBuilingDone" class="btn btn-primary  btn-fill pull-right shadow">빌딩 정보 수정</button>
                         </div>
                 </div>
             </div>
         </div>
 
-<% include inc/footer %>
-<% include inc/modal %>
-<% include inc/bottom %>
+<%- include inc/footer %>
+<%- include inc/modal %>
+<%- include inc/bottom %>
+
+<script>
+    var API_KEY = localStorage.getItem('api_key');   
+    var id = "<%= id %>";
+    var bid = "<%= bid %>";
+    var url = "properties/" + id + "/buildings/" + bid;
+
+    //빌딩상세 api
+    $.ajax({
+        method: "get",
+        url : endUrl(url),
+        contentType: "application/json; charset=utf-8",
+        headers : headers()
+    })
+    .done(function(res) {                         
+        console.log(res);            
+        $('[name="viewName"').text(res.name);        
+        $('[name="buildingtype"').text(res.buildingtype);
+        for(var i in res.commonrooms){
+            var id = res.commonrooms[i].id;
+            var name = res.commonrooms[i].name;  
+            var rowItem = '<tr><td>' + name + '</td>tr>';
+            $('#readDoorList tbody').append(rowItem);
+        }
+         // 테이블에 tr행 개수 
+        var doorCnt = $('#readDoorList tbody tr').length;
+        if(doorCnt > 0){
+            $('#doorCnt').text(doorCnt);
+        }else if(doorCnt == 0){
+            $('#noDoorList').show(); 
+            $('#readDoorList').hide(); 
+        }           
+    })
+    .fail(function (request, status, error){  
+        msg = request.status + "<br>" + request.responseText + "<br>" + error;
+        console.log(msg); 
+        alert("빌딩내용을 불러 올 수 없습니다.");                          
+    }) 
+
+    // 빌딩타입 불러오기    
+    var url2 ="properties/" + id + "/buildingtypes"   
+    $.ajax({
+        method: "get",
+        url : endUrl(url2),
+        contentType: "application/json; charset=utf-8",
+        headers : headers(),
+        data:{
+            property_id : id,
+            language_code : "ko"
+        }
+    })
+    .done(function(res) {                         
+        console.log(res);        
+        $('select[name="buildingtype"]').empty();
+        $('select[name="buildingtype"]').append('<option  value="0" value="0" selected="true">빌딩 타입 선택</option>');
+        $('select[name="buildingtype"]').prop('selectedIndex', 0); 
+        for(var i of res.items){
+            $('select[name="buildingtype"]').append($('<option></option>').attr('value', i.id).text(i.name)); 
+        }                                                           
+    })
+    .fail(function (request, status, error){  
+        msg = request.status + "<br>" + request.responseText + "<br>" + error;
+        console.log(msg); 
+        alert("빌딩타입을 불러 올 수 없습니다.");                          
+    }) 
+
+</script>
 

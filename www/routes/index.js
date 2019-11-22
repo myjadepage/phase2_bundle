@@ -136,6 +136,17 @@ router.get('/properties/:id/building_new',common.ensureAuthenticated, function(r
 	});	
 });
 
+router.get('/properties/:id/building_edit/:bid',common.ensureAuthenticated, function(req, res) {   
+	var id = req.params.id;
+	var bid = req.params.bid;
+	res.render('building_edit',{	  
+	  date:common.currDateTime(),
+	  path:'/building_list',
+	  id:id,
+	  bid: bid
+	});	
+});
+
 router.get('/properties/:id/room/:bid',common.ensureAuthenticated, function(req, res) {
 	var id = req.params.id;
 	var bid = req.params.bid;

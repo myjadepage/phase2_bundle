@@ -48,7 +48,7 @@
                                     </div>
                             </div>
 
-                            <button class="btn btn-default btn-fill shadow pull-left">취소</button>
+                            <button class="btn btn-default btn-fill shadow pull-left" onclick="location='javascript:history.back()'">취소</button>
                             <button onclick="location='/properties/<%=id%>/building_new'" class="btn btn-primary btn-fill shadow pull-right">빌딩 생성하기</button>
                            
                     </div>
@@ -68,13 +68,10 @@
         method: "get",
         url : endUrl(url),
         contentType: "application/json; charset=utf-8",
-        headers : headers(),
-        data:{
-            property_id : id
-        }
+        headers : headers()
     })                                                                               
     .done(function(res) {            
-        console.log(res);  
+        console.log(res);             
         trHtml ="";
         $('#cntBuilding').text('[ ' + res.total +'개 ]');
         if(res.total > 0){
@@ -84,8 +81,8 @@
                 var date =new Date(item.created_at);        
                 trHtml += "<tr><td>" + formatDate(date) + "</td><td><a href='/properties/" + id + "/room/" + item.id + "'>" + item.name+ "</a></td>";
                 trHtml += "<td>Room : "+item.room_counts + " / Common : " + item.commonrooms.length + "</td>";
-                trHtml += "<td><button onclick='location.href='/building_edit'' type='button'  title='수정하기' class='btn btn-simple btn-link'><i class='icon edit'></i></button>";
-                trHtml += "<button type='button' title='삭제하기' class='btn btn-simple btn-link'  data-building_id='" + item.id + "'id='btnDelBuilding'><i class='icon trash'></i></button></td>";
+                trHtml += "<td><button onclick=location.href='/properties/" + id + "/building_edit/" + item.buildingtype_id+ "' type='button'  title='수정하기' class='btn btn-simple btn-link'><i class='icon edit'></i></button>";
+                trHtml += "<button type='button' rel='tooltip' title='객실(공용도어)에 도어락이 설치된 경우,삭제가 불가능합니다. 모바일 앱의 도어락 설치 메뉴에서 해당 도어락을 삭제한 후,  다시 시도해주세요.' class='btn btn-simple btn-link'  data-building_id='" + item.id + "'id='btnDelBuilding'><i class='icon trash'></i></button></td>";
                 trHtml += "</tr>";            
             });       
             $('#buildingList tbody').append(trHtml);

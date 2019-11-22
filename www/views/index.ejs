@@ -64,7 +64,7 @@
             $('.slide_wrap').show();           
             for(var i=0; i<res.items.length; i++){
                 liHtml ='<li class="col-md-4"><div class="card shadow card-s2"><div class="image">';                        
-                liHtml+='<a href="/property_category/'+ res.items[i].id +'"><img src="/assets/img/img_building.jpg" alt=""></a></div><div class="content">';                      
+                liHtml+='<a href="/property_category/'+ res.items[i].id +'?name='+ res.items[i].name +'?address=' + res.items[i].address +'"><img src="/assets/img/img_building.jpg" alt=""></a></div><div class="content">';                      
                 liHtml+='<a href="/property_read/' + res.items[i].id + '"> <h4 class="title" style="line-height: 40px;">'+ res.items[i].name +'</h4></a>';
                 liHtml+='<p class="description">'+ res.items[i].address +'</p></div>';
                 liHtml+='<a class="setting icon"  data-property_id="' + res.items[i].id + '" data-toggle="modal" data-target="#propertySetting" class="open-properDial" role="button" ></a>';
@@ -80,7 +80,7 @@
                         liHtml+= '<div class="alert alert-danger" style="top:10px; padding:5px 15px;">'+ role +'</div>';break;
                 }               
                 liHtml+='</li>';
-                $('#property_list').prepend(liHtml);            
+                $('#property_list').prepend(liHtml); 
             }            
             propertyList();//슬라이드         
         

@@ -163,6 +163,24 @@
         </div>
 <% include inc/footer %>
 <% include inc/modal %>
+<!-- 공용도어 수정Modal -->
+<div class="modal fade modal-primary" id="EditName" tabindex="-1" role="dialog" aria-labelledby="EditName" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                   <h5>알림</h5>
+                </div>
+                <div class="modal-body setting_choice">
+                        <i class="icon confirm"></i>                       
+                    <h6>공용도어 이름 수정</h6>
+                    <p>이름을 입력해 주세요  <input type= "text" value="" name="editDoorName">  </p>
+                </div>
+                <div class="modal-footer">                   
+                    <button type="button" class="btn btn-default btn-fill btn-wd shadow"   name="btnEditNameDone">수정</button>
+                </div>
+            </div>
+        </div>
+<div>
 <% include inc/bottom %>
 
 
@@ -258,8 +276,7 @@
         var doorname = $('#newDoorName').val();  //공용도어추가 input 필드 
 
         if(doorname !== ""){ 
-            if(commonrooms.length > 0){  
-                console.log("총길이",commonrooms.length)                             
+            if(commonrooms.length > 0){
                 for(var i=0; i< commonrooms.length;i++){
                     if(doorname == commonrooms[i]){
                         alert("동일한 이름의 공용도어가 존재합니다. 다른 이름을 입력해 주세요");                   
@@ -268,37 +285,23 @@
                     }
                 }
                 $("#newDoorDone").modal('show');  
-                var rowItem = '<tr><td scope="col"><div class="form-check"><label class="form-check-label"><input class="form-check-input" type="checkbox" name="chkObject" value=""><span class="form-check-sign"></span></label></div></td>';
-                rowItem += '<td class="commonDoor">'+ doorname + '</td><td class="td-actions text-right">';
-                rowItem += '<button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-target="#Editpropertyerror" class="btn btn-info btn-simple btn-link"><i class="fa fa-edit"></i></button></td></tr>';
-                $('#newDoorList tbody').append(rowItem);
-                $('#newDoorName').val('');  
-                commonrooms =  commonArray(); 
+                addDoorTr(doorname); ////공용도어 tr 동적추가
+                console.log("총길이",commonrooms) 
 
             } else if(commonrooms.length == 0){ 
                 $("#newDoorDone").modal('show');  
                 $('#noDoorList').hide();  
                 $('#newDoorList').show(); 
-                var rowItem = '<tr><td scope="col"><div class="form-check"><label class="form-check-label"><input class="form-check-input" type="checkbox" name="chkObject" value=""><span class="form-check-sign"></span></label></div></td>';
-                rowItem += '<td class="commonDoor">'+ doorname + '</td><td class="td-actions text-right">';
-                rowItem += '<button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-target="#Editpropertyerror" class="btn btn-info btn-simple btn-link"><i class="fa fa-edit"></i></button></td></tr>';
-                $('#newDoorList tbody').append(rowItem);
-                $('#newDoorName').val('');  
-                commonrooms =  commonArray(); 
+                addDoorTr(doorname);
                 console.log(commonrooms)
-            }      
-            // 테이블에 tr행 개수 
-            // if(doorCnt > 0){
-            //     $('#doorCnt').text(doorCnt);
-            // }else if(doorCnt == 0){
-            //     $('#noDoorList').show(); 
-            //     $('#newDoorList').hide(); 
-            // }
+            } 
+            $('#doorCnt').text(doorCnt + 1); 
+
         }else{
             alert("공용도어의 이름을 입력해 주세요");
-        }        
+        }
     });
-
+        
     //commondoor 이름 읽기
     function commonArray(){           
         var commonrooms = $("#newDoorList > tbody").find('tr').map(function(){      
@@ -307,12 +310,40 @@
         return commonrooms;
     }
 
+    //공용도어 tr 동적추가
+    function addDoorTr(doorname){
+        var rowItem = '<tr><td scope="col"><div class="form-check"><label class="form-check-label"><input class="form-check-input" type="checkbox" name="chkObject" value=""><span class="form-check-sign"></span></label></div></td>';
+        rowItem += '<td class="commonDoor">'+ doorname + '</td><td class="td-actions text-right">';
+        rowItem += '<button type="button" rel="tooltip" title="수정하기" data-toggle="modal" data-doorname="'+ doorname+'" data-target="#EditName" name ="editName" class="btn btn-info btn-simple btn-link"><i class="fa fa-edit"></i></button></td></tr>';
+        $('#newDoorList tbody').append(rowItem);
+        $('#newDoorName').val(''); 
+        commonrooms =  commonArray();
+    }
 
 
+    $('[name=editName]').on('show.bs.modal', function(e) {        
+         var name = $(e.relatedTarget).data('doorname');//해당 프라퍼티 아이디 가지고 오기
+         console.log(name)
+         $('[name=btnEditNameDone]').on('click', function() {  
+            console.log(doorname) 
+            var doorname = $(e.currentTarget).find('[name =editDoorName]').val();   
+            if(name == doorname){
+                alert("동일한 이름이니다. 다른이름으로 입력해 주세요")
+            }else{
+                alert("ok")
+            }
+        });
+     });  
 
-
-  
    
+//     $('[name=btnEditNameDone]').on('click', function() {         
+//         var doorname = $('[name =editDoorName]').val();        
+//         $('.commonDoor').val(doorname);
+//         $('#EditName').modal('hide');
+// });
+
+
+
     // 공용도어락 삭제
     function fn_delRow(chkObjNm) { 
         if ($("input[name="+chkObjNm+"]").is(":checked")){ 

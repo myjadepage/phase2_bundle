@@ -24,5 +24,24 @@
 <% include inc/footer %>
 <% include inc/modal %>
 <% include inc/bottom %>
+<script> 
+    var name;
+    var address;     
+    function qs() {
+        var qsparam = new Array(2);
+        var query = window.location.search.substring(1).query.split('&');
+        for (var i = 0; i < query.length; i++) {
+            var pos = query[i].indexOf('=');
+            if (pos > 0){
+                    var key = decodeURIComponent(query[i].substring(0, pos));
+                    var val = decodeURIComponent(query[i].substring(pos + 1));
+                    qsparam[i] = val;    
+            }                          
+        }
+        name = qsparam[0];
+        address = qsparam[1];
+    }                      
+    navTitle(name, address);   
+</script>
 
 

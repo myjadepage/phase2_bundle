@@ -13,68 +13,62 @@
                             <h4>
                                 <div class="row">
                                     <div class="col-md-3">                                       
-                                        <select class="form-control">
-                                            <option>빌딩선택</option>
-                                            <option>빌라</option>
-                                            <option>카라반</option>
-                                        <select>                                             
+                                        <select class="form-control" name="buildingtype"></select>                                       
                                     </div>              
                                     <div class="col-md-3">                                       
                                             <select class="form-control">
                                                 <option>도어타입 선택</option>
-                                                <option>빌라</option>
-                                                <option>카라반</option>
+                                                <option>전체</option>
+                                                <option>객실</option>
+                                                <option>공용도어</option>
                                             <select>                                             
-                                        </div>                                                                                                
+                                    </div>
+                                    <button class="btn btn-primary btn-fill">검색</button>                                                                                                
                                 </div>  
-    
                             </h4>
                             <div class="card">                                   
                                     <div class="content table-responsive  table-full-width">
                                         <table class="table table-hover">
                                             <colgroup>
-                                                <col width="20%">
-                                                <col width="*">
-                                                <col width="15%">
                                                 <col width="30%">
-                                                <col width="10%">
+                                                <col width="*">
+                                                <col width="20%">
+                                                <col width="20%">
+                                                <col width="15%">
                                             </colgroup>
-                                            <thead>                                               
-                                                <th>생성일</th>
+                                            <thead>
                                                 <th>빌딩이름</th>
                                                 <th>도어타입</th>
-                                                <th>상세정보</th>                                                
-                                                <th>정렬:생성일 기준</th>
+                                                <th>설치상태</th>
+                                                <th>설치일</th>                                              
+                                                <th>정렬: 이름순/설치 상태</th>
                                             </thead>
                                             <tbody>
-                                                <tr>                                                  
-                                                    <td>DD-MM-YYYY  HH:MM</td>
-                                                    <td><a href="room_list.html">Residence A</a></td>
+                                                <tr>    
+                                                    <td>Residence A</td>
                                                     <td>Room Door</td>
+                                                    <td>설치/미설치</td>                                         
+                                                    <td>DD-MM-YYYY  HH:MM</td>
                                                     <td></td>
-                                                    <td>                                                       
-                                                        <button type="button" data-toggle="modal" data-target="#DelDoorlock"  title="삭제하기" class="btn btn-simple btn-link">
-                                                            <i class="icon trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>                                                  
-                                                        <td>26-SEP-2019  11::01</td>
-                                                        <td><a href="room_list.html">Residence A</a></td>
-                                                        <td>Room Door</td>
-                                                        <td></td>
-                                                        <td>                                                       
-                                                            <button type="button" title="삭제하기" class="btn btn-simple btn-link">
-                                                                <i class="icon trash"></i>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
+                                                </tr>                                               
                                             </tbody>
+                                            <tbody>
+                                                    <tr>
+                                                        <td colspan="5">
+                                                            <div class="con_default">
+                                                                <i class="icon m_issuekey"></i>
+                                                                <h4 class="text-center text-info">
+                                                                    ‘ 도어락 정보가 없습니다. ’
+                                                                </h4>
+                                                            </div>
+                                                        </td>                                                                      
+                                                    </tr>                                                                        
+                                                </tbody>
                                         </table>        
                                     </div>
                             </div>
 
-                            <button class="btn btn-default btn-fill shadow ">나가기</button>
+                            <button class="btn btn-default btn-fill shadow " onclick="location='javascript:history.back()'">나가기</button>
                             
                            
                     </div>
@@ -85,3 +79,37 @@
 <% include inc/footer %>
 <% include inc/modal %>
 <% include inc/bottom %>
+
+<script>
+var API_KEY = localStorage.getItem('api_key');   
+    var id = "<%= id %>";
+    var url = "properties/" + id + "/buildings";
+    console.log('id', id);
+
+    // 빌딩타입 불러오기    
+    var url2 ="properties/" + id + "/buildingtypes"   
+    $.ajax({
+        method: "get",
+        url : endUrl(url2),
+        contentType: "application/json; charset=utf-8",
+        headers : headers(),
+        data:{
+            property_id : id,
+            language_code : "ko"
+        }
+    })                                                                               
+    .done(function(res) {                         
+        console.log(res);        
+        $('select[name="buildingtype"]').empty();
+        $('select[name="buildingtype"]').append('<option  value="0" value="0" selected="true">빌딩 타입 선택</option>');
+        $('select[name="buildingtype"]').prop('selectedIndex', 0); 
+        for(var i of res.items){
+            $('select[name="buildingtype"]').append($('<option></option>').attr('value', i.id).text(i.name)); 
+        }                                                        
+    })
+    .fail(function (request, status, error){  
+        msg = request.status + "<br>" + request.responseText + "<br>" + error;
+        console.log(msg); 
+        alert("빌딩타입을 불러 올 수 없습니다.");                          
+    }) 
+</script>
