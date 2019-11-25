@@ -202,6 +202,27 @@ function navTitle(big, small){
       $('small.nav_stitle').text(small)    
 }
 
+/**
+ *  상단 네비 타이틀에 들어갈 단지이름과 주소 쿼리 함수
+ */
+function qs() {
+    var qsparam = new Array(2);
+    var query = window.location.search.substring(1).split('&');  
+    console.log(query);     
+    for (var i = 0; i < query.length; i++) {
+        var pos = query[i].indexOf('=');
+        if (pos > 0){
+                var key = decodeURIComponent(query[i].substring(0, pos));
+                var val = decodeURIComponent(query[i].substring(pos + 1));
+                qsparam[i] = val;    
+        }                          
+    }
+    name = qsparam[0];
+    address = qsparam[1];    
+    itemQuery = '?name=' + name + '&address=' + address;  
+};
+
+
 /* 
  *로그인 폰번호 체크 "-" 제외
  */

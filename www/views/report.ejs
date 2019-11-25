@@ -13,24 +13,18 @@
                                     <input type="text" class="form-control" placeholder="Search for keyword">
                             </div><!-- /input-group -->
 
-
-
                             <h4>
                                 <div class="row">
                                     <div class="col-md-3">                                       
                                         <select class="form-control">
-                                            <option>리프트 종류 선택</option>
-                                            <option>빌라</option>
-                                            <option>카라반</option>
+                                            <option>리포트 종류 선택</option>
+                                            <option>스태프 리포트 조회</option>
+                                            <option>시설 정보 리포트 조회</option>
                                         <select>                                             
                                     </div> 
                                     <div class="col-md-3">                                       
-                                            <select class="form-control">
-                                                <option>빌딩선택</option>
-                                                <option>빌라</option>
-                                                <option>카라반</option>
-                                            <select>                                             
-                                        </div>  
+                                        <select class="form-control" name="buildingNames"><select>                                                 
+                                    </div>  
                                     <div class="col-md-6">            
                                         <button type="submit" class="btn btn-primary pull-right">Excel 저장</button>                                                                                                   
                                     </div>
@@ -58,13 +52,7 @@
                                                     <td><a data-target="#viewStaff" data-toggle="modal" role="button">Staff name 1A</a></td>  
                                                     <td>마스터 [ 보유키 : 2개 ]</td>                                                  
                                                     <td></td>
-                                                </tr>
-                                                <tr>                                                  
-                                                    <td>26-SEP-2019  11:01</td>
-                                                    <td><a data-target="#viewStaff" data-toggle="modal" role="button">Staff name 1A</a></td>  
-                                                    <td>하우스키핑 [ 보유키 : 1 개 ]</td>                                             
-                                                    <td></td>
-                                                </tr>
+                                                </tr>                                              
                                             </tbody>
                                         </table>        
                                     </div>
@@ -80,4 +68,79 @@
 <% include inc/footer %>
 <% include inc/modal %>
 <% include inc/bottom %>
+
+<script>
+    //navTitle 쿼리  
+    var name;
+    var address;
+    var itemQuery;       
+    qs();        
+    $('.nav .query_building').attr('href','/properties/<%= id %>/building'+itemQuery );
+    $('.nav .query_doorlock').attr('href','/properties/<%= id %>/doorlock'+itemQuery);
+    $('.nav .query_issuekey').attr('href','/properties/<%= id %>/issuekey'+itemQuery);
+    $('.nav .query_staff').attr('href','/properties/<%= id %>/staff'+itemQuery);
+    $('.nav .query_report').attr('href','/properties/<%= id %>/report'+itemQuery);
+    navTitle(name, address);  
+        
+        
+    //빌딩선택 api
+    var API_KEY = localStorage.getItem('api_key');   
+    var id = "<%= id%>";
+    var url = "properties/" + id + "/buildings";
+    $.ajax({
+        method: "get",
+        url : endUrl(url),
+        contentType: "application/json; charset=utf-8",
+        headers : headers()
+    })                                                                               
+    .done(function(res) {            
+        console.log(res); 
+        $('[name=buildingNames]').empty();
+        $('[name=buildingNames]').append('<option  value="0" value="0" selected="true">빌딩 선택</option>');
+        for(var i=0; i<res.items.length;i++){
+            $('[name=buildingNames]').append($('<option></option>').attr('value', res.items[i].id).text(res.items[i].name)); 
+        }                    
+    })
+    .fail(function (request, status, error){  
+        msg = request.status + "<br>" + request.responseText + "<br>" + error;
+        console.log(msg); 
+        alert("건물 목록을 불러 올 수 없습니다.");                          
+    })  
+
+    //스텝 리포트 조회
+    var url2="properties/"+ id+"/reports/staffs"
+    $.ajax({
+        method: "get",
+        url : endUrl(url2),
+        contentType: "application/json; charset=utf-8",
+        headers : headers()
+    })  
+    .done(function(res) {            
+        console.log(res); 
+    })
+    .fail(function (request, status, error){  
+        msg = request.status + "<br>" + request.responseText + "<br>" + error;
+        console.log(msg); 
+        alert("리포트를 불러 올 수 없습니다.");                          
+    })  
+
+    //스텝 리포트 조회
+    var url3="properties/"+id+"/reports/facilities"
+    $.ajax({
+        method: "get",
+        url : endUrl(url3),
+        contentType: "application/json; charset=utf-8",
+        headers : headers()
+    })  
+    .done(function(res) {            
+        console.log(res); 
+    })
+    .fail(function (request, status, error){  
+        msg = request.status + "<br>" + request.responseText + "<br>" + error;
+        console.log(msg); 
+        alert("리포트를 불러 올 수 없습니다.");                          
+    })  
+
+
+</script>    
 

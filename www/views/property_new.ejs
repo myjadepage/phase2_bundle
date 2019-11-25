@@ -353,9 +353,9 @@
                 } 
 
                 // 등록한 도어락 모두 삭제경우                
-                var doorCnt = $('#newDoorList tbody tr').length;  
-                console.log(doorCnt);
+                var doorCnt = $('#newDoorList tbody tr').length; 
                 if(doorCnt == 0){
+                    location.reload();
                     $('#noDoorList').show(); 
                     $('#newDoorList').hide(); 
                 }else{
@@ -366,15 +366,6 @@
             alert("선택된 데이터가 없습니다.");  
          }       
     }
-
-
-
-
-
-
-
-
-
 
      //같은 단지 다른주소 생성 체크(같은 단지 같은 주소 안됨)
      function chkAdd(name,address){            
@@ -400,7 +391,4 @@
         }) 
     }
 
- 
- 
-   
 </script>

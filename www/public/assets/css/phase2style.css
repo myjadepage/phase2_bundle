@@ -593,6 +593,18 @@ i.icon.codelist{
     height: 17px;
     background-position: -94px -64px ;
 }
+i.icon.installed{
+    width: 19px;
+    height: 22px;
+    background-position: -271px -0px ;
+}
+i.icon.created{
+    width: 19px;
+    height: 22px;
+    background-position: -291px 0px ;
+}
+
+
 
 /* 서비스메뉴 아이콘 */
 i.icon.m_property{

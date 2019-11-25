@@ -23,7 +23,7 @@
                                                 <option>공용도어</option>
                                             <select>                                             
                                     </div>
-                                    <button class="btn btn-primary btn-fill">검색</button>                                                                                                
+                                    <button class="btn btn-primary btn-fill" id="btnSearchType">검색</button>                                                                                                
                                 </div>  
                             </h4>
                             <div class="card">                                   
@@ -43,16 +43,8 @@
                                                 <th>설치일</th>                                              
                                                 <th>정렬: 이름순/설치 상태</th>
                                             </thead>
-                                            <tbody>
-                                                <tr>    
-                                                    <td>Residence A</td>
-                                                    <td>Room Door</td>
-                                                    <td>설치/미설치</td>                                         
-                                                    <td>DD-MM-YYYY  HH:MM</td>
-                                                    <td></td>
-                                                </tr>                                               
-                                            </tbody>
-                                            <tbody>
+                                            <tbody class="doorlock_list"></tbody>
+                                            <tbody class="doorlock_nolist">
                                                     <tr>
                                                         <td colspan="5">
                                                             <div class="con_default">
@@ -81,7 +73,21 @@
 <% include inc/bottom %>
 
 <script>
-var API_KEY = localStorage.getItem('api_key');   
+    //navTitle 쿼리 
+    var name;
+    var address;
+    var itemQuery;       
+    qs();
+    $('.nav .query_building').attr('href','/properties/<%= id %>/building'+itemQuery );
+    $('.nav .query_doorlock').attr('href','/properties/<%= id %>/doorlock'+itemQuery);
+    $('.nav .query_issuekey').attr('href','/properties/<%= id %>/issuekey'+itemQuery);
+    $('.nav .query_staff').attr('href','/properties/<%= id %>/staff'+itemQuery);
+    $('.nav .query_report').attr('href','/properties/<%= id %>/report'+itemQuery);
+    navTitle(name, address);
+
+
+
+    var API_KEY = localStorage.getItem('api_key');   
     var id = "<%= id %>";
     var url = "properties/" + id + "/buildings";
     console.log('id', id);
@@ -112,4 +118,53 @@ var API_KEY = localStorage.getItem('api_key');
         console.log(msg); 
         alert("빌딩타입을 불러 올 수 없습니다.");                          
     }) 
+
+    //도어락리스트 api
+    var url3="properties/"+ id +"/doorlocks"
+    console.log(url3);
+    $.ajax({
+        method: "get",
+        url : endUrl(url3),
+        contentType: "application/json; charset=utf-8",
+        headers : headers()
+    })                                                                               
+    .done(function(res) {                         
+        console.log(res); 
+        trHtml="";
+        if(res.items.length >0){
+            for(var i=0; i<res.items.length;i++){
+                var date =new Date(res.items[i].created_at);
+                trHtml +='<tr><td>'+res.items[i].building.name +'</td>';
+                trHtml +='<td>'+ res.items[i].type +'</td>';
+                    if(res.items[i].status == "created"){//미설치시
+                        trHtml +='<td><i class="icon created"></td>';
+                    }else{//설치시
+                        trHtml +='<td><i class="icon installed"></td>';
+                    }                
+                trHtml +='<td>'+ formatDate(date) +'</td>';
+                trHtml +='<td></td></tr>';
+                $('.doorlock_list').append(trHtml);
+            }
+            $('.doorlock_nolist').hide();
+        }else{
+            $('.doorlock_nolist').show();
+            $('.doorlock_list').hide();
+        }
+    })
+    .fail(function (request, status, error){  
+        msg = request.status + "<br>" + request.responseText + "<br>" + error;
+        console.log(msg); 
+        alert("도어락 목록을 불러 올 수 없습니다.");                          
+    }) 
+
+ //리스트에 보이는 날짜포맷 변경
+ function formatDate(date) {
+        var month = date.toLocaleString('en', {month :'short'});
+        var day = date.getDate();
+        var year = date.getFullYear();
+        var hh = date.getHours();
+        var mm = date.getMinutes();
+        return day + "-" + month + "-" + year + "  " + hh + ":" + mm
+    }
+
 </script>

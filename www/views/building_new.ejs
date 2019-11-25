@@ -116,11 +116,27 @@
 <% include inc/bottom %>
 <!-- 93d8265dd0e2f63b41abb6a46ce9b67ef6133403 -->
 <!-- Bearer 24a21f9c9277eecd030336364b658f75d3cb4017 -->
-<script>   
+<script> 
+ //navTitle 쿼리 
+    var name;
+    var address;
+    var itemQuery;       
+    qs();
+    $('.nav .query_building').attr('href','/properties/<%= id %>/building'+itemQuery );
+    $('.nav .query_doorlock').attr('href','/properties/<%= id %>/doorlock'+itemQuery);
+    $('.nav .query_issuekey').attr('href','/properties/<%= id %>/issuekey'+itemQuery);
+    $('.nav .query_staff').attr('href','/properties/<%= id %>/staff'+itemQuery);
+    $('.nav .query_report').attr('href','/properties/<%= id %>/report'+itemQuery);
+    navTitle(name, address);
+
+
+
     var API_KEY = localStorage.getItem('api_key');   
     var id = "<%= id %>";
     var url = "properties/" + id + "/buildings";
     console.log('id', id);
+     
+
 
     // 빌딩타입 불러오기    
     var url2 ="properties/" + id + "/buildingtypes"   
@@ -135,15 +151,13 @@
         }
     })                                                                               
     .done(function(res) {                         
-        console.log(res);        
+        console.log(res);                 
         $('select[name="buildingtype"]').empty();
         $('select[name="buildingtype"]').append('<option  value="0" value="0" selected="true">빌딩 타입 선택</option>');
         $('select[name="buildingtype"]').prop('selectedIndex', 0); 
         for(var i of res.items){
             $('select[name="buildingtype"]').append($('<option></option>').attr('value', i.id).text(i.name)); 
-        }
-           
-                                                                      
+        }                                                           
     })
     .fail(function (request, status, error){  
         msg = request.status + "<br>" + request.responseText + "<br>" + error;
@@ -197,7 +211,11 @@
         }) 
         .done(function (res) {
             console.log(res);
-            location.href='/properties/'+id+'/building';
+            name = $('input[name="name"]').val('');                
+            buildingtype_id =$('select[name="buildingtype"]').val('');       
+            ommonrooms =[];
+
+            location.href='/properties/'+id+'/building'+itemQuery;
            
         })
         .fail(function(jqXHR, textStatus, errorThrown){

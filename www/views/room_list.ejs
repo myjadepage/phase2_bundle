@@ -18,11 +18,7 @@
                             <h4>
                                 <div class="row">
                                     <div class="col-md-3">                                       
-                                        <select class="form-control">
-                                            <option>빌딩이름</option>
-                                            <option>빌라</option>
-                                            <option>카라반</option>
-                                        <select>                                             
+                                        <select class="form-control" name="buildingNames"><select>                                             
                                     </div>              
                                     <button type="submit" class="btn btn-primary">빌딩 선택하기</button>                                                                                                   
                                 </div>  
@@ -60,7 +56,7 @@
                             </div>
 
                             <button class="btn btn-default btn-fill shadow pull-left">취소</button>
-                            <button onclick="location='/properties/<%= id %>/room_new/<%= bid %>'" class="btn btn-primary btn-fill shadow pull-right">신규 객실 생성</button>                           
+                            <a href='/properties/<%= id %>/room_new/<%= bid %>' class="btn btn-primary btn-fill shadow pull-right query">신규 객실 생성</a>                           
                             
                     </div>
                 </div>
@@ -71,6 +67,22 @@
 <%- include inc/modal %>
 <%- include inc/bottom %>
 <script>
+     //navTitle 쿼리 
+    var name;
+    var address;
+    var itemQuery;       
+    qs();
+    $('.nav .query_building').attr('href','/properties/<%= id %>/building'+itemQuery );
+    $('.nav .query_doorlock').attr('href','/properties/<%= id %>/doorlock'+itemQuery);
+    $('.nav .query_issuekey').attr('href','/properties/<%= id %>/issuekey'+itemQuery);
+    $('.nav .query_staff').attr('href','/properties/<%= id %>/staff'+itemQuery);
+    $('.nav .query_report').attr('href','/properties/<%= id %>/report'+itemQuery);
+    $('.query').prop('href','/properties/<%= id %>/room_new/<%= bid %>'+itemQuery );
+    navTitle(name, address);
+
+
+
+
     var API_KEY = localStorage.getItem('api_key');   
     var id = "<%= id %>";
     var bid ="<%= bid %>"
@@ -94,7 +106,7 @@
             var trHtml ="";
             res.items.forEach(function(item, i, array){  
                 var date =new Date(item.created_at);  
-                trHtml += "<tr><td>" + formatDate(date) + "</td><td><a href='/properties/" + id + "/room/" + item.id + "'>" + item.name+ "</a></td>";               
+                trHtml += "<tr><td>" + formatDate(date) + "</td><td><a href='/properties/" + id + "/room/" + item.id + itemQuery + "'>" + item.name+ "</a></td>";               
                 trHtml += "<td><button onclick='location.href='/room_edit'' type='button'  title='수정하기' class='btn btn-simple btn-link'><i class='icon edit'></i></button>";
                 trHtml += "<button type='button' title='삭제하기' class='btn btn-simple btn-link'  data-room_id='" + item.id + "'id='btnDelRoom'><i class='icon trash'></i></button></td>";
                 trHtml += "</tr>";                                             
@@ -126,7 +138,7 @@
             .done(function(res) {                
                 console.log(res);                 
                 if(res.code == 200){
-                    $('#Delproperty').modal('show');                    
+                    $('#DelBuilding').modal('show');                    
                 }else{
                     alert("삭제 실패");
                 }            
@@ -142,6 +154,27 @@
             }) 
         });
 
+    //빌딩리스트
+    var url2 = "properties/" + id + "/buildings";
+    $.ajax({
+        method: "get",
+        url : endUrl(url2),
+        contentType: "application/json; charset=utf-8",
+        headers : headers()
+    })                                                                               
+    .done(function(res) {            
+        console.log(res);
+        $('[name=buildingNames]').empty();
+        $('[name=buildingNames]').append('<option  value="0" value="0" selected="true">빌딩 선택</option>');
+        for(var i=0; i<res.items.length;i++){
+            $('[name=buildingNames]').append($('<option></option>').attr('value', res.items[i].id).text(res.items[i].name)); 
+        }
+    })
+    .fail(function (request, status, error){  
+        msg = request.status + "<br>" + request.responseText + "<br>" + error;
+        console.log(msg); 
+        alert("건물 목록을 불러 올 수 없습니다.");                          
+    })  
 
         //리스트에 보이는 날짜포맷 변경
      function formatDate(date) {

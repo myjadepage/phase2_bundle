@@ -184,3 +184,17 @@
 <% include inc/modal %>
 <% include inc/bottom %>
 
+<script>
+    //navTitle 쿼리  
+    var name;
+    var address;
+    var itemQuery;       
+    qs();    
+    $('.nav .query_building').attr('href','/properties/<%= id %>/building'+itemQuery );
+    $('.nav .query_doorlock').attr('href','/properties/<%= id %>/doorlock'+itemQuery);
+    $('.nav .query_issuekey').attr('href','/properties/<%= id %>/issuekey'+itemQuery);
+    $('.nav .query_staff').attr('href','/properties/<%= id %>/staff'+itemQuery);
+    $('.nav .query_report').attr('href','/properties/<%= id %>/report'+itemQuery);
+    navTitle(name, address);   
+</script>
+

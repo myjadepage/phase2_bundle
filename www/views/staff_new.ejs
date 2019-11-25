@@ -84,6 +84,30 @@
 <% include inc/bottom %>
 
 <script>
+    //navTitle 쿼리 
+    var name;
+    var address;
+    var itemQuery;   
+    (function qs() {
+        var qsparam = new Array(2);
+        var query = window.location.search.substring(1).split('&');  
+        console.log(query);     
+        for (var i = 0; i < query.length; i++) {
+            var pos = query[i].indexOf('=');
+            if (pos > 0){
+                    var key = decodeURIComponent(query[i].substring(0, pos));
+                    var val = decodeURIComponent(query[i].substring(pos + 1));
+                    qsparam[i] = val;    
+            }                          
+        }
+        name = qsparam[0];
+        address = qsparam[1];
+        itemQuery ='?name=' + name + '&address=' + address;        
+    })();
+    navTitle(name, address);
+
+
+
     var API_KEY = localStorage.getItem('api_key');   
     var id = "<%= id %>";
 
@@ -154,10 +178,15 @@
         }) 
         .done(function (res) {
             console.log(res);
-           
+            $('#newstaffDone').modal('show');  
         })
         .fail(function(jqXHR, textStatus, errorThrown){
             console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
+        }) 
+        .always(function(){ 
+            setTimeout(function(){
+                location.replace('/properties/'+ id+'/staff/');
+            },1500);
         })  
              
     });

@@ -49,7 +49,7 @@
                             </div>
 
                             <button class="btn btn-default btn-fill shadow pull-left" onclick="location='javascript:history.back()'">취소</button>
-                            <button onclick="location='/properties/<%=id%>/building_new'" class="btn btn-primary btn-fill shadow pull-right">빌딩 생성하기</button>
+                            <a href='/properties/<%=id%>/building_new'" class="btn btn-primary btn-fill shadow pull-right query">빌딩 생성하기</a>
                            
                     </div>
                 </div>
@@ -61,6 +61,20 @@
 <%- include inc/bottom %>
 
 <script>
+    //navTitle 쿼리  
+    var name;
+    var address;
+    var itemQuery;       
+    qs();
+    $('.query').prop('href','/properties/<%= id %>/building_new'+itemQuery );    
+    $('.nav .query_building').attr('href','/properties/<%= id %>/building'+itemQuery );
+    $('.nav .query_doorlock').attr('href','/properties/<%= id %>/doorlock'+itemQuery);
+    $('.nav .query_issuekey').attr('href','/properties/<%= id %>/issuekey'+itemQuery);
+    $('.nav .query_staff').attr('href','/properties/<%= id %>/staff'+itemQuery);
+    $('.nav .query_report').attr('href','/properties/<%= id %>/report'+itemQuery);
+    navTitle(name, address);    
+
+
     var API_KEY = localStorage.getItem('api_key');   
     var id = "<%= id%>";
     var url = "properties/" + id + "/buildings";
@@ -79,9 +93,9 @@
             $('#buildingList').show(); 
             res.items.forEach(function(item, i, array){    
                 var date =new Date(item.created_at);        
-                trHtml += "<tr><td>" + formatDate(date) + "</td><td><a href='/properties/" + id + "/room/" + item.id + "'>" + item.name+ "</a></td>";
+                trHtml += "<tr><td>" + formatDate(date) + "</td><td><a href='/properties/" + id + "/room/" + item.id + itemQuery +"'>" + item.name+ "</a></td>";
                 trHtml += "<td>Room : "+item.room_counts + " / Common : " + item.commonrooms.length + "</td>";
-                trHtml += "<td><button onclick=location.href='/properties/" + id + "/building_edit/" + item.buildingtype_id+ "' type='button'  title='수정하기' class='btn btn-simple btn-link'><i class='icon edit'></i></button>";
+                trHtml += "<td><button onclick=location.href='/properties/" + id + "/building_edit/" + item.buildingtype_id + itemQuery +"' type='button'  title='수정하기' class='btn btn-simple btn-link'><i class='icon edit'></i></button>";
                 trHtml += "<button type='button' rel='tooltip' title='객실(공용도어)에 도어락이 설치된 경우,삭제가 불가능합니다. 모바일 앱의 도어락 설치 메뉴에서 해당 도어락을 삭제한 후,  다시 시도해주세요.' class='btn btn-simple btn-link'  data-building_id='" + item.id + "'id='btnDelBuilding'><i class='icon trash'></i></button></td>";
                 trHtml += "</tr>";            
             });       
@@ -104,18 +118,19 @@
             var building_id = $(this).data('building_id');
             console.log(building_id);
             $.ajax({
-                url: endUrl(url) + building_id,
+                url: endUrl(url) + '/'+building_id,
                 method:'delete',
                 contentType: "application/json; charset=utf-8",                
                 headers : headers()
             })
             .done(function(res) {                
-                console.log(res);                 
-                if(res.code == 200){
-                    $('#Delproperty').on('show.modal');                    
-                }else{
-                    alert("삭제 실패");
-                }            
+                console.log(res);
+                location.reload();                 
+                // if(res.code == 200){
+                //     $('#Delproperty').on('show.modal');                    
+                // }else{
+                //     alert("삭제 실패");
+                // }            
             })
             .fail(function (request, status, error){  
                 msg = request.status + "<br>" + request.responseText + "<br>" + error;

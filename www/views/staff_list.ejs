@@ -12,11 +12,7 @@
                         <h4>
                                 <div class="row">
                                     <div class="col-md-3">                                       
-                                        <select class="form-control">
-                                            <option>빌딩이름</option>
-                                            <option>빌라</option>
-                                            <option>카라반</option>
-                                        <select>                                             
+                                        <select class="form-control" name="buildingNames"><select>                                             
                                     </div>  
                                     <div class="col-md-9">            
                                         <button type="submit" class="btn btn-primary pull-right">스텝키 발급 내역</button>                                                                                                   
@@ -58,8 +54,8 @@
                                     </div>
                             </div>
 
-                            <button class="btn btn-default btn-fill shadow pull-left">나가기</button>
-                            <button onclick="location='/properties/<%= id %>/staff_new'" class="btn btn-primary btn-fill shadow pull-right">스텝 등록하기</button>
+                            <button class="btn btn-default btn-fill shadow pull-left" >나가기</button>
+                            <a href='/properties/<%= id %>/staff_new' class="btn btn-primary btn-fill shadow pull-right query">스텝 등록하기</a>
                             
 
                     </div>    
@@ -75,35 +71,7 @@
                 <div class="modal-header">
                    <h5>스텝 정보 상세</h5>
                 </div>
-                <div class="modal-body">                      
-                    <dl>
-                        <dt>Staff name</dt>
-                        <dd>
-                            <label>연락처</label>
-                            <span>+82-10-9999-8888</span>
-                        </dd>
-                        <dd>
-                            <label>스텝 레벨</label>
-                            <span>Master</span>
-                        </dd>
-                        <dd>
-                            <label>등록일</label>
-                            <span>2019-10-01</span>
-                        </dd>
-                        <dd>
-                            <label>보유키</label>
-                            <span>
-                                <strong>마스터키(사용기간 : 2019-10-01 ~ 2099-10-01)</strong>
-                                <strong>스텝키(사용기간 : 2019-10-01 ~ 2099-10-01)</strong>                                
-                            </span>
-                        </dd>
-                        <dd>
-                            <label>메모</label>
-                            <span>미국 시설 단지 마스터</span>
-                        </dd>
-                    </dl>
-                                  
-                </div>
+                <div class="modal-body"> </div>
                 <div class="modal-footer">                   
                     <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
                 </div>
@@ -114,6 +82,20 @@
 <% include inc/bottom %>
 
 <script>
+    //navTitle 쿼리      
+    var name;
+    var address;
+    var itemQuery;       
+    qs();
+    $('.nav .query_building').attr('href','/properties/<%= id %>/building'+itemQuery );
+    $('.nav .query_doorlock').attr('href','/properties/<%= id %>/doorlock'+itemQuery);
+    $('.nav .query_issuekey').attr('href','/properties/<%= id %>/issuekey'+itemQuery);
+    $('.nav .query_staff').attr('href','/properties/<%= id %>/staff'+itemQuery);
+    $('.nav .query_report').attr('href','/properties/<%= id %>/report'+itemQuery);          
+    navTitle(name, address);
+    
+
+    //스테프 리스트 api
     var API_KEY = localStorage.getItem('api_key'); 
     var id = "<%= id%>";
     var url = "properties/" + id + "/staffs";
@@ -135,8 +117,8 @@
             res.items.forEach(function(item, i, array){    
                 var date =new Date(item.created_at);        
                 trHtml +='<tr><td>' + formatDate(date) + '</td><td><a data-toggle="modal" data-target="#viewStaff" data-staff_id="'+ item.id +'" role="button">' + item.name + '</a></td>';
-                trHtml +='<td>' + item.role + ' [ 보유키 : 2개 ]</td>';
-                trHtml +='<td><button onclick="location.href=staff_key" type="button"  title="키발급하기" class="btn btn-simple btn-link"><i class="icon key"></i></button>';
+                trHtml +='<td>' + item.role + ' [ 보유키 : '+ res.total+'개 ]</td>';
+                trHtml +='<td><button onclick=location.href="/properties/'+ id+'/staff_key' + itemQuery +'" type="button"  title="키발급하기" class="btn btn-simple btn-link"><i class="icon key"></i></button>';
                 trHtml +='<button type="button" id="btnDelStaff" data-staff_id="' + item.id + '" data-target="#Delstaff" data-toggle="modal" title="삭제하기" class="btn btn-simple btn-link"><i class="icon trash"></i></button></td></tr>';
             });       
             $('#staffList tbody').append(trHtml);
@@ -198,7 +180,8 @@
             .done(function(res) {                
                 console.log(res);                 
                 if(res.code == 200){
-                   console.log(res);                   
+                   console.log(res);
+                   $('#Delstaff').modal('show');                    
                 }else{
                    $('#DelstaffError').modal('show');
                 }            
@@ -206,9 +189,35 @@
             .fail(function (request, status, error){  
                 msg = request.status + "<br>" + request.responseText + "<br>" + error;
                 console.log(msg);  
+            }) 
+            .always(function(){ 
+                setTimeout(function(){
+                    location.reload();
+                },1500);
             })   
         });
 
+//빌딩리스트
+    var url2 = "properties/" + id + "/buildings";
+    $.ajax({
+        method: "get",
+        url : endUrl(url2),
+        contentType: "application/json; charset=utf-8",
+        headers : headers()
+    })                                                                               
+    .done(function(res) {            
+        console.log(res);
+        $('[name=buildingNames]').empty();
+        $('[name=buildingNames]').append('<option  value="0" value="0" selected="true">빌딩 선택</option>');
+        for(var i=0; i<res.items.length;i++){
+            $('[name=buildingNames]').append($('<option></option>').attr('value', res.items[i].id).text(res.items[i].name)); 
+        }
+    })
+    .fail(function (request, status, error){  
+        msg = request.status + "<br>" + request.responseText + "<br>" + error;
+        console.log(msg); 
+        alert("건물 목록을 불러 올 수 없습니다.");                          
+    })  
 
     
     //리스트에 보이는 날짜포맷 변경

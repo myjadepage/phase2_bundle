@@ -9,11 +9,11 @@
                         <div class="con_default category">
                             <h4 class="text-info">서비스 메뉴선택</h4>
                             <ul>
-                                <li><a href="/properties/<%= id %>/building/"><i class="icon m_property"></i><small>PROPERTY</small></a></li>
-                                <li><a href="/properties/<%= id %>/doorlock/"><i class="icon m_doorlock"></i><small>DOORLOCK</small></a></li>
-                                <li><a href="/properties/<%= id %>/issuekey/"><i class="icon m_issuekey"></i><small>ISSUE KEY</small></a></li>
-                                <li><a href="/properties/<%= id %>/staff/"><i class="icon m_staff"></i><small>STAFF</small></a></li>
-                                <li><a href="/properties/<%= id %>report/"><i class="icon m_report"></i><small>REPORTS</small></a></li>
+                                <li><a href="/properties/<%= id %>/building/" class="query_building"><i class="icon m_property"></i><small>PROPERTY</small></a></li>
+                                <li><a href="/properties/<%= id %>/doorlock/" class="query_doorlock"><i class="icon m_doorlock"></i><small>DOORLOCK</small></a></li>
+                                <li><a href="/properties/<%= id %>/issuekey/" class="query_issuekey"><i class="icon m_issuekey"></i><small>ISSUE KEY</small></a></li>
+                                <li><a href="/properties/<%= id %>/staff/" class="query_staff"><i class="icon m_staff"></i><small>STAFF</small></a></li>
+                                <li><a href="/properties/<%= id %>report/" class="query_report"><i class="icon m_report"></i><small>REPORTS</small></a></li>
                             </ul>
                         </div>
                     </div>
@@ -25,23 +25,23 @@
 <% include inc/modal %>
 <% include inc/bottom %>
 <script> 
+ //navTitle 쿼리 
     var name;
-    var address;     
-    function qs() {
-        var qsparam = new Array(2);
-        var query = window.location.search.substring(1).query.split('&');
-        for (var i = 0; i < query.length; i++) {
-            var pos = query[i].indexOf('=');
-            if (pos > 0){
-                    var key = decodeURIComponent(query[i].substring(0, pos));
-                    var val = decodeURIComponent(query[i].substring(pos + 1));
-                    qsparam[i] = val;    
-            }                          
-        }
-        name = qsparam[0];
-        address = qsparam[1];
-    }                      
-    navTitle(name, address);   
+    var address;
+    var itemQuery; 
+    qs();  
+    $('.nav .query_building').attr('href','/properties/<%= id %>/building'+itemQuery );
+    $('.nav .query_doorlock').attr('href','/properties/<%= id %>/doorlock'+itemQuery);
+    $('.nav .query_issuekey').attr('href','/properties/<%= id %>/issuekey'+itemQuery);
+    $('.nav .query_staff').attr('href','/properties/<%= id %>/staff'+itemQuery);
+    $('.nav .query_report').attr('href','/properties/<%= id %>/report'+itemQuery);  
+    
+    $('.category .query_building').attr('href','/properties/<%= id %>/building'+itemQuery );
+    $('.category .query_doorlock').attr('href','/properties/<%= id %>/doorlock'+itemQuery);
+    $('.category .query_issuekey').attr('href','/properties/<%= id %>/issuekey'+itemQuery);
+    $('.category .query_staff').attr('href','/properties/<%= id %>/staff'+itemQuery);
+    $('.category .query_report').attr('href','/properties/<%= id %>/report'+itemQuery);
+    navTitle(name, address);
 </script>
 
 
