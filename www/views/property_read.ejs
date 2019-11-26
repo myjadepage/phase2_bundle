@@ -16,7 +16,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label>단지 이름</label>
-                                                        <p name="viewName" class="form-control"></p>
+                                                        <p name="name" class="form-control"></p>
                                                     </div>
                                                 </div>                                                        
                                             </div>
@@ -25,17 +25,17 @@
                                                     <div class="row form-group">
                                                         <div class="col-md-6">
                                                             <label>단지 지역정보</label>
-                                                            <p name="viewCountry" class="form-control"></p>  
+                                                            <p name="country_code" class="form-control"></p>  
                                                         </div> 
                                                         <div class="col-md-6 pr-1">
                                                             <label class="txt_hidden">도시선택</label>
-                                                            <p name ="viewCity" class="form-control"></p>                                                                     
+                                                            <p name ="city" class="form-control"></p>                                                                     
                                                         </div> 
                                                         <div class="col-md-12 pl-1 pr-1">                                                                        
-                                                            <p class="form-control"  name="viewTimeZone"></p>                                                                                                                                                                                            
+                                                            <p class="form-control"  name="timeZone"></p>                                                                                                                                                                                            
                                                         </div>
                                                         <div class="col-md-12 pl-1">                                                                        
-                                                            <p class="form-control" value="" name="viewAddress"></p>
+                                                            <p class="form-control" value="" name="address"></p>
                                                         </div>
                                                     </div>  
                                                 </div>
@@ -113,11 +113,11 @@
                 })
                 .done(function(res) { 
                     navTitle(res.name,res.address);    
-                    $('[name="viewName"').text(res.name);
-                    $('[name="viewCountry"').text(res.country_code);
-                    $('[name="viewCity"').text(res.city);
-                    $('[name="viewTimeZone"').text(res.timezone);
-                    $('[name="viewAddress"').text(res.address);
+                    $('[name="name"').text(res.name);
+                    $('[name="country_code"').text(res.country_code);
+                    $('[name="city"').text(res.city);
+                    $('[name="timeZone"').text(res.timezone);
+                    $('[name="address"').text(res.address);
                     for(var i in res.commonrooms){
                         var id = res.commonrooms[i].id;
                         var name = res.commonrooms[i].name;  

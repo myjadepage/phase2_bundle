@@ -41,7 +41,7 @@
     var code;//인증코드
     var AuthTimer;//3분 인증 제한시간
     var countryCode;
-    countryCodejson();//국가코드 선택  
+    countryCodelogin();//국가코드 선택  
     $('select[name="country_code"]').on("change", function(){ 
           countryCode = $(this).val().replace(/\D/g,'');
     });     

@@ -71,13 +71,13 @@
                 var role = res.items[i].staff.role;
                 switch (role){
                     case 'supervisor' : //수퍼바이저일 경우 
-                        liHtml+= '<div class="alert alert-info" style="top:10px; padding:5px 15px;">'+ role +'</div>';break;
+                        liHtml+= '<div class="alert alert-info" style="position: absolute;left: 0;right: 0;bottom: -20px;padding: 5px 15px;">'+ role +'</div>';break;
                     case 'master' :     //마스터일 경우
-                        liHtml+= '<div class="alert alert-success" style="top:10px; padding:5px 15px;">'+ role +'</div>';break;
+                        liHtml+= '<div class="alert alert-success" style="position: absolute;left: 0;right: 0;bottom: -20px;padding: 5px 15px;">'+ role +'</div>';break;
                     case 'manager' :    //매니져일 경우
-                        liHtml+= '<div class="alert alert-warning" style="top:10px; padding:5px 15px;">'+ role +'</div>';break;
+                        liHtml+= '<div class="alert alert-warning" style="position: absolute;left: 0;right: 0;bottom: -20px;padding: 5px 15px;">'+ role +'</div>';break;
                     case 'housekeeping' : //하우스키핑 경우
-                        liHtml+= '<div class="alert alert-danger" style="top:10px; padding:5px 15px;">'+ role +'</div>';break;
+                        liHtml+= '<div class="alert alert-danger" style="position: absolute;left: 0;right: 0;bottom: -20px;padding: 5px 15px;">'+ role +'</div>';break;
                 }               
                 liHtml+='</li>';
                 $('#property_list').prepend(liHtml); 

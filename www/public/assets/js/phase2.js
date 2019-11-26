@@ -311,7 +311,7 @@ function characterCheck(obj) {
  *      국가코드  json
  */
 
-function countryCodejson(){  
+function countryCodelogin(){  
     $.ajax({
         url : '/countries', //json 불러오기 router이용해서 불러옴
         dataType :'json',
@@ -326,6 +326,24 @@ function countryCodejson(){
         error: function(jqXHR, textStatus, errorThrown){
           console.log('Error: ' + textStatus + ' - ' + errorThrown);   
           alert("국가코드의 내용을 불러 올 수 없습니다.");                   
+        }    
+    });      
+}
+function countryCodejson(){  
+    $.ajax({
+        url : '/countries', //json 불러오기 router이용해서 불러옴
+        dataType :'json',
+        success : function (data) {
+            $('select[name="country_code"]').empty();
+            $('select[name="country_code"]').append('<option  value="0" selected="true" disabled>국가 코드 선택</option>');
+            $('select[name="country_code"]').prop('selectedIndex', 0);         
+            $.each(data, function (key, entry) {                
+                $('select[name="country_code"]').append($('<option></option>').attr('value', key).text(entry.name ));                          
+            })
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+          console.log('Error: ' + textStatus + ' - ' + errorThrown);   
+          alert("국가코드를 불러 올 수 없습니다.");                   
         }    
     });      
 }

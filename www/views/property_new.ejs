@@ -238,33 +238,64 @@
             if(type == 0){
                 alert("단지 타입을 선택해 주세요");  
             }else{
-                chkAdd(name,address);//같은 단지 다른주소 생성 체크(같은 단지 같은 주소 안됨)
 
-                 //입력박스 체크 뒤 api 호출 
-                var params ={};
-                if(!(name == "")) params.name = name;
-                if(!(country_code == 0)) params.country_code = country_code;
-                if(!(timezone == 0 )) params.timezone = timezone;
-                if(!(address == "")) params.address = address;
-                if(!(city == "")) params.city = city;        
-                if(!(image_url == "")) params.image_url = image_url;
-                if(!(commonrooms == "")) params.commonrooms = commonrooms; 
-                
-                //단지 생성 API         
+                //같은 단지 다른주소 생성 체크(같은 단지 같은 주소 안됨)
+                var cnt =0;
                 $.ajax({
-                    url : endUrl(url),            
+                    url : endUrl(url),
+                    method:'get',
                     contentType: "application/json; charset=utf-8",
-                    type:'POST',           
-                    headers : headers(),              
-                    data:JSON.stringify(params)
-                }) 
-                .done(function (res) {
-                    console.log(res);
-                    location.href='/propery_new_done/'+ res.id;
+                    headers : headers()
                 })
-                .fail(function(jqXHR, textStatus, errorThrown){
-                    console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
-                })  
+                .done(function(res) {  
+                    console.log(res); 
+                    for(var i=0; i<res.items.length; i++){                
+                        if(name == res.items[i].name && address == res.items[i].address){ 
+                            cnt++;                 
+                        }                
+                    }    
+                    if(cnt >=1){                   
+                        alert("동일한 단지에 동일한 주소가 존재합니다. 다른 주소를 입력해 주세요");
+                        $('input[name="address"]').focus();
+                        $('input[name="address"]').val("");
+                    }else{
+
+
+
+                        //입력박스 체크 뒤 api 호출 
+                        var params ={};
+                        if(!(name == "")) params.name = name;
+                        if(!(country_code == 0)) params.country_code = country_code;
+                        if(!(timezone == 0 )) params.timezone = timezone;
+                        if(!(address == "")) params.address = address;
+                        if(!(city == "")) params.city = city;        
+                        if(!(image_url == "")) params.image_url = image_url;
+                        if(!(commonrooms == "")) params.commonrooms = commonrooms; 
+                        
+                        //단지 생성 API         
+                        $.ajax({
+                            url : endUrl(url),            
+                            contentType: "application/json; charset=utf-8",
+                            type:'POST',           
+                            headers : headers(),              
+                            data:JSON.stringify(params)
+                        }) 
+                        .done(function (res) {
+                            console.log('ok',res);
+                            // location.href='/propery_new_done/'+ res.id;
+                        })
+                        .fail(function(jqXHR, textStatus, errorThrown){
+                            console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
+                        })  
+                    }
+
+
+                                    
+                })
+                .fail(function (request, status, error){  
+                    msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                    console.log(msg);                           
+                })                  
             }
         }
     });
@@ -365,30 +396,6 @@
          } else { 
             alert("선택된 데이터가 없습니다.");  
          }       
-    }
-
-     //같은 단지 다른주소 생성 체크(같은 단지 같은 주소 안됨)
-     function chkAdd(name,address){            
-         $.ajax({
-            url : endUrl(url),
-            method:'get',
-            contentType: "application/json; charset=utf-8",
-            headers : headers()
-        })
-        .done(function(res) {  
-            console.log(res); 
-            for(var i=0; i<res.items.length; i++){                
-                if(name == res.items[i].name && address == res.items[i].address){
-                    alert("동일한 단지에 동일한 주소가 존재합니다. 다른 주소를 입력해 주세요");
-                    $('input[name="address"]').focus();
-                    $('input[name="address"]').val("");
-                }
-            }             
-        })
-        .fail(function (request, status, error){  
-            msg = request.status + "<br>" + request.responseText + "<br>" + error;
-            console.log(msg);                           
-        }) 
     }
 
 </script>

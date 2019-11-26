@@ -17,7 +17,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label>단지 이름</label>
-                                                        <input type="text" class="form-control" name="viewName">
+                                                        <input type="text" class="form-control" name="name" onFocus='this.value=""; return false;'>
                                                     </div>
                                                 </div>                                                        
                                             </div>
@@ -30,7 +30,7 @@
                                                                 </div> 
                                                                 <div class="col-md-6 pr-1">
                                                                     <label class="txt_hidden">도시입력</label>
-                                                                    <input type="text" class="form-control" id="local" name="viewCity">                                                                  
+                                                                    <input type="text" class="form-control" id="local" name="city" >                                                                     
                                                                 </div> 
                                                                 <div class="col-md-12 pl-1 pr-1">                                                                        
                                                                     <select class="form-control"  name="timezone"></select>                                                                                                                                                                                            
@@ -94,7 +94,7 @@
                                                             </tr>
                                                     </table>
 
-                                                   <table class="table" id="readDoorList" >
+                                                   <table class="table" id="readDoorList" style="display: none;"> 
                                                         <colgroup>
                                                             <col width="10%">
                                                             <col width="*">
@@ -149,34 +149,30 @@
 <% include inc/bottom %>
 
 <script>
-     countryCodejson();//국가코드 선택  
+    //프라퍼티 상세보기 api
+    countryCodejson();//국가코드 선택  
     $('select[name="country_code"]').on("change", function(){ 
         $(this).val().replace(/\D/g,'');
     });
     timeZone(); // 타임존선택 timeZone
     dayTimeset();////day-type-offset option
-  
-    //프라퍼티 상세보기  
+
     var API_KEY = localStorage.getItem('api_key'); 
     var url = 'properties/';                  
     var id = "<%= id %>";  
       
-    $.ajax({                   
-        //property 상세보기 api
+    $.ajax({  
         url : endUrl(url)+ id ,
         method:'get',
-        contentType: "application/json; charset=utf-8",
-        data:{
-            property_id : id
-        },
+        contentType: "application/json; charset=utf-8",        
         headers : headers()
     })
     .done(function(res) { 
         console.log(res);    
         navTitle(res.name,res.address);    
-        $('[name="viewName"]').val(res.name);
+        $('[name="name"]').val(res.name);
         $('[name="country_code"]').val(res.country_code);
-        $('[name="viewCity"]').val(res.city);
+        $('[name="city"]').val(res.city);
         $('[name="timezone"]').val(res.timezone);
         $('[name="address"]').val(res.address);
         $('[name="day_type_offset"]').val(res.day_type_offset);
@@ -184,14 +180,16 @@
             var id = res.commonrooms[i].id;
             var name = res.commonrooms[i].name;  
             var rowItem = '<tr><td scope="col"><div class="form-check"><label class="form-check-label"><input class="form-check-input" type="checkbox" name="chkObject" value=""><span class="form-check-sign"></span></label></div></td>';
-    rowItem += '<td class="commonDoor">'+ name + '</td><td class="td-actions text-right">';
-    rowItem += '<button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-common_id="' + id + '" name ="editName" class="btn btn-info btn-simple btn-link "><i class="fa fa-edit"></i></button></td></tr>';
+            rowItem += '<td class="commonDoor">'+ name + '</td><td class="td-actions text-right">';
+            rowItem += '<button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-common_id="' + id + '" name ="editName" class="btn btn-info btn-simple btn-link "><i class="fa fa-edit"></i></button></td></tr>';
             $('#readDoorList tbody').append(rowItem);
         }
          // 테이블에 tr행 개수 
         var doorCnt = $('#readDoorList tbody tr').length;
         if(doorCnt > 0){
             $('#doorCnt').text(doorCnt);
+            $('#noDoorList').hide(); 
+            $('#readDoorList').show(); 
         }else if(doorCnt == 0){
             $('#noDoorList').show(); 
             $('#readDoorList').hide(); 
@@ -230,85 +228,71 @@
             if(type == 0){
                 alert("단지 타입을 선택해 주세요");  
             }else{
-                chkAdd(name,address);//같은 단지 다른주소 생성 체크(같은 단지 같은 주소 안됨)
 
-                 //입력박스 체크 뒤 api 호출 
-                var params ={};
-                if(!(name == "")) params.name = name;
-                if(!(country_code == 0)) params.country_code = country_code;
-                if(!(timezone == 0 )) params.timezone = timezone;
-                if(!(address == "")) params.address = address;
-                if(!(city == "")) params.city = city;        
-                if(!(image_url == "")) params.image_url = image_url;               
-                
-                //단지 생성 API         
-                $.ajax({
-                    url : endUrl(url)+ id ,            
-                    contentType: "application/json; charset=utf-8",
-                    type:'PUT',           
-                    headers : headers(),              
-                    data:JSON.stringify(params)
-                }) 
-                .done(function (res) {
-                    console.log(res);
-                    location.href='/propery_new_done/'+ res.id;
-                })
-                .fail(function(jqXHR, textStatus, errorThrown){
-                    console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
-                })  
+                //같은 단지 다른주소 생성 체크(같은 단지 같은 주소 안됨)
+                for(var i=0; i<res.items.length; i++){                
+                    if(name == res.items[i].name && address == res.items[i].address){ 
+                        cnt++;                 
+                    }                
+                }    
+                if(cnt >=1){                   
+                    alert("동일한 단지에 동일한 주소가 존재합니다. 다른 주소를 입력해 주세요");
+                    $('input[name="address"]').focus();
+                    $('input[name="address"]').val("");
+                }else{
+
+                    //입력박스 체크 뒤 api 호출 
+                    var params ={};
+                    if(!(name == "")) params.name = name;
+                    if(!(country_code == 0)) params.country_code = country_code;
+                    if(!(timezone == 0 )) params.timezone = timezone;
+                    if(!(address == "")) params.address = address;
+                    if(!(city == "")) params.city = city;        
+                    if(!(image_url == "")) params.image_url = image_url;               
+                        
+                    $.ajax({
+                        url : endUrl(url)+ id ,            
+                        contentType: "application/json; charset=utf-8",
+                        type:'PUT',           
+                        headers : headers(),              
+                        data:JSON.stringify(params)
+                    }) 
+                    .done(function (res) {
+                        console.log(res);
+                        $("#editPropertyDone").modal('show'); 
+                    })
+                    .fail(function(jqXHR, textStatus, errorThrown){
+                        console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
+                    })  
+                    .always(function(){ 
+                        setTimeout(function(){
+                            location.replace('/');
+                        },1500);
+                    })
+                }
             }
         }
     });
 
 
-  //같은 단지 다른주소 생성 체크(같은 단지 같은 주소 안됨)
-  function chkAdd(name,address){            
-         $.ajax({
-            url : endUrl(url),
-            method:'get',
-            contentType: "application/json; charset=utf-8",
-            headers : headers()
-        })
-        .done(function(res) {  
-            console.log(res); 
-            for(var i=0; i<res.items.length; i++){                
-                if(name == res.items[i].name && address == res.items[i].address){
-                    alert("동일한 단지에 동일한 주소가 존재합니다. 다른 주소를 입력해 주세요");
-                    $('input[name="address"]').focus();
-                    $('input[name="address"]').val("");
-                }
-            }             
-        })
-        .fail(function (request, status, error){  
-            msg = request.status + "<br>" + request.responseText + "<br>" + error;
-            console.log(msg);                           
-        }) 
-    }
-
-
-
-
-
 //공용도어 추가  
     var commonrooms =[]; //공용도어 배열
     $('#btnDoorName').on('click', function(){
-        var url="properties/"+id+"/commonrooms";  
+        var url="properties/"+ id + "/commonrooms";          
         commonrooms =  commonArray(); 
         var doorname =$('#readDoorName').val();
+
         if(doorname !== ""){ 
             if(commonrooms.length > 0){
                 for(var i=0; i< commonrooms.length;i++){
                     if(doorname == commonrooms[i]){
                         alert("동일한 이름의 공용도어가 존재합니다. 다른 이름을 입력해 주세요");                   
-                        $('#newDoorName').val('');                        
+                        $('#readDoorName').val('');                        
                         return false;
                     }
                 }
-                $("#newDoorDone").modal('show');  
-                addDoorTr(doorname); ////공용도어 tr 동적추가 
-
-
-                $.ajax({
+            }
+            $.ajax({
                     url : endUrl(url),
                     method:'post',
                     contentType: "application/json; charset=utf-8",        
@@ -318,25 +302,18 @@
                     })
                 })
                 .done(function(res) {  
-                    console.log(res); 
-                    $("#newDoorDone").modal('show');
-                    setTimeout(function(){
-                        location.reload();
-                    },1500);                    
+                    console.log(res);                    
+                    addDoorTr(res.name, res.id);               
+                    $('#doorCnt').text(doorCnt + 1); 
+                    $("#newDoorDone").modal('show');  
+                    $('#noDoorList').hide();  
+                    $('#readDoorList').show();
                 })
                 .fail(function (request, status, error){  
                     msg = request.status + "<br>" + request.responseText + "<br>" + error;
                     console.log(msg);                           
-                })     
-                
-                
-            } else if(commonrooms.length == 0){ 
-                $("#newDoorDone").modal('show');  
-                $('#noDoorList').hide();  
-                $('#newDoorList').show(); 
-                addDoorTr(doorname);               
-                $('#doorCnt').text(doorCnt + 1); 
-            }
+                })
+
         }else{
             alert("공용도어의 이름을 입력해 주세요");
         }
@@ -351,29 +328,27 @@ function commonArray(){
         return commonrooms;
     }
 //공용도어 tr 동적추가
-function addDoorTr(doorname){
+function addDoorTr(doorname, id){
     var rowItem = '<tr><td scope="col"><div class="form-check"><label class="form-check-label"><input class="form-check-input" type="checkbox" name="chkObject" value=""><span class="form-check-sign"></span></label></div></td>';
     rowItem += '<td class="commonDoor">'+ doorname + '</td><td class="td-actions text-right">';
-    rowItem += '<button type="button" rel="tooltip" title="수정하기" data-toggle="modal" data-doorname="'+ doorname+'" data-target="#EditName" name ="editName" class="btn btn-info btn-simple btn-link"><i class="fa fa-edit"></i></button></td></tr>';
-    $('#newDoorList tbody').append(rowItem);
-    $('#newDoorName').val(''); 
+    rowItem += '<button type="button" rel="tooltip" title="수정하기" data-toggle="modal" data-doorname="'+ doorname+'" data-common_id="'+ id +'" data-target="#EditName" name ="editName" class="btn btn-info btn-simple btn-link"><i class="fa fa-edit"></i></button></td></tr>';
+    $('#readDoorList tbody').append(rowItem);
+    $('#readDoorName').val(''); 
     commonrooms =  commonArray();
 }
 
 
-
-
-
-
     // 공용도어락 삭제
     function fn_delRow(chkObjNm) {  
-        var commonId= $('[name=editName]').data('common_id');           
+        var commonId= $('[name=editName]').data('common_id');     
+        console.log(commonId);      
         var url= 'properties/' + id + '/commonrooms/' + commonId;
         if ($("input[name="+chkObjNm+"]").is(":checked")){ 
             if (confirm("삭제 하시겠습니까?")) { 
                 for(var i=$("[name='"+chkObjNm+"']:checked").length-1; i>-1; i--){ 
                     $("[name='"+chkObjNm+"']:checked").eq(i).closest("tr").remove();                   
                 } 
+
                 $.ajax({
                     url: endUrl(url),
                     method:'delete',
@@ -382,7 +357,7 @@ function addDoorTr(doorname){
                 })
                 .done(function(res) {                
                     console.log(res); 
-                    location.reload();
+                    // location.reload();
                     // if(res.code == 200){
                     //     $('#Delproperty').modal('show', function(e) { 
                     //         var name = $(e.relatedTarget).data('property_name');
