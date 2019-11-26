@@ -18,9 +18,9 @@
                                     <div class="col-md-3">                                       
                                             <select class="form-control">
                                                 <option>도어타입 선택</option>
-                                                <option>전체</option>
-                                                <option>객실</option>
-                                                <option>공용도어</option>
+                                                <option value="all">전체</option>
+                                                <option value="room">객실</option>
+                                                <option value="commonroom">공용도어</option>
                                             <select>                                             
                                     </div>
                                     <button class="btn btn-primary btn-fill" id="btnSearchType">검색</button>                                                                                                
@@ -41,7 +41,7 @@
                                                 <th>도어타입</th>
                                                 <th>설치상태</th>
                                                 <th>설치일</th>                                              
-                                                <th>정렬: 이름순/설치 상태</th>
+                                                <th>정렬<select><option>이름순</option><option>설치상태</option></select></th>
                                             </thead>
                                             <tbody class="doorlock_list"></tbody>
                                             <tbody class="doorlock_nolist">

@@ -539,6 +539,23 @@ button>i.key{
     height: 12px;
     background-position: -49px -99px;
 } 
+a>i.trash{
+    width: 15px;
+    height: 19px;
+    background-position: -35px -118px;
+} 
+a>i.edit{
+    position: relative;
+    top: 4px;
+    width: 23px;
+    height: 21px;
+    background-position: -74px -117px;
+} 
+a>i.key{
+    width: 22px;
+    height: 12px;
+    background-position: -49px -99px;
+} 
 
 /* 팝업창아이콘 */
 .modal .setting_choice a>i.icon.edit {    
