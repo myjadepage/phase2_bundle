@@ -1,194 +1,192 @@
-
 <%- include('inc/head') %>
-<%- include('inc/sidebar') %>
-<%- include('inc/nav') %>
+    <%- include('inc/sidebar') %>
+        <%- include('inc/nav') %>
 
-        <div class="content">
-            <div class="">
-                <div class="row">                   
-                            <div class="col-md-6">
-                                        <div class="card card-h2">
-                                            <div class="card-header">
-                                                <h5 class="card-title">스텝 등록</h5>
-                                            </div> 
-                                            <div class="card-body">
-                                                <form>
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="row form-group">
-                                                                <div class="col-md-12 pr-1">                                                               
-                                                                    <label>스텝 권한 선택</label>
-                                                                    <select class="form-control" name="property_list"></select> <!--단지선택-->
-                                                                </div>
-                                                                <div class="col-md-12 pl-1">                                                                    
-                                                                    <select class="form-control" name="role">
+            <div class="content">
+                <div class="">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card card-h2">
+                                <div class="card-header">
+                                    <h5 class="card-title">스텝 등록</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row form-group">
+                                                    <div class="col-md-12 pr-1">
+                                                        <label>스텝 권한 선택</label>
+                                                        <select class="form-control" name="property_list"></select>
+                                                        <!--단지선택-->
+                                                    </div>
+                                                    <div class="col-md-12 pl-1">
+                                                        <select class="form-control" name="role">
                                                                         <option value="0">스텝 레벨 선택</option>
                                                                         <option value="supervisor">Supervisor (수퍼바이저)</option>
                                                                         <option value="manager">Manager (매니저)</option>
                                                                         <option value="master">Master (마스터)</option>
                                                                         <option value="housekeeping">Housekeeping (하우스키핑)</option>
                                                                     </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>                                                        
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="col-md-12">                                                           
-                                                                <div class="row form-group">
-                                                                    <div class="col-md-12 pr-1">
-                                                                        <label>스텝 정보 입력</label>
-                                                                        <input class="form-control" name="name" type="text" placeholder="스텝 이름 입력">
-                                                                    </div>
-                                                                    <div class="col-md-12 pr-1 pl-1"> 
-                                                                        <!-- 국가번호 -->
-                                                                            <select class="form-control" id="CountryCode" name="country_code"></select>
-                                                                    </div> 
-                                                                    <div class="col-md-12 pl-1">  
-                                                                            <input class="form-control" name="phone" type="text"  maxlength="13" placeholder="상세 전화번호 입력 (숫자만 입력해 주세요)">                                                                                                                                                                                
-                                                                      
-                                                                    </div>                                                           
-                                                                </div>  
-                                                        </div>
-                                                    </div>                                          
-                                                </form>
+                                                </div>
                                             </div>
                                         </div>
-                            </div>
-                            <div class="col-md-6">
-                                        <div class="card  card-h2">
-                                            <div class="card-header">
-                                                <h5 class="card-title">스텝 메모 입력</h5>                                      
-                                            </div> 
-                                            <div class="card-body">                                                      
-                                                <textarea id="staffMemo" name="desc" placeholder="메모 입력"></textarea> 
-                                                <ul>
-                                                    <li><small>작성자만 볼 수 있습니다.</small></li>
-                                                    <li><small>한번 작성한 내용은 수정이 불가합니다.</small></li>
-                                                </ul>                                                   
-                                            </div>                                           
-                                        </div>
-                            </div>
-                            <div class="clearfix"></div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row form-group">
+                                                    <div class="col-md-12 pr-1">
+                                                        <label>스텝 정보 입력</label>
+                                                        <input class="form-control" name="name" type="text" placeholder="스텝 이름 입력">
+                                                    </div>
+                                                    <div class="col-md-12 pr-1 pl-1">
+                                                        <!-- 국가번호 -->
+                                                        <select class="form-control" id="CountryCode" name="country_code"></select>
+                                                    </div>
+                                                    <div class="col-md-12 pl-1">
+                                                        <input class="form-control" name="phone" type="text" maxlength="13" placeholder="상세 전화번호 입력 (숫자만 입력해 주세요)">
 
-                            <div class="col-md-12 text-center">
-                                <button type="reset" class="btn btn-default btn-fill shadow pull-left">나가기</button>
-                                <button type="button" class="btn btn-fill btn-primary shadow pull-right" id="btnNewStaff">스텝 등록 완료</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                   
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card  card-h2">
+                                <div class="card-header">
+                                    <h5 class="card-title">스텝 메모 입력</h5>
+                                </div>
+                                <div class="card-body">
+                                    <textarea id="staffMemo" name="desc" placeholder="메모 입력"></textarea>
+                                    <ul>
+                                        <li><small>작성자만 볼 수 있습니다.</small></li>
+                                        <li><small>한번 작성한 내용은 수정이 불가합니다.</small></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="col-md-12 text-center">
+                            <button type="reset" class="btn btn-default btn-fill shadow pull-left">나가기</button>
+                            <button type="button" class="btn btn-fill btn-primary shadow pull-right" id="btnNewStaff">스텝 등록 완료</button>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-        </div>
 
-<% include inc/footer %>
-<% include inc/modal %>
-<% include inc/bottom %>
-
-<script>
-    //navTitle 쿼리 
-    var name;
-    var address;
-    var itemQuery;   
-    (function qs() {
-        var qsparam = new Array(2);
-        var query = window.location.search.substring(1).split('&');  
-        console.log(query);     
-        for (var i = 0; i < query.length; i++) {
-            var pos = query[i].indexOf('=');
-            if (pos > 0){
-                    var key = decodeURIComponent(query[i].substring(0, pos));
-                    var val = decodeURIComponent(query[i].substring(pos + 1));
-                    qsparam[i] = val;    
-            }                          
-        }
-        name = qsparam[0];
-        address = qsparam[1];
-        itemQuery ='?name=' + name + '&address=' + address;        
-    })();
-    navTitle(name, address);
+            <%- include inc/footer %>
+                <%- include inc/modal %>
+                    <%- include inc/bottom %>
+                        <script>
+                            //navTitle 쿼리 
+                            var name;
+                            var address;
+                            var itemQuery;
+                            (function qs() {
+                                var qsparam = new Array(2);
+                                var query = window.location.search.substring(1).split('&');
+                                console.log(query);
+                                for (var i = 0; i < query.length; i++) {
+                                    var pos = query[i].indexOf('=');
+                                    if (pos > 0) {
+                                        var key = decodeURIComponent(query[i].substring(0, pos));
+                                        var val = decodeURIComponent(query[i].substring(pos + 1));
+                                        qsparam[i] = val;
+                                    }
+                                }
+                                name = qsparam[0];
+                                address = qsparam[1];
+                                itemQuery = '?name=' + name + '&address=' + address;
+                            })();
+                            navTitle(name, address);
 
 
+                            var API_KEY = localStorage.getItem('api_key');
+                            var id = "<%= id %>";
 
-    var API_KEY = localStorage.getItem('api_key');   
-    var id = "<%= id %>";
 
+                            // 단지선택
+                            var url = 'properties'
+                            $.ajax({
+                                    url: endUrl(url),
+                                    method: 'get',
+                                    contentType: "application/json; charset=utf-8",
+                                    headers: headers()
+                                })
+                                .done(function(res) {
+                                    console.log(res);
+                                    $('select[name="property_list"]').empty();
+                                    $('select[name="property_list"]').append('<option value="0" selected="true" >단지 선택</option>');
+                                    $('select[name="property_list"]').prop('selectedIndex', 0);
+                                    for (var i of res.items) {
+                                        $('select[name="property_list"]').append($('<option></option>').attr('value', i.id).text(i.name));
+                                    }
+                                })
+                                .fail(function(request, status, error) {
+                                    msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                                    console.log(msg);
+                                    alert("단지를 불러올 수 없습니다.");
+                                })
 
-    // 단지선택
-    var url ='properties'  
-    $.ajax({
-        url: endUrl(url),
-        method:'get',
-        contentType: "application/json; charset=utf-8",
-        headers : headers()
-    })
-    .done(function(res) {  
-        console.log(res);        
-        $('select[name="property_list"]').empty();
-        $('select[name="property_list"]').append('<option value="0" selected="true" >단지 선택</option>');
-        $('select[name="property_list"]').prop('selectedIndex', 0); 
-        for(var i of res.items){
-            $('select[name="property_list"]').append($('<option></option>').attr('value', i.id).text(i.name)); 
-        }
-    })
-    .fail(function (request, status, error){  
-        msg = request.status + "<br>" + request.responseText + "<br>" + error;
-        console.log(msg);                           
-        alert("단지를 불러올 수 없습니다.");    
-    }) 
+                            //스텝등록
+                            //국가코드 선택 및 전번입력
+                            var countryCode;
+                            countryCodejson();
+                            $('select[name="country_code"]').on("change", function() {
+                                countryCode = $(this).val().replace(/\D/g, '');
+                            });
 
-    //스텝등록
-    //국가코드 선택 및 전번입력
-    var countryCode;
-    countryCodejson();
-    $('select[name="country_code"]').on("change", function(){ 
-          countryCode = $(this).val().replace(/\D/g,'');
-    });   
-    
-    $('#btnNewStaff').on('click',function(){  
-        var userNumber = $('input[name=phone]').val().replace(/(^0+)/, "");  //맨 앞 "0"제거
-        var phone_number = countryCode + userNumber; 
-        var name = $('input[name="name"]').val();
-        var role = $('select[name="role"] option:selected').val(); 
-        var desc = $('textarea[name="desc"]').val();
+                            $('#btnNewStaff').on('click', function() {
+                                var userNumber = $('input[name=phone]').val().replace(/(^0+)/, ""); //맨 앞 "0"제거
+                                var phone_number = countryCode + userNumber;
+                                var name = $('input[name="name"]').val();
+                                var role = $('select[name="role"] option:selected').val();
+                                var desc = $('textarea[name="desc"]').val();
 
-        if(countryCode == "0"){
-            alert("국가코드를 선택해 주세요");    
-        }else if(role == '0'){
-            alert("스태프 직책을 선택해 주세요");
-        }else if(name == ""){
-            alert("스텝이름을 입력해 주세요");    
-        }else if(phone_number == ""){
-            alert("전화번호를 입력해 주세요");    
-        }
-        //입력박스 체크 뒤 api 호출 
-        var params ={};
-        params.name = name;
-        params.phone_number = phone_number;
-        params.role = role;
-        if(!(desc == "")){
-            params.desc = desc;
-        }
-        console.log(JSON.stringify(params));
-        var url="properties/" + id + "/staffs";
-        $.ajax({
-            url : endUrl(url),            
-            contentType: "application/json; charset=utf-8",
-            type:'POST',           
-            headers : headers(),              
-            data:JSON.stringify(params)
-        }) 
-        .done(function (res) {
-            console.log(res);
-            $('#newstaffDone').modal('show');  
-        })
-        .fail(function(jqXHR, textStatus, errorThrown){
-            console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
-        }) 
-        .always(function(){ 
-            setTimeout(function(){
-                location.replace('/properties/'+ id+'/staff/');
-            },1500);
-        })  
-             
-    });
+                                if (countryCode == "0") {
+                                    alert("국가코드를 선택해 주세요");
+                                } else if (role == '0') {
+                                    alert("스태프 직책을 선택해 주세요");
+                                } else if (name == "") {
+                                    alert("스텝이름을 입력해 주세요");
+                                } else if (phone_number == "") {
+                                    alert("전화번호를 입력해 주세요");
+                                }
+                                //입력박스 체크 뒤 api 호출 
+                                var params = {};
+                                params.name = name;
+                                params.phone_number = phone_number;
+                                params.role = role;
+                                if (!(desc == "")) {
+                                    params.desc = desc;
+                                }
+                                console.log(JSON.stringify(params));
+                                var url = "properties/" + id + "/staffs";
+                                $.ajax({
+                                        url: endUrl(url),
+                                        contentType: "application/json; charset=utf-8",
+                                        type: 'POST',
+                                        headers: headers(),
+                                        data: JSON.stringify(params)
+                                    })
+                                    .done(function(res) {
+                                        console.log(res);
+                                        $('#newstaffDone').modal('show');
+                                    })
+                                    .fail(function(jqXHR, textStatus, errorThrown) {
+                                        console.log('Error: ' + textStatus + ' - ' + errorThrown);
 
-</script>
+                                    })
+                                    .always(function() {
+                                        setTimeout(function() {
+                                            location.replace('/properties/' + id + '/staff/');
+                                        }, 1500);
+                                    })
+
+                            });
+                        </script>

@@ -1,29 +1,32 @@
-<%- include('inc/head') %> 
-<%- include('inc/sidebar') %>
-<%- include('inc/nav') %>
+<%- include('inc/head') %>
+    <%- include('inc/sidebar') %>
+        <%- include('inc/nav') %>
 
-        <div class="content">
-            <div class="">
-                <div class="row">
-                    <div class="col-md-12">
+            <div class="content">
+                <div class="">
+                    <div class="row">
+                        <div class="col-md-12">
                             <div class="input-group">
-                                    <span class="input-group-btn">
+                                <span class="input-group-btn">
                                       <button class="btn btn-default" type="button"><i class="nc-icon nc-zoom-split"></i></button>                                          
                                     </span>
-                                    <input type="text" class="form-control" placeholder="Search for keyword">
-                            </div><!-- /input-group -->
+                                <input type="text" class="form-control" placeholder="Search for keyword">
+                            </div>
+                            <!-- /input-group -->
 
                             <h4>
                                 <div class="row">
-                                    <div class="col-md-3">                                       
-                                        <select class="form-control">
-                                            <option>리포트 종류 선택</option>
-                                            <option>스태프 리포트 조회</option>
-                                            <option>시설 정보 리포트 조회</option>
+                                    <div class="col-md-3">
+                                        <select class="form-control" name="reports">
+                                            <option value="0">리포트 종류 선택</option>
+                                            <option value="staff">스태프 리포트 조회</option>
+                                            <option value="facilities">시설 정보 리포트 조회</option>
                                         <select>                                             
                                     </div> 
                                     <div class="col-md-3">                                       
-                                        <select class="form-control" name="buildingNames"><select>                                                 
+                                        <select class="form-control" name="buildingNames">
+                                                <option>선택</option>
+                                        <select>                                                 
                                     </div>  
                                     <div class="col-md-6">            
                                         <button type="submit" class="btn btn-primary pull-right">Excel 저장</button>                                                                                                   
@@ -33,7 +36,7 @@
                             </h4>
                             <div class="card">                                   
                                     <div class="content table-responsive table-full-width">
-                                        <table class="table table-hover">
+                                        <table class="table table-hover" id="reportList">
                                             <colgroup>
                                                 <col width="20%">
                                                 <col width="*">
@@ -47,12 +50,12 @@
                                                 <th>정렬:생성일 기준</th>
                                             </thead>
                                             <tbody>
-                                                <tr>                                                  
+                                                <!-- <tr>                                                  
                                                     <td>DD-MMM-YYYY  HH:MM</td>
                                                     <td><a data-target="#viewStaff" data-toggle="modal" role="button">Staff name 1A</a></td>  
                                                     <td>마스터 [ 보유키 : 2개 ]</td>                                                  
                                                     <td></td>
-                                                </tr>                                              
+                                                </tr>                                               -->
                                             </tbody>
                                         </table>        
                                     </div>
@@ -83,64 +86,208 @@
     navTitle(name, address);  
         
         
-    //빌딩선택 api
+    // //빌딩선택 api
     var API_KEY = localStorage.getItem('api_key');   
     var id = "<%= id%>";
     var url = "properties/" + id + "/buildings";
-    $.ajax({
-        method: "get",
-        url : endUrl(url),
-        contentType: "application/json; charset=utf-8",
-        headers : headers()
-    })                                                                               
-    .done(function(res) {            
-        console.log(res); 
-        $('[name=buildingNames]').empty();
-        $('[name=buildingNames]').append('<option  value="0" value="0" selected="true">빌딩 선택</option>');
-        for(var i=0; i<res.items.length;i++){
-            $('[name=buildingNames]').append($('<option></option>').attr('value', res.items[i].id).text(res.items[i].name)); 
-        }                    
-    })
-    .fail(function (request, status, error){  
-        msg = request.status + "<br>" + request.responseText + "<br>" + error;
-        console.log(msg); 
-        alert("건물 목록을 불러 올 수 없습니다.");                          
-    })  
-
-    //스텝 리포트 조회
-    var url2="properties/"+ id+"/reports/staffs"
-    $.ajax({
-        method: "get",
-        url : endUrl(url2),
-        contentType: "application/json; charset=utf-8",
-        headers : headers()
-    })  
-    .done(function(res) {            
-        console.log(res); 
-    })
-    .fail(function (request, status, error){  
-        msg = request.status + "<br>" + request.responseText + "<br>" + error;
-        console.log(msg); 
-        alert("리포트를 불러 올 수 없습니다.");                          
-    })  
-
-    //스텝 리포트 조회
-    var url3="properties/"+id+"/reports/facilities"
-    $.ajax({
-        method: "get",
-        url : endUrl(url3),
-        contentType: "application/json; charset=utf-8",
-        headers : headers()
-    })  
-    .done(function(res) {            
-        console.log(res); 
-    })
-    .fail(function (request, status, error){  
-        msg = request.status + "<br>" + request.responseText + "<br>" + error;
-        console.log(msg); 
-        alert("리포트를 불러 올 수 없습니다.");                          
-    })  
+    // $.ajax({
+    //     method: "get",
+    //     url : endUrl(url),
+    //     contentType: "application/json; charset=utf-8",
+    //     headers : headers()
+    // })                                                                               
+    // .done(function(res) {            
+    //     console.log(res); 
+    //     $('[name=buildingNames]').empty();
+    //     $('[name=buildingNames]').append('<option  value="0" value="0" selected="true">빌딩 선택</option>');
+    //     for(var i=0; i<res.items.length;i++){
+    //         $('[name=buildingNames]').append($('<option></option>').attr('value', res.items[i].id).text(res.items[i].name)); 
+    //     }                    
+    // })
+    // .fail(function (request, status, error){  
+    //     msg = request.status + "<br>" + request.responseText + "<br>" + error;
+    //     console.log(msg); 
+    //     alert("건물 목록을 불러 올 수 없습니다.");                          
+    // })  
+    
 
 
-</script>    
+    // api선택
+   
+    $('[name="reports"]').on('change', function(){
+        if(this.value !== ""){
+            var optVal = $(this).find(":selected").val();
+            console.log(optVal);
 
+            if(optVal == 'staff'){
+                //스텝 리포트 조회
+                var url2="properties/"+ id+"/reports/staffs"
+                $.ajax({
+                    method: "get",
+                    url : endUrl(url2),
+                    contentType: "application/json; charset=utf-8",
+                    headers : headers()
+                })  
+                .done(function(res) {            
+                    console.log(res); 
+                    $('[name=buildingNames]').empty();
+                    $('[name=buildingNames]').append('<option  value="0" selected="true">빌딩 선택</option>');
+                    $('[name=buildingNames]').append('<option  value="commonroom" selected="true">CommonRoom</option>');
+                    $('[name=buildingNames]').append('<option  value="property" selected="true">Property</option>');
+                    $('[name=buildingNames]').append('<option  value="building" selected="true">Building</option>');
+                    $('[name=buildingNames]').append('<option  value="room" selected="true">Room</option>');                    
+
+                    $('[name="buildingNames"]').on('change', function(){
+                        if(this.value !== ""){
+                            var optVal = $(this).find(":selected").val();
+                            switch(optVal){    
+                                case "commonroom" : 
+                                for(var i=0; i<res.items.length;i++){
+                                    if(res.items.report_subtype == "commonroom"){
+                                        var trHtml ='';
+                                        trHtml += '<tr><td>'+res.items[i].created_at+'</td>';
+                                        trHtml += '<td>'+ res.items[i].actor_name+'</td>';
+                                        trHtml += '<td>'+ res.items[i].facility_name+'</td><td></td></tr>';
+                                        $('#reportList tbody').append(trHtml);
+                                    }else{
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+
+                    })
+                    
+
+
+
+
+
+                            
+                    // for(var i=0; i<res.items.length;i++){
+                    //     var trHtml ='';
+                    //     trHtml += '<tr><td>'+res.items[i].created_at+'</td>';
+                    //     trHtml += '<td>'+ res.items[i].actor_name+'</td>';
+                    //     trHtml += '<td>'+ res.items[i].facility_name+'</td><td></td></tr>';
+                    //     $('#reportList tbody').append(trHtml);
+                         
+                    // }
+
+                })
+                .fail(function (request, status, error){  
+                    msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                    console.log(msg); 
+                    alert("리포트를 불러 올 수 없습니다.");                          
+                }) 
+
+            }else if(optVal == 'facilities'){
+                //시설정보 리포트 조회
+                var url3="properties/" + id + "/reports/facilities"
+                $.ajax({
+                    method: "get",
+                    url : endUrl(url3),
+                    contentType: "application/json; charset=utf-8",
+                    headers : headers()
+                })  
+                .done(function(res) {            
+                    console.log(res); 
+                    $('[name=buildingNames]').empty();
+                    $('[name=buildingNames]').append('<option  value="0" selected="true">빌딩 선택</option>');
+                    $('[name=buildingNames]').append('<option  value="commonroom" selected="true">CommonRoom</option>');
+                    $('[name=buildingNames]').append('<option  value="property" selected="true">Property</option>');
+                    $('[name=buildingNames]').append('<option  value="building" selected="true">Building</option>');
+                    $('[name=buildingNames]').append('<option  value="room" selected="true">Room</option>');  
+
+                    $('[name="buildingNames"]').on('change', function(){
+                        if(this.value !== ""){
+                            var optVal = $(this).find(":selected").val();
+                            console.log(optVal);
+                            switch(optVal){    
+                                case "commonroom" : 
+                                    $('#reportList tbody tr').remove();
+                                    for(var i=0; i<res.items.length;i++){
+                                        if(res.items[i].report_subtype == "commonroom"){
+                                            var trHtml ='';
+                                            trHtml += '<tr><td>'+res.items[i].created_at+'</td>';
+                                            trHtml += '<td>'+ res.items[i].actor_name+'</td>';
+                                            trHtml += '<td>'+ res.items[i].facility_name+'</td><td></td></tr>';
+                                            $('#reportList tbody').append(trHtml);
+                                        }
+                                    }
+                                    break;
+
+                                case "property" : 
+                                    $('#reportList tbody tr').remove();
+                                    for(var i=0; i<res.items.length;i++){
+                                        if(res.items[i].report_subtype == "property"){
+                                            var trHtml ='';
+                                            trHtml += '<tr><td>'+res.items[i].created_at+'</td>';
+                                            trHtml += '<td>'+ res.items[i].actor_name+'</td>';
+                                            trHtml += '<td>'+ res.items[i].facility_name+'</td><td></td></tr>';
+                                            $('#reportList tbody').append(trHtml);
+                                        }
+                                    }
+                                    break;
+
+                                case "building" : 
+                                    $('#reportList tbody tr').remove();
+                                    for(var i=0; i<res.items.length;i++){
+                                        if(res.items[i].report_subtype == "building"){
+                                            var trHtml ='';
+                                            trHtml += '<tr><td>'+res.items[i].created_at+'</td>';
+                                            trHtml += '<td>'+ res.items[i].actor_name+'</td>';
+                                            trHtml += '<td>'+ res.items[i].facility_name+'</td><td></td></tr>';
+                                            $('#reportList tbody').append(trHtml);
+                                        }
+                                    }
+                                    break;
+                                    
+                                case "room" : 
+                                    $('#reportList tbody tr').remove();
+                                    for(var i=0; i<res.items.length;i++){
+                                        if(res.items[i].report_subtype == "room"){
+                                            var trHtml ='';
+                                            trHtml += '<tr><td>'+res.items[i].created_at+'</td>';
+                                            trHtml += '<td>'+ res.items[i].actor_name+'</td>';
+                                            trHtml += '<td>'+ res.items[i].facility_name+'</td><td></td></tr>';
+                                            $('#reportList tbody').append(trHtml);
+                                        }
+                                    }
+                                    break;
+                            }
+                        }
+
+                    })
+                    
+                    // for(var i=0; i<res.items.length;i++){
+                    //     var trHtml ='';
+                    //     trHtml += '<tr><td>'+res.items[i].created_at+'</td>';
+                    //     trHtml += '<td>'+ res.items[i].actor_name+'</td>';
+                    //     trHtml += '<td>'+ res.items[i].facility_name+'</td><td></td></tr>';
+                    //     $('#reportList tbody').append(trHtml);
+                    // }
+
+                })
+                .fail(function (request, status, error){  
+                    msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                    console.log(msg); 
+                    alert("리포트를 불러 올 수 없습니다.");                          
+                })  
+            }
+
+        }
+    
+    });
+
+
+
+
+
+ 
+    
+    
+    
+
+   
+
+</script>

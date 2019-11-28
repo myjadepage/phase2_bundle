@@ -1,12 +1,86 @@
+<%- include('inc/head') %>
+    <%- include('inc/sidebar') %>
+        <%- include('inc/nav') %>
 
-<%- include('inc/head') %> 
-<%- include('inc/sidebar') %>
-<%- include('inc/nav') %>
+            <div class="content">
+                <div class="">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <%- include('inc/search') %>
+                                <!-- 검색 -->
 
-        <div class="content">
-            <div class="">
-                <div class="row">
-                        <%- include('inc/search') %><!-- 검색 -->
+                                <h4>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <select class="form-control">
+                                        <option>키타입 선택</option>
+                                        <option>빌라</option>
+                                        <option>카라반</option>
+                                    <select>                                             
+                                </div>  
+                                <div class="col-md-9">            
+                                    <a  href="/staff_key_list" class="btn btn-primary pull-right">스텝키 발급 내역</a>                                                                                                   
+                                </div>
+                            </div>  
+
+                        </h4>
+                        <div class="card">                                   
+                            <div class="content table-responsive table-full-width">
+                                <table class="table table-hover">
+                                    <colgroup>
+                                        <col width="20%">
+                                        <col width="*">
+                                        <col width="25%">
+                                        <col width="15%">
+                                    </colgroup>
+                                    <thead>                                               
+                                        <th>생성일</th>
+                                        <th>스텝이름</th>   
+                                        <th>키종류</th>                                             
+                                        <th>정렬:생성일 기준</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>                                                  
+                                            <td>DD-MMM-YYYY  HH:MM</td>
+                                            <td><a data-target="#viewStaff" data-toggle="modal" role="button">Staff name 1A</a></td>  
+                                            <td>마스터 [ 시쿼스 : 10 ]</td>                                                  
+                                            <td>
+                                                <button onclick="location.href='staff_key.html' " type="button"   class="btn btn-fill btn-xs btn-default"  disabled>
+                                                    재발급
+                                                </button>
+                                                <button type="button" data-target="#DelstaffError" data-toggle="modal" title="삭제하기" class="btn btn-simple btn-link">
+                                                    <i class="icon trash mt-1"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>                                                  
+                                            <td>26-SEP-2019  11:01</td>
+                                            <td><a data-target="#viewStaff" data-toggle="modal" role="button">Staff name 1A</a></td>  
+                                            <td>하우스키핑 [ 시쿼스 : 05 ]</td>                                             
+                                            <td>
+                                                    <button onclick="location.href='staff_key.html' " type="button"   class="btn btn-fill btn-xs btn-default">
+                                                            재발급
+                                                        </button>
+                                                <button type="button" data-target="#Delstaff" data-toggle="modal" title="삭제하기" class="btn btn-simple btn-link">
+                                                    <i class="icon trash mt-1"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>        
+                            </div>
+                    </div>
+
+                    <button class="btn btn-default btn-fill shadow pull-left">나가기</button>
+                    <a href='/properties/<%= id %>/staff_new' class="btn btn-primary btn-fill shadow pull-right">스텝 등록하기</a>
+                    
+            </div>
+            </div>
+
+                        
+                        
+
+
                 </div>
             </div>
         </div>
@@ -14,4 +88,3 @@
 <% include inc/footer %>
 <% include inc/modal %>
 <% include inc/bottom %>
-

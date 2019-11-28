@@ -1,94 +1,101 @@
+<%- include('inc/head') %>
+    <%- include('inc/sidebar') %>
+        <%- include('inc/nav') %>
 
-<%- include('inc/head') %> 
-<%- include('inc/sidebar') %>
-<%- include('inc/nav') %>
+            <div class="content">
+                <div class="">
+                    <div class="row">
 
-        <div class="content">
-            <div class="">
-                <div class="row">
-                   
-                            <div class="col-md-6">
-                                        <div class="card card-h2">
-                                            <div class="card-header">
-                                                <h5 class="card-title">게스트 키발급 선택</h5>
-                                            </div> 
-                                            <div class="card-body">
-                                                <form>
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="row form-group">
-                                                                <div class="col-md-12 pr-1">                                                               
-                                                                    <label>단지 타입 선택</label>
-                                                                    <select class="form-control">
+                        <div class="col-md-6">
+                            <div class="card card-h2">
+                                <div class="card-header">
+                                    <h5 class="card-title">게스트 키발급 선택</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row form-group">
+                                                    <div class="col-md-12 pr-1">
+                                                        <label>단지 타입 선택</label>
+                                                        <select class="form-control">
                                                                         <option>빌딩선택</option>
                                                                         <option>나라이름2</option>
                                                                         <option>나라이름3</option>
-                                                                    </select> 
-                                                                </div>
-                                                                <div class="col-md-12 pl-1">                                                                    
-                                                                    <select class="form-control">
+                                                                    </select>
+                                                    </div>
+                                                    <div class="col-md-12 pl-1">
+                                                        <select class="form-control">
                                                                         <option>객실 선택</option>
                                                                         <option>도시이름</option>
                                                                         <option>도시이름</option>
                                                                     </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>                                                        
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="col-md-12">                                                           
-                                                                <div class="row form-group">
-                                                                    <div class="col-md-12 pr-1">
-                                                                        <label>게스트 정보 입력</label>
-                                                                        <input class="form-control" type="text" placeholder="게스트 이름 입력">
-                                                                    </div>
-                                                                    <div class="col-md-12 pr-1 pl-1">    
-                                                                        <select class="form-control">
-                                                                            <option>대한민국 (+82)</option>                                                                          
-                                                                        </select> 
-                                                                    </div> 
-                                                                    <div class="col-md-12 pl-1">  
-                                                                            <input class="form-control" type="text" placeholder="상세 전화번호 입력"> 
-                                                                    </div>                                                           
-                                                                </div>  
-                                                        </div>
-                                                    </div>                                          
-                                                </form>
+                                                </div>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row form-group">
+                                                    <div class="col-md-12 pr-1">
+                                                        <label>게스트 정보 입력</label>
+                                                        <input class="form-control" type="text" placeholder="게스트 이름 입력">
+                                                    </div>
+                                                    <div class="col-md-12 pr-1 pl-1">
+                                                        <select class="form-control">
+                                                                            <option>대한민국 (+82)</option>                                                                          
+                                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-12 pl-1">
+                                                        <input class="form-control" type="text" placeholder="상세 전화번호 입력">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                            <div class="col-md-6" >
-                                        <div class="card  card-h2" role="tabpanel">
-                                            <div class="card-header">
-                                                <h5 class="card-title">
-                                                    <ul  class="nav nav-tabs  nav-justified" role="tablist">
-                                                        <li  role="presentation" class="active">
-                                                            <a href="#mobileKey" aria-controls="mobileKey" role="tab" data-toggle="tab">모바일키 발급</a>                                                            
-                                                        </li>
-                                                        <li  role="presentation">
-                                                            <a href="#pincode" aria-controls="pincode" role="tab" data-toggle="tab">핀코드 발급</a>
-                                                        </li>
-                                                    </ul>
-                                                </h5>                                      
-                                            </div> 
-                                            <div class="tab-content">   
-                                                <div  role="tabpanel" class="tab-pane fade in active" id="mobileKey">
-                                                    <div class="card-body table-full-width-staffkey">
-                                                    <div class="row  form-group">
-                                                        <div class="col-md-12">
-                                                            <div class="col-md-6 input-group date">
-                                                                    <i class="icon checkin"></i><label>체크인</label>                                                                   
-                                                                    <input type="text" class="form-control">
-                                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                                                                    <!-- <select class="form-control" >
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card  card-h2" role="tabpanel">
+                                <div class="card-header">
+                                    <h5 class="card-title">
+                                        <ul class="nav nav-tabs  nav-justified" role="tablist">
+                                            <li role="presentation" class="active">
+                                                <a href="#mobileKey" aria-controls="mobileKey" role="tab" data-toggle="tab">모바일키 발급</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#pincode" aria-controls="pincode" role="tab" data-toggle="tab">핀코드 발급</a>
+                                            </li>
+                                        </ul>
+                                    </h5>
+                                </div>
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane fade in active" id="mobileKey">
+                                        <div class="card-body table-full-width-staffkey">
+                                            <div class="row  form-group">
+                                                <div class="col-md-12">
+                                                    <div class="col-md-6">
+                                                        <i class="icon checkin"></i><label>체크인</label>
+                                                        <select class="form-control">
+                                                                    <option>2019-10-01</option>
+                                                                    <option>나라이름2</option>
+                                                                    <option>나라이름3</option>
+                                                                <select> 
+                                                        </div> 
+                                                    <!-- <div class="col-md-6 input-group">
+                                                        <i class="icon checkin"></i><label>체크인</label>
+                                                        <input type="text" class="form-control">
+                                                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                        <select class="form-control">
                                                                         <option>2019-10-01</option>                                                                       
-                                                                    <select>  -->
-                                                            </div> 
+                                                        </select>
+                                                    </div> -->
+                                                    <div class="col-md-6">
+                                                        <div class="row">
                                                             <div class="col-md-6">
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <i class="icon checkin txt_hidden"></i><label class="txt_hidden">시간 선택</label>                                                                                                                             
-                                                                        <select class="form-control">
+                                                                <i class="icon checkin txt_hidden"></i><label class="txt_hidden">시간 선택</label>
+                                                                <select class="form-control">
                                                                             <option>13시</option>                                                                   
                                                                         <select>
                                                                     </div> 
@@ -240,6 +247,3 @@
     });
 
     </script>
-
-
-
