@@ -39,6 +39,14 @@
                                                         </div>
                                                     </div>  
                                                 </div>
+                                            </div> 
+                                            <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="day_type_offset">일 단위 타입 선택</label>
+                                                            <p class="form-control"  name="day_type_offset"></p>                                                               
+                                                        </div>
+                                                    </div>
                                             </div>                                            
                                     </div>
                                 </div>
@@ -113,15 +121,16 @@
                 })
                 .done(function(res) { 
                     navTitle(res.name,res.address);    
-                    $('[name="name"').text(res.name);
-                    $('[name="country_code"').text(res.country_code);
-                    $('[name="city"').text(res.city);
-                    $('[name="timeZone"').text(res.timezone);
-                    $('[name="address"').text(res.address);
+                    $('[name="name"]').text(res.name);
+                    $('[name="country_code"]').text(res.country_code);
+                    $('[name="city"]').text(res.city);
+                    $('[name="timeZone"]').text(res.timezone);
+                    $('[name="address"]').text(res.address);
+                    $('[name="day_type_offset"]').text(res.day_type_offset);
                     for(var i in res.commonrooms){
                         var id = res.commonrooms[i].id;
                         var name = res.commonrooms[i].name;  
-                        var rowItem = '<tr><td>' + name + '</td>tr>';
+                        var rowItem = '<tr><td>' + name + '</td></tr>';
                         $('#readDoorList tbody').append(rowItem);
                     }
                      // 테이블에 tr행 개수 
@@ -135,7 +144,8 @@
                 })
                 .fail(function (request, status, error){  
                     msg = request.status + "<br>" + request.responseText + "<br>" + error;
-                    console.log(msg);                           
+                    console.log(msg); 
+                    alert("단지정보를 불러올 수 없습니다.");                          
                 })   
         });
     

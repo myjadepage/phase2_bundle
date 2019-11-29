@@ -36,7 +36,33 @@
                             </h4>
                             <div class="card">                                   
                                     <div class="content table-responsive table-full-width">
-                                        <table class="table table-hover" id="reportList">
+                                        <table class="table table-hover" id="defaultReportList" >
+                                                <tr>
+                                                        <td colspan="3" style="border: none;">
+                                                            <div class="con_default">
+                                                                <i class="icon m_report"></i>
+                                                                <h4 class="text-center text-info">
+                                                                    ‘ 리포트 종류를 선택해 주세요 ’
+                                                                </h4>
+                                                            </div>
+                                                        </td>                                                                      
+                                                    </tr>
+                                        </table> 
+
+                                        <!-- <table class="table table-hover" id="noReportList" style="display: none;">
+                                                <tr>
+                                                        <td colspan="3" style="border: none;">
+                                                            <div class="con_default">
+                                                                <i class="icon m_staff"></i>
+                                                                <h4 class="text-center text-info">
+                                                                    ‘ 해당 리포트 정보가 없습니다 ’
+                                                                </h4>
+                                                            </div>
+                                                        </td>                                                                      
+                                                    </tr>
+                                        </table>  -->
+
+                                        <table class="table table-hover" id="reportList" style="display: none;">
                                             <colgroup>
                                                 <col width="20%">
                                                 <col width="*">
@@ -49,14 +75,7 @@
                                                 <th>등급</th>                                             
                                                 <th>정렬:생성일 기준</th>
                                             </thead>
-                                            <tbody>
-                                                <!-- <tr>                                                  
-                                                    <td>DD-MMM-YYYY  HH:MM</td>
-                                                    <td><a data-target="#viewStaff" data-toggle="modal" role="button">Staff name 1A</a></td>  
-                                                    <td>마스터 [ 보유키 : 2개 ]</td>                                                  
-                                                    <td></td>
-                                                </tr>                                               -->
-                                            </tbody>
+                                            <tbody></tbody>
                                         </table>        
                                     </div>
                             </div>
@@ -86,38 +105,18 @@
     navTitle(name, address);  
         
         
-    // //빌딩선택 api
     var API_KEY = localStorage.getItem('api_key');   
     var id = "<%= id%>";
     var url = "properties/" + id + "/buildings";
-    // $.ajax({
-    //     method: "get",
-    //     url : endUrl(url),
-    //     contentType: "application/json; charset=utf-8",
-    //     headers : headers()
-    // })                                                                               
-    // .done(function(res) {            
-    //     console.log(res); 
-    //     $('[name=buildingNames]').empty();
-    //     $('[name=buildingNames]').append('<option  value="0" value="0" selected="true">빌딩 선택</option>');
-    //     for(var i=0; i<res.items.length;i++){
-    //         $('[name=buildingNames]').append($('<option></option>').attr('value', res.items[i].id).text(res.items[i].name)); 
-    //     }                    
-    // })
-    // .fail(function (request, status, error){  
-    //     msg = request.status + "<br>" + request.responseText + "<br>" + error;
-    //     console.log(msg); 
-    //     alert("건물 목록을 불러 올 수 없습니다.");                          
-    // })  
     
 
-
     // api선택
-   
     $('[name="reports"]').on('change', function(){
         if(this.value !== ""){
             var optVal = $(this).find(":selected").val();
             console.log(optVal);
+            $('#defaultReportList').hide();
+            $('#reportList').show();
 
             if(optVal == 'staff'){
                 //스텝 리포트 조회
@@ -131,25 +130,71 @@
                 .done(function(res) {            
                     console.log(res); 
                     $('[name=buildingNames]').empty();
-                    $('[name=buildingNames]').append('<option  value="0" selected="true">빌딩 선택</option>');
-                    $('[name=buildingNames]').append('<option  value="commonroom" selected="true">CommonRoom</option>');
-                    $('[name=buildingNames]').append('<option  value="property" selected="true">Property</option>');
-                    $('[name=buildingNames]').append('<option  value="building" selected="true">Building</option>');
-                    $('[name=buildingNames]').append('<option  value="room" selected="true">Room</option>');                    
+                    $('[name=buildingNames]').append('<option  value="0" selected="true">스탭 종류 선택</option>');
+                    $('[name=buildingNames]').append('<option  value="supervisor">Supervisor</option>');
+                    $('[name=buildingNames]').append('<option  value="manager">Manager</option>');
+                    $('[name=buildingNames]').append('<option  value="master" ">Master</option>');
+                    $('[name=buildingNames]').append('<option  value="housekeeping" >Housekeeping</option>');                    
 
                     $('[name="buildingNames"]').on('change', function(){
+                        
                         if(this.value !== ""){
                             var optVal = $(this).find(":selected").val();
+                            console.log(optVal);
                             switch(optVal){    
-                                case "commonroom" : 
+                                case "supervisor" : 
+                                $('#reportList tbody tr').remove();
                                 for(var i=0; i<res.items.length;i++){
-                                    if(res.items.report_subtype == "commonroom"){
+                                    if(res.items[i].grantee_role == "supervisor"){
                                         var trHtml ='';
                                         trHtml += '<tr><td>'+res.items[i].created_at+'</td>';
-                                        trHtml += '<td>'+ res.items[i].actor_name+'</td>';
-                                        trHtml += '<td>'+ res.items[i].facility_name+'</td><td></td></tr>';
+                                        trHtml += '<td>'+ res.items[i].grantee_name+'</td>';
+                                        trHtml += '<td>'+ res.items[i].grantee_phone_number+'</td><td></td></tr>';
                                         $('#reportList tbody').append(trHtml);
                                     }else{
+                                      
+                                        return false;
+                                    }
+                                }
+                               
+                                case "manager" : 
+                                $('#reportList tbody tr').remove();
+                                for(var i=0; i<res.items.length;i++){
+                                    if(res.items[i].grantee_role == "manager"){
+                                        var trHtml ='';
+                                        trHtml += '<tr><td>'+res.items[i].created_at+'</td>';
+                                        trHtml += '<td>'+ res.items[i].grantee_name+'</td>';
+                                        trHtml += '<td>'+ res.items[i].grantee_phone_number+'</td><td></td></tr>';
+                                        $('#reportList tbody').append(trHtml);$('#reportList tbody').append(trHtml);
+                                    }else{                                                                   
+                                        return false;
+                                    }
+                                }
+
+                                case "master" : 
+                                $('#reportList tbody tr').remove();
+                                for(var i=0; i<res.items.length;i++){
+                                    if(res.items[i].grantee_role == "master"){
+                                        var trHtml ='';
+                                        trHtml += '<tr><td>'+res.items[i].created_at+'</td>';
+                                        trHtml += '<td>'+ res.items[i].grantee_name+'</td>';
+                                        trHtml += '<td>'+ res.items[i].grantee_phone_number+'</td><td></td></tr>';
+                                        $('#reportList tbody').append(trHtml);$('#reportList tbody').append(trHtml);                                      
+                                    }else{                                     
+                                        return false;
+                                    }
+                                }
+                                
+                                case "housekeeping" : 
+                                $('#reportList tbody tr').remove();
+                                for(var i=0; i<res.items.length;i++){
+                                    if(res.items[i].grantee_role == "housekeeping"){
+                                        var trHtml ='';
+                                        trHtml += '<tr><td>'+res.items[i].created_at+'</td>';
+                                        trHtml += '<td>'+ res.items[i].grantee_name+'</td>';
+                                        trHtml += '<td>'+ res.items[i].grantee_phone_number+'</td><td></td></tr>';
+                                        $('#reportList tbody').append(trHtml);
+                                    }else{                                       
                                         return false;
                                     }
                                 }
@@ -157,21 +202,7 @@
                         }
 
                     })
-                    
-
-
-
-
-
-                            
-                    // for(var i=0; i<res.items.length;i++){
-                    //     var trHtml ='';
-                    //     trHtml += '<tr><td>'+res.items[i].created_at+'</td>';
-                    //     trHtml += '<td>'+ res.items[i].actor_name+'</td>';
-                    //     trHtml += '<td>'+ res.items[i].facility_name+'</td><td></td></tr>';
-                    //     $('#reportList tbody').append(trHtml);
-                         
-                    // }
+                
 
                 })
                 .fail(function (request, status, error){  
@@ -193,10 +224,10 @@
                     console.log(res); 
                     $('[name=buildingNames]').empty();
                     $('[name=buildingNames]').append('<option  value="0" selected="true">빌딩 선택</option>');
-                    $('[name=buildingNames]').append('<option  value="commonroom" selected="true">CommonRoom</option>');
-                    $('[name=buildingNames]').append('<option  value="property" selected="true">Property</option>');
-                    $('[name=buildingNames]').append('<option  value="building" selected="true">Building</option>');
-                    $('[name=buildingNames]').append('<option  value="room" selected="true">Room</option>');  
+                    $('[name=buildingNames]').append('<option  value="commonroom" >CommonRoom</option>');
+                    $('[name=buildingNames]').append('<option  value="property" >Property</option>');
+                    $('[name=buildingNames]').append('<option  value="building">Building</option>');
+                    $('[name=buildingNames]').append('<option  value="room">Room</option>');  
 
                     $('[name="buildingNames"]').on('change', function(){
                         if(this.value !== ""){
@@ -257,15 +288,7 @@
                             }
                         }
 
-                    })
-                    
-                    // for(var i=0; i<res.items.length;i++){
-                    //     var trHtml ='';
-                    //     trHtml += '<tr><td>'+res.items[i].created_at+'</td>';
-                    //     trHtml += '<td>'+ res.items[i].actor_name+'</td>';
-                    //     trHtml += '<td>'+ res.items[i].facility_name+'</td><td></td></tr>';
-                    //     $('#reportList tbody').append(trHtml);
-                    // }
+                    })                 
 
                 })
                 .fail(function (request, status, error){  
@@ -278,16 +301,5 @@
         }
     
     });
-
-
-
-
-
- 
-    
-    
-    
-
-   
 
 </script>

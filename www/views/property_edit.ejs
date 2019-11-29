@@ -138,7 +138,7 @@
                         <div class="clearfix"></div>
 
                         <div class="col-md-12 text-center">
-                            <button type="reset" class="btn btn-default btn-fill shadow pull-left" onclick="location='javascript:history.back()'">취소</button>                           
+                            <button type="reset" class="btn btn-default btn-fill shadow pull-left" onclick="location='javascript:history.back()'">뒤로가기</button>                           
                             <button  class="btn btn-fill btn-primary pull-right shadow" id="btnItem">단지 수정 하기</button>
                         </div>
                 </div>
@@ -229,17 +229,17 @@
                 alert("단지 타입을 선택해 주세요");  
             }else{
 
-                //같은 단지 다른주소 생성 체크(같은 단지 같은 주소 안됨)
-                for(var i=0; i<res.items.length; i++){                
-                    if(name == res.items[i].name && address == res.items[i].address){ 
-                        cnt++;                 
-                    }                
-                }    
-                if(cnt >=1){                   
-                    alert("동일한 단지에 동일한 주소가 존재합니다. 다른 주소를 입력해 주세요");
-                    $('input[name="address"]').focus();
-                    $('input[name="address"]').val("");
-                }else{
+                // //같은 단지 다른주소 생성 체크(같은 단지 같은 주소 안됨)
+                // for(var i=0; i<res.items.length; i++){                
+                //     if(name == res.items[i].name && address == res.items[i].address){ 
+                //         cnt++;                 
+                //     }                
+                // }    
+                // if(cnt >=1){                   
+                //     alert("동일한 단지에 동일한 주소가 존재합니다. 다른 주소를 입력해 주세요");
+                //     $('input[name="address"]').focus();
+                //     $('input[name="address"]').val("");
+                // }else{
 
                     //입력박스 체크 뒤 api 호출 
                     var params ={};
@@ -269,7 +269,7 @@
                             location.replace('/');
                         },1500);
                     })
-                }
+                // }
             }
         }
     });
