@@ -1,23 +1,24 @@
-<%- include('inc/head') %> 
-<%- include('inc/sidebar') %>
-<%- include('inc/nav') %>
+<%- include('inc/head') %>
+    <%- include('inc/sidebar') %>
+        <%- include('inc/nav') %>
 
-        <div class="content">
-            <div class="">
-                <div class="row">
-                    <div class="col-md-12">
+            <div class="content">
+                <div class="">
+                    <div class="row">
+                        <div class="col-md-12">
                             <div class="input-group">
-                                    <span class="input-group-btn">
+                                <span class="input-group-btn">
                                       <button class="btn btn-default" type="button"><i class="nc-icon nc-zoom-split"></i></button>                                          
                                     </span>
-                                    <input type="text" class="form-control" placeholder="Search for keyword">
-                            </div><!-- /input-group -->
+                                <input type="text" class="form-control" placeholder="Search for keyword">
+                            </div>
+                            <!-- /input-group -->
 
 
 
                             <h4>
                                 <div class="row">
-                                    <div class="col-md-3">                                       
+                                    <div class="col-md-3">
                                         <select class="form-control" name="buildingNames"><select>                                             
                                     </div>              
                                     <button type="submit" class="btn btn-primary">빌딩 선택하기</button>                                                                                                   
@@ -44,10 +45,14 @@
                                                 <col width="20%">
                                                 <col width="*">
                                                 <col width="15%">
+                                                <col width="15%">
+                                                <col width="15%">
                                             </colgroup>
                                             <thead>                                               
-                                                <th>생성일</th>
-                                                <th>객실이름</th>                                                
+                                                <th >생성일</th>
+                                                <th>객실이름</th> 
+                                                <th>사용상태</th> 
+                                                <th>동작모드</th> 
                                                 <th>정렬:생성일 기준</th>
                                             </thead>
                                             <tbody></tbody>
@@ -65,6 +70,28 @@
 
 <%- include inc/footer %>
 <%- include inc/modal %>
+
+<!-- 공용도어 수정Modal -->
+<div class="modal fade modal-primary" id="EditName" tabindex="-1" role="dialog" aria-labelledby="EditName" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+               <h5>알림</h5>
+            </div>
+            <div class="modal-body setting_choice">
+                    <i class="icon confirm"></i>                       
+                <h6>객실 이름 변경</h6>
+                <p>이름을 입력해 주세요  <input type= "text" value="" name="editRoomName">  </p>
+            </div>
+            <div class="modal-footer">     
+                <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">취소</button>              
+                <button type="button" class="btn btn-default btn-fill btn-wd shadow"   name="btnEditNameDone">이름변경</button>
+            </div>
+        </div>
+    </div>
+<div>
+
+
 <%- include inc/bottom %>
 <script>
      //navTitle 쿼리 
@@ -106,8 +133,16 @@
             var trHtml ="";
             res.items.forEach(function(item, i, array){  
                 var date =new Date(item.created_at);  
-                trHtml += "<tr><td>" + formatDate(date) + "</td><td><a href='/properties/" + id + "/room/" + item.id + itemQuery + "'>" + item.name+ "</a></td>";               
-                trHtml += "<td><button onclick='location.href='/room_edit'' type='button'  title='수정하기' class='btn btn-simple btn-link'><i class='icon edit'></i></button>";
+                trHtml += "<tr><td>" + formatDate(date) + "</td><td>" + item.name+ "</td>";  
+               
+                    if(res.items.type == "created"){//미설치시
+                        trHtml +='<td><i class="icon created"></i><small class="text-info">미사용중</small></td>';
+                    }else{//설치시
+                        trHtml +='<td><i class="icon installed"></i><small class="text-primary" >사용중</small</td>';
+                    }   
+                
+                trHtml += "<td ><i class='icon mode_shield'></i><small  class='text-primary'>보안모드</small></td>";               
+                trHtml += "<td><button title='객실이름변경하기' data-toggle='modal' data-target='#EditName' class='btn btn-simple btn-link' ><i class='icon edit' ></i></button>";
                 trHtml += "<button type='button' title='삭제하기' class='btn btn-simple btn-link'  data-room_id='" + item.id + "'id='btnDelRoom'><i class='icon trash'></i></button></td>";
                 trHtml += "</tr>";                                             
                                                   
@@ -186,5 +221,6 @@
         return day + "-" + month + "-" + year + "  " + hh + ":" + mm
 }
 
-</script>
 
+
+</script>

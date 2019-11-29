@@ -93,7 +93,7 @@
             $('#buildingList').show(); 
             res.items.forEach(function(item, i, array){    
                 var date =new Date(item.created_at);
-                var move ='/properties/'+ id +'/building_edit/'+item.buildingtype_id+itemQuery;        
+                var move ='/properties/'+ id +'/building_edit/'+item.id+itemQuery;        
                 trHtml += "<tr><td>" + formatDate(date) + "</td><td><a href='/properties/" + id + "/room/" + item.id + itemQuery +"'>" + item.name+ "</a></td>";
                 trHtml += "<td>Room : "+item.room_counts + " / Common : " + item.commonrooms.length + "</td><td>";
                 trHtml += "<a href='" + move + "' type='button'  title='수정하기' class='btn btn-simple btn-link'>";

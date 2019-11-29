@@ -620,6 +620,16 @@ i.icon.created{
     height: 22px;
     background-position: -291px 0px ;
 }
+i.icon.mode_shield{
+    width: 21px;
+    height: 25px;
+    background-position: -312px -0px ;
+}
+i.icon.mode_touch{
+    width: 21px;
+    height: 23px;
+    background-position: -336px 0px ;
+}
 
 
 
