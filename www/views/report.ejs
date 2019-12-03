@@ -1,91 +1,82 @@
 <%- include('inc/head') %>
-    <%- include('inc/sidebar') %>
-        <%- include('inc/nav') %>
+<%- include('inc/sidebar') %>
+<%- include('inc/nav') %>
 
-            <div class="content">
-                <div class="">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="input-group">
-                                <span class="input-group-btn">
-                                      <button class="btn btn-default" type="button"><i class="nc-icon nc-zoom-split"></i></button>                                          
-                                    </span>
-                                <input type="text" class="form-control" placeholder="Search for keyword">
-                            </div>
-                            <!-- /input-group -->
-
-                            <h4>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <select class="form-control" name="reports">
-                                            <option value="0">리포트 종류 선택</option>
-                                            <option value="staff">스태프 리포트 조회</option>
-                                            <option value="facilities">시설 정보 리포트 조회</option>
-                                        <select>                                             
-                                    </div> 
-                                    <div class="col-md-3">                                       
-                                        <select class="form-control" name="buildingNames">
-                                                <option>선택</option>
-                                        <select>                                                 
-                                    </div>  
-                                    <div class="col-md-6">            
-                                        <button type="submit" class="btn btn-primary pull-right">Excel 저장</button>                                                                                                   
-                                    </div>
-                                </div>  
-
-                            </h4>
-                            <div class="card">                                   
-                                    <div class="content table-responsive table-full-width">
-                                        <table class="table table-hover" id="defaultReportList" >
-                                                <tr>
-                                                        <td colspan="3" style="border: none;">
-                                                            <div class="con_default">
-                                                                <i class="icon m_report"></i>
-                                                                <h4 class="text-center text-info">
-                                                                    ‘ 리포트 종류를 선택해 주세요 ’
-                                                                </h4>
-                                                            </div>
-                                                        </td>                                                                      
-                                                    </tr>
-                                        </table> 
-
-                                        <!-- <table class="table table-hover" id="noReportList" style="display: none;">
-                                                <tr>
-                                                        <td colspan="3" style="border: none;">
-                                                            <div class="con_default">
-                                                                <i class="icon m_staff"></i>
-                                                                <h4 class="text-center text-info">
-                                                                    ‘ 해당 리포트 정보가 없습니다 ’
-                                                                </h4>
-                                                            </div>
-                                                        </td>                                                                      
-                                                    </tr>
-                                        </table>  -->
-
-                                        <table class="table table-hover" id="reportList" style="display: none;">
-                                            <colgroup>
-                                                <col width="20%">
-                                                <col width="*">
-                                                <col width="25%">
-                                                <col width="15%">
-                                            </colgroup>
-                                            <thead>                                               
-                                                <th>생성일</th>
-                                                <th>스텝이름</th>   
-                                                <th>등급</th>                                             
-                                                <th>정렬:생성일 기준</th>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>        
-                                    </div>
-                            </div>
-
-                            <button class="btn btn-default btn-fill shadow pull-left">나가기</button>                          
-                            
+    <div class="content">
+        <div class="">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                              <button class="btn btn-default" type="button"><i class="nc-icon nc-zoom-split"></i></button>                                          
+                            </span>
+                        <input type="text" class="form-control" placeholder="Search for keyword">
                     </div>
+                    <!-- /input-group -->
+                    <h4>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <select class="form-control" name="reports">
+                                    <option value="0">리포트 선택</option>
+                                    <option value="key">키발급 리포트</option>
+                                    <option value="facility">시설 정보 리포트</option>
+                                    <option value="staff">스태프 리포트</option>
+                                    <option value="mkey">모바일키 사용</option>
+                                <select>                                             
+                            </div> 
+                            <div class="col-md-3">                                       
+                                <select class="form-control" name="buildingNames" >
+                                        <option>선택</option>
+                                </select>                                                 
+                            </div>  
+                            <div class="col-md-6">            
+                                <button type="submit" class="btn btn-primary pull-right">Excel 저장</button>                                                                                                   
+                            </div>
+                        </div>  
+                    </h4>
+                    <div class="card">                                   
+                            <div class="content table-responsive table-full-width">
+                                <table class="table table-hover" id="defaultReportList" >
+                                        <tr>
+                                                <td colspan="3" style="border: none;">
+                                                    <div class="con_default">
+                                                        <i class="icon m_report"></i>
+                                                        <h4 class="text-center text-info">
+                                                            ‘ 리포트 종류를 선택해 주세요 ’
+                                                        </h4>
+                                                    </div>
+                                                </td>                                                                      
+                                            </tr>
+                                </table> 
+                                <!-- <table class="table table-hover" id="noReportList" style="display: none;">
+                                        <tr>
+                                                <td colspan="3" style="border: none;">
+                                                    <div class="con_default">
+                                                        <i class="icon m_staff"></i>
+                                                        <h4 class="text-center text-info">
+                                                            ‘ 해당 리포트 정보가 없습니다 ’
+                                                        </h4>
+                                                    </div>
+                                                </td>                                                                      
+                                            </tr>
+                                </table>  -->
+                                <table class="table table-hover" id="reportList" style="display: none;">
+                                    <colgroup>
+                                        <col width="30%">
+                                        <col width="*">
+                                        <col width="25%">
+                                        <col width="15%">
+                                    </colgroup>
+                                    <thead></thead>
+                                    <tbody></tbody>
+                                </table>        
+                            </div>
+                    </div>
+                    <button class="btn btn-default btn-fill shadow pull-left">나가기</button>
                 </div>
             </div>
         </div>
+    </div>
 
 <% include inc/footer %>
 <% include inc/modal %>
@@ -134,10 +125,18 @@
                     $('[name=buildingNames]').append('<option  value="supervisor">Supervisor</option>');
                     $('[name=buildingNames]').append('<option  value="manager">Manager</option>');
                     $('[name=buildingNames]').append('<option  value="master" ">Master</option>');
-                    $('[name=buildingNames]').append('<option  value="housekeeping" >Housekeeping</option>');                    
+                    $('[name=buildingNames]').append('<option  value="housekeeping" >Housekeeping</option>');  
+                    
+                    for(var i=0; i<res.items.length;i++){
+                        var trHtml ='';
+                        trHtml += '<tr><td>'+res.items[i].created_at+'</td>';
+                        trHtml += '<td>'+ res.items[i].grantee_name+'</td>';
+                        trHtml += '<td>'+ res.items[i].grantee_phone_number+'</td><td></td></tr>';
+                        $('#reportList tbody').append(trHtml);
+                    }
+
 
                     $('[name="buildingNames"]').on('change', function(){
-                        
                         if(this.value !== ""){
                             var optVal = $(this).find(":selected").val();
                             console.log(optVal);
@@ -211,7 +210,7 @@
                     alert("리포트를 불러 올 수 없습니다.");                          
                 }) 
 
-            }else if(optVal == 'facilities'){
+            }else if(optVal == 'facility'){
                 //시설정보 리포트 조회
                 var url3="properties/" + id + "/reports/facilities"
                 $.ajax({
@@ -220,70 +219,77 @@
                     contentType: "application/json; charset=utf-8",
                     headers : headers()
                 })  
-                .done(function(res) {            
+                .done(function(res) {                                
                     console.log(res); 
+                    //결과값 받을적마다 리셋
+                    $('#reportList thead tr').remove();
+                    $('#reportList tbody tr').remove();
+                    //정렬선택
                     $('[name=buildingNames]').empty();
-                    $('[name=buildingNames]').append('<option  value="0" selected="true">빌딩 선택</option>');
-                    $('[name=buildingNames]').append('<option  value="commonroom" >CommonRoom</option>');
-                    $('[name=buildingNames]').append('<option  value="property" >Property</option>');
-                    $('[name=buildingNames]').append('<option  value="building">Building</option>');
-                    $('[name=buildingNames]').append('<option  value="room">Room</option>');  
+                    $('[name=buildingNames]').append('<option  value="0" selected="true">정렬 선택</option>');
+                    $('[name=buildingNames]').append('<option  value="facility_name">시설 이름</option>');
+                    $('[name=buildingNames]').append('<option  value="building_name">빌딩 이름</option>');
+                    $('[name=buildingNames]').append('<option  value="actor_name"">스태프 이름</option>');
+                    $('[name=buildingNames]').append('<option  value="created_at">일시</option>'); 
+                    //테이블제목
+                    titleHtml='';
+                    titleHtml += '<tr><th>시설 이름</th><th>빌딩 이름</th><th>스태프 이름</th><th>일시</th></tr>';
+                    $('#reportList thead').append(titleHtml);
+                    //결과값 테이블에 넣기
+                    for(var i=0; i<res.items.length;i++){
+                        var trHtml ='';
+                        if(res.items[i].facility_name == undefined ){trHtml += '<tr><td> - </td>';}
+                            else{trHtml += '<tr><td>' + res.items[i].facility_name + '</td>';}
+                        if(res.items[i].building_name == undefined){trHtml += '<td> - </td>';}
+                            else{trHtml += '<td>' + res.items[i].building_name + '</td>';}
+                        if(res.items[i].actor_name == undefined){trHtml += '<td> - </td>';}
+                            else{trHtml += '<td>' + res.items[i].actor_name + '</td>';}
+                        if(res.items[i].created_at == undefined){trHtml += '<td> - </td></tr>';}
+                            else{trHtml += '<td>' + res.items[i].created_at + '</td></tr>';}
+                        $('#reportList tbody').append(trHtml);
+                    }
 
-                    $('[name="buildingNames"]').on('change', function(){
+                    //select 선택하기
+                    $('[name="buildingNames"]').on('change', function(){                                             
                         if(this.value !== ""){
                             var optVal = $(this).find(":selected").val();
                             console.log(optVal);
-                            switch(optVal){    
-                                case "commonroom" : 
+                            switch(optVal){ 
+                                case "0" : 
                                     $('#reportList tbody tr').remove();
-                                    for(var i=0; i<res.items.length;i++){
-                                        if(res.items[i].report_subtype == "commonroom"){
-                                            var trHtml ='';
-                                            trHtml += '<tr><td>'+res.items[i].created_at+'</td>';
-                                            trHtml += '<td>'+ res.items[i].actor_name+'</td>';
-                                            trHtml += '<td>'+ res.items[i].facility_name+'</td><td></td></tr>';
-                                            $('#reportList tbody').append(trHtml);
-                                        }
+                                        for(var i=0; i<res.items.length;i++){
+                                        var trHtml ='';
+                                        if(res.items[i].facility_name == undefined ){trHtml += '<tr><td> - </td>';}
+                                            else{trHtml += '<tr><td>' + res.items[i].facility_name + '</td>';}
+                                        if(res.items[i].building_name == undefined){trHtml += '<td> - </td>';}
+                                            else{trHtml += '<td>' + res.items[i].building_name + '</td>';}
+                                        if(res.items[i].actor_name == undefined){trHtml += '<td> - </td>';}
+                                            else{trHtml += '<td>' + res.items[i].actor_name + '</td>';}
+                                        if(res.items[i].created_at == undefined){trHtml += '<td> - </td></tr>';}
+                                            else{trHtml += '<td>' + res.items[i].created_at + '</td></tr>';}
+                                        $('#reportList tbody').append(trHtml);
                                     }
+                                    break;                                
+                                case "facility_name" : 
+                                    // $('#reportList tbody tr').remove();
+                                    sortTable();
                                     break;
 
-                                case "property" : 
-                                    $('#reportList tbody tr').remove();
-                                    for(var i=0; i<res.items.length;i++){
-                                        if(res.items[i].report_subtype == "property"){
-                                            var trHtml ='';
-                                            trHtml += '<tr><td>'+res.items[i].created_at+'</td>';
-                                            trHtml += '<td>'+ res.items[i].actor_name+'</td>';
-                                            trHtml += '<td>'+ res.items[i].facility_name+'</td><td></td></tr>';
-                                            $('#reportList tbody').append(trHtml);
-                                        }
-                                    }
+                                case "building_name" : 
+                                    // $('#reportList tbody tr').remove();
+                                    sortTable();
+                                   
                                     break;
 
-                                case "building" : 
-                                    $('#reportList tbody tr').remove();
-                                    for(var i=0; i<res.items.length;i++){
-                                        if(res.items[i].report_subtype == "building"){
-                                            var trHtml ='';
-                                            trHtml += '<tr><td>'+res.items[i].created_at+'</td>';
-                                            trHtml += '<td>'+ res.items[i].actor_name+'</td>';
-                                            trHtml += '<td>'+ res.items[i].facility_name+'</td><td></td></tr>';
-                                            $('#reportList tbody').append(trHtml);
-                                        }
-                                    }
+                                case "actor_name" : 
+                                    // $('#reportList tbody tr').remove();
+                                    sortTable();
                                     break;
                                     
-                                case "room" : 
-                                    $('#reportList tbody tr').remove();
-                                    for(var i=0; i<res.items.length;i++){
-                                        if(res.items[i].report_subtype == "room"){
-                                            var trHtml ='';
-                                            trHtml += '<tr><td>'+res.items[i].created_at+'</td>';
-                                            trHtml += '<td>'+ res.items[i].actor_name+'</td>';
-                                            trHtml += '<td>'+ res.items[i].facility_name+'</td><td></td></tr>';
-                                            $('#reportList tbody').append(trHtml);
-                                        }
-                                    }
+                                case "created_at" : 
+                                    // $('#reportList tbody tr').remove();
+                                    sortTable();
+                                    
                                     break;
                             }
                         }
@@ -301,5 +307,30 @@
         }
     
     });
+
+
+
+    //정렬하기   
+    
+    function sortTable(){                 
+        var sortType = 'asc';
+        var chkSort = true; 
+        while (chkSort){ 
+            chkSort = false; 
+            $('#reportList tbody > tr').each(function(inx, row) { 
+                console.log('inx', inx);
+                if (inx===0 || !row.nextSibling) return; 
+                var fCell = row.cells[0].innerHTML.toLowerCase(); 
+                var sCell = row.nextSibling.cells[0].innerHTML.toLowerCase(); 
+                if ( (sortType === 'asc' && fCell > sCell)) { 
+                     $( row.nextSibling ).insertBefore( $(row) ); 
+                     chkSort = true; 
+                    } 
+                }); 
+            } 
+        }
+        // <button type='button' onclick='sortTable()'>Sort</button> 
+        // <div id='targetPn' style='width:130px'> </div>
+
 
 </script>
