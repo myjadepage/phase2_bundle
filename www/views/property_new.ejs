@@ -8,14 +8,14 @@
                         <div class="col-md-6">
                                 <div class="card card-h2">
                                     <div class="card-header">
-                                        <h5 class="card-title">신규 단지 정보 입력 <i class="text-danger">*</i><small> 표시는 필수로 입력해야 합니다!</small></h5>
+                                        <h5 class="card-title">신규 단지 정보 입력 <i class="text-danger"  role="presentation">*</i><small> 표시는 필수로 입력해야 합니다!</small></h5>
                                     </div> 
                                     <div class="card-body">
                                       <form>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label>단지 이름 입력<i class="text-danger">*</i></label>
+                                                        <label>단지 이름 입력<i class="text-danger"  role="presentation">*</i></label>
                                                         <input type="text" class="form-control" placeholder="신규 단지 이름 등록" name="name" onkeyup="chkword(this,100);">
                                                     </div>
                                                 </div>                                                        
@@ -43,7 +43,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="propertyType">단지 타입 선택<i class="text-danger">*</i></label>
+                                                        <label for="propertyType">단지 타입 선택<i class="text-danger"  role="presentation">*</i></label>
                                                         <select class="form-control" name="type">
                                                             <option value="0" selected="true" disabled>단지 타입 선택</option>
                                                             <option value="Residential">Residential</option>
@@ -66,7 +66,7 @@
                                                     </div> -->
  
                                                     <div class="form-group">
-                                                        <label for="day_type_offset">일 단위 타입 선택<i class="text-danger">*</i></label>
+                                                        <label for="day_type_offset">일 단위 타입 선택<i class="text-danger"  role="presentation">*</i></label>
                                                         <select class="form-control"  name="day_type_offset"></select>  
                                                         <small class="text-info"> ※  일단위 출입코드 발급시 선택한 기간내에서 설정 시각을 기준으로 출입코드를 사용할 수 있습니다.</small>                                                   
                                                     </div>
@@ -77,7 +77,7 @@
                                                     <div class="form-group">  
                                                         <label>단지 이미지 등록</label>
                                                         <!-- 이미지등록 알아볼것 -->
-                                                        <input type="file" class="form-control" id="hotel_logo" placeholder="배경 이밎 첨부파일 등록 [png,jpg]">
+                                                        <input type="file" class="form-control" name="hotel_logo" placeholder="배경 이밎 첨부파일 등록 [png,jpg]">
 
                                                         <!-- <div class="img_insert">
                                                             <i class="icon image_state"></i>                                                            
@@ -102,12 +102,14 @@
                                         <h5 class="card-title">공용도어 정보 입력</h5>                                      
                                     </div> 
                                     <div class="card-body">
-                                            <div class="table-full-width">                                               
+                                            <div class="table-full-width">   
+
+                                                <!-- 공용도어 없을때  -->
                                                    <table class="table" id="noDoorList"> 
                                                         <tr>
                                                             <td>
                                                                 <div class="con_default">
-                                                                    <i class="icon m_issuekey"></i>
+                                                                    <i class="icon m_issuekey"  role="presentation"></i>
                                                                     <h4 class="text-center text-info">
                                                                         ‘등록된 공용 도어가 없습니다 ’<br>
                                                                         <span>도어락 정보를 등록하여 서비스를 시작해 보세요. </span>
@@ -117,7 +119,8 @@
                                                         </tr>
                                                     </table>
 
-                                                    <table class="table" id="newDoorList" style="display: none;">
+                                                <!-- 공용도어 있을때 -->
+                                                    <table class="table" id="doorList" style="display: none;">
                                                             <colgroup>
                                                                 <col width="10%">
                                                                 <col width="*">
@@ -133,7 +136,7 @@
                                                                             </label>
                                                                             <span>1 selected</span>
                                                                             <button type="button" title="삭제하기" id="delTrash" class="btn btn-simple btn-link" onClick="fn_delRow('chkObject');">
-                                                                                <i class="icon trash"></i>
+                                                                                <i class="icon trash"  role="presentation"></i>
                                                                             </button>
                                                                         </div>                                                                   
                                                                     </th>                                                               
@@ -147,15 +150,15 @@
                                     <div class="card-footer ">
                                             <hr>
                                             <div class="state form-inline">                                                  
-                                               <input type="text" class="form-control" id="newDoorName" placeholder="공용도어 이름 입력" onkeyup="chkword(this,100);">                                                            
+                                               <input type="text" class="form-control" id="doorName" placeholder="공용도어 이름 입력" onkeyup="chkword(this,100);">                                                            
                                                <button type="button" class="btn btn-primary" id="btnDoorName">공용도어 추가</button>                                             
                                             </div>
                                     </div>
                                 </div>
                         </div>                 
                         <div class="col-md-12">
-                            <button type="reset" class="btn btn-default btn-fill shadow pull-left">취소</button>
-                            <button  class="btn btn-primary btn-fill pull-right shadow" id="btnItem">단지 생성 하기</a>                            
+                            <button type="reset" class="btn btn-default btn-fill shadow pull-left" onclick="location='javascript:history.back()'">뒤로가기</button>  
+                            <button type="button" class="btn btn-primary btn-fill pull-right shadow" id="btnItem">단지 생성 하기</a>                            
                         </div>
                        
                 </div>
@@ -163,6 +166,7 @@
         </div>
 <% include inc/footer %>
 <% include inc/modal %>
+
 <!-- 공용도어 수정Modal -->
 <div class="modal fade modal-primary" id="EditName" tabindex="-1" role="dialog" aria-labelledby="EditName" aria-hidden="true">
         <div class="modal-dialog">
@@ -181,6 +185,7 @@
             </div>
         </div>
 <div>
+
 <% include inc/bottom %>
 
 
@@ -196,8 +201,9 @@
     });
 
 </script>
+
 <script>    
-     navTitle('단지생성','');
+     navTitle('신규 단지생성','');
      var API_KEY = localStorage.getItem('api_key');
      var url = 'properties';
 
@@ -208,8 +214,9 @@
      timeZone();// 타임존선택 timeZone    
      dayTimeset();////day-type-offset option
 
+
      var commonrooms =[]; //공용도어 배열
-     //단지생성하기
+     //단지생성하기(단지 생성시 공용도어도 함게 생성)
      $('#btnItem').on('click',function(){
          //  input 변수
         var name = $('input[name="name"]').val(); //필수
@@ -243,7 +250,7 @@
                 var cnt =0;
                 $.ajax({
                     url : endUrl(url),
-                    method:'get',
+                    method:'GET',
                     contentType: "application/json; charset=utf-8",
                     headers : headers()
                 })
@@ -282,15 +289,12 @@
                         }) 
                         .done(function (res) {
                             console.log('ok',res);
-                            // location.href='/propery_new_done/'+ res.id;
+                            location.href='/propery_new_done/'+ res.id;
                         })
                         .fail(function(jqXHR, textStatus, errorThrown){
                             console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
                         })  
-                    }
-
-
-                                    
+                    }                
                 })
                 .fail(function (request, status, error){  
                     msg = request.status + "<br>" + request.responseText + "<br>" + error;
@@ -301,28 +305,28 @@
     });
 
 
-// 공용도어입력       
+// 공용도어입력      
     $('#btnDoorName').click(function(){          
-        var doorCnt = $('#newDoorList tbody tr').length;
-        var doorname = $('#newDoorName').val();  //공용도어추가 input 필드 
+        var doorCnt = $('#doorList tbody tr').length;
+        var doorname = $('#doorName').val();  //공용도어추가 input 필드 
 
         if(doorname !== ""){ 
             if(commonrooms.length > 0){
                 for(var i=0; i< commonrooms.length;i++){
                     if(doorname == commonrooms[i]){
                         alert("동일한 이름의 공용도어가 존재합니다. 다른 이름을 입력해 주세요");                   
-                        $('#newDoorName').val('');                        
+                        $('#doorName').val('');                        
                         return false;
                     }
                 }
-                $("#newDoorDone").modal('show');  
+                $("#doorDone").modal('show');  
                 addDoorTr(doorname); ////공용도어 tr 동적추가
                 console.log("총길이",commonrooms) 
 
             } else if(commonrooms.length == 0){ 
-                $("#newDoorDone").modal('show');  
+                $("#doorDone").modal('show');  
                 $('#noDoorList').hide();  
-                $('#newDoorList').show(); 
+                $('#doorList').show(); 
                 addDoorTr(doorname);
                 console.log(commonrooms)
             } 
@@ -332,10 +336,11 @@
             alert("공용도어의 이름을 입력해 주세요");
         }
     });
+
         
-    //commondoor 이름 읽기
+    //공용도어commondoor 이름 읽기
     function commonArray(){           
-        var commonrooms = $("#newDoorList > tbody").find('tr').map(function(){      
+        var commonrooms = $("#doorList > tbody").find('tr').map(function(){      
             return $(this).find('.commonDoor').text();
             }).get();
         return commonrooms;
@@ -346,12 +351,12 @@
         var rowItem = '<tr><td scope="col"><div class="form-check"><label class="form-check-label"><input class="form-check-input" type="checkbox" name="chkObject" value=""><span class="form-check-sign"></span></label></div></td>';
         rowItem += '<td class="commonDoor">'+ doorname + '</td><td class="td-actions text-right">';
         rowItem += '<button type="button" rel="tooltip" title="수정하기" data-toggle="modal" data-doorname="'+ doorname+'" data-target="#EditName" name ="editName" class="btn btn-info btn-simple btn-link"><i class="fa fa-edit"></i></button></td></tr>';
-        $('#newDoorList tbody').append(rowItem);
-        $('#newDoorName').val(''); 
+        $('#doorList tbody').append(rowItem);
+        $('#doorName').val(''); 
         commonrooms =  commonArray();
     }
 
-
+    //공용도어 이름 수정시 팝업창?????????????????????????????????????????????????
     $('[name=editName]').on('show.bs.modal', function(e) {        
          var name = $(e.relatedTarget).data('doorname');//해당 프라퍼티 아이디 가지고 오기
          console.log(name)
@@ -384,11 +389,11 @@
                 } 
 
                 // 등록한 도어락 모두 삭제경우                
-                var doorCnt = $('#newDoorList tbody tr').length; 
+                var doorCnt = $('#doorList tbody tr').length; 
                 if(doorCnt == 0){
                     location.reload();
                     $('#noDoorList').show(); 
-                    $('#newDoorList').hide(); 
+                    $('#doorList').hide(); 
                 }else{
                     $('#doorCnt').text(doorCnt);                           
                 }

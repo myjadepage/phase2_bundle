@@ -6,22 +6,18 @@
     <div class="row">    
         <div class="col-md-12">                                  
           <%- include('inc/search') %><!-- 검색 -->
-         
-            <!-- 단지가 있을 경우 -->
+            
+          <!-- 단지가 있을 경우 -->
             <div class="slide_wrap" style="display: none;">
                 <ul id="property_list">                            	                                                  
                     <li  class="col-md-4">
                         <div class="card card_default card-s2">
-                            <div class="image">
-                                <i class="icon"></i>
-                            </div>
+                            <div class="image"><i class="icon"></i></div>
                             <div class="content">
                                 <h4 class="title">
                                     <a href="/property_new"  class="icon"></a>
                                 </h4>
-                                <p class="description">
-                                    새로운 단지를 신규로 생성합니다.
-                                </p>                                 
+                                <p class="description">새로운 단지를 신규로 생성합니다.</p>                                 
                             </div>
                         </div>
                     </li>
@@ -46,10 +42,12 @@
 <%- include inc/footer %>
 <%- include inc/modal %>   
 <%- include inc/bottom %>
+
+
 <script> 
     navTitle('단지선택','');
     
-    //property list api
+    //property list api:(단지 리스트 불러오기)
     var url ='properties'  
     $.ajax({
         url: endUrl(url),
@@ -68,21 +66,22 @@
                 liHtml+='<a href="/property_read/' + res.items[i].id + '"> <h4 class="title" style="line-height: 40px;">'+ res.items[i].name +'</h4></a>';
                 liHtml+='<p class="description">'+ res.items[i].address +'</p></div>';
                 liHtml+='<a class="setting icon"  data-property_id="' + res.items[i].id + '" data-toggle="modal" data-target="#propertySetting" class="open-properDial" role="button" ></a>';
+                
                 var role = res.items[i].staff.role;
                 switch (role){
-                    case 'supervisor' : //수퍼바이저일 경우 
+                    case 'supervisor' :     //수퍼바이저일 경우 
                         liHtml+= '<div class="alert alert-info" style="position: absolute;left: 0;right: 0;bottom: -20px;padding: 5px 15px;">'+ role +'</div>';break;
-                    case 'master' :     //마스터일 경우
+                    case 'master' :         //마스터일 경우
                         liHtml+= '<div class="alert alert-success" style="position: absolute;left: 0;right: 0;bottom: -20px;padding: 5px 15px;">'+ role +'</div>';break;
-                    case 'manager' :    //매니져일 경우
+                    case 'manager' :        //매니져일 경우
                         liHtml+= '<div class="alert alert-warning" style="position: absolute;left: 0;right: 0;bottom: -20px;padding: 5px 15px;">'+ role +'</div>';break;
-                    case 'housekeeping' : //하우스키핑 경우
+                    case 'housekeeping' :   //하우스키핑 경우
                         liHtml+= '<div class="alert alert-danger" style="position: absolute;left: 0;right: 0;bottom: -20px;padding: 5px 15px;">'+ role +'</div>';break;
                 }               
                 liHtml+='</li>';
                 $('#property_list').prepend(liHtml); 
             }            
-            propertyList();//슬라이드         
+            propertyList();//bx슬라이드         
         
         }else if(res.total <= 0){
             $('.con_default').show();
@@ -92,7 +91,7 @@
     .fail(function (request, status, error){  
         msg = request.status + "<br>" + request.responseText + "<br>" + error;
         console.log(msg);  
-        alert("단지를 불러 올수가 없습니다.");                         
+        alert("단지를 불러 올수가 없습니다.");                    
     }) 
  
 

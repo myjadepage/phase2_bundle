@@ -54,17 +54,7 @@
                                                             <div class="form-group">  
                                                                 <label>단지 이미지 등록</label>
                                                                 <!-- 이미지등록 알아볼것 -->
-                                                                <input type="file" class="form-control" id="hotel_logo" placeholder="배경 이밎 첨부파일 등록 [png,jpg]">
-        
-                                                                <!-- <div class="img_insert">
-                                                                    <i class="icon image_state"></i>                                                            
-                                                                    <span>
-                                                                        imagenamadadadasdasdasdasdadasdase.png<br><small>100.1MB</small>
-                                                                    </span>
-                                                                    <button type="button" rel="이미지삭제" title="Remove" class="btn btn-simple btn-link">
-                                                                        <i class="icon trash"></i>
-                                                                    </button>
-                                                                </div> -->
+                                                                <input type="file" class="form-control" name="hotel_logo" placeholder="배경 이밎 첨부파일 등록 [png,jpg]">        
                                                             </div>
                                                         </div>
                                                     </div>                                                                                           
@@ -80,11 +70,13 @@
                                     </div> 
                                     <div class="card-body">
                                             <div class="table-full-width"> 
+
+                                                <!-- 공용도어ㅇ없을때 -->
                                                     <table class="table" id="noDoorList" style="display: none;"> 
                                                             <tr>
                                                                 <td>
                                                                     <div class="con_default">
-                                                                        <i class="icon m_issuekey"></i>
+                                                                        <i class="icon m_issuekey"  role="presentation"></i>
                                                                         <h4 class="text-center text-info">
                                                                             ‘등록된 공용 도어가 없습니다 ’<br>
                                                                             <span>도어락 정보를 등록하여 서비스를 시작해 보세요. </span>
@@ -94,7 +86,8 @@
                                                             </tr>
                                                     </table>
 
-                                                   <table class="table" id="readDoorList" style="display: none;"> 
+                                                <!-- 공용도어 있을때 -->
+                                                   <table class="table" id="doorList" style="display: none;"> 
                                                         <colgroup>
                                                             <col width="10%">
                                                             <col width="*">
@@ -109,37 +102,31 @@
                                                                             <span class="form-check-sign"></span>                                                                            
                                                                         </label>
                                                                         <span>1 selected</span>
-                                                                        <!-- <button type="button" rel="이미지삭제" title="Remove" class="btn btn-simple btn-link">
-                                                                            <i class="icon trash"></i>
-                                                                        </button> -->
                                                                         <button type="button" title="삭제하기" id="delTrash" class="btn btn-simple btn-link" onClick="fn_delRow('chkObject');">
-                                                                                <i class="icon trash"></i>
+                                                                                <i class="icon trash"   role="presentation"></i>
                                                                         </button>
                                                                     </div>
-                                                                   
                                                                 </th>                                                               
                                                                 <th class="text-right">total: <strong class="text-primary" id="doorCnt"></strong></th>
                                                             </tr>
                                                         </thead> 
-                                                        
-                                                      <tbody></tbody>
+                                                        <tbody></tbody>
                                                     </table>
                                                 </div>
                                     </div>
                                     <div class="card-footer ">
                                             <hr>
                                             <div class="state form-inline">                                                  
-                                               <input type="text" class="form-control" id="readDoorName"  placeholder="공용도어 이름 입력" onkeyup="chkword(this,100);">
-                                               <a role="button" data-toggle="modal" data-target="#newPropertyDone" class="btn btn-primary" id="btnDoorName">공용도어 추가</a>  
+                                               <input type="text" class="form-control" id="doorName"  placeholder="공용도어 이름 입력" onkeyup="chkword(this,100);">
+                                               <button type="button" class="btn btn-primary" id="btnDoorName">공용도어 추가</button>  
                                             </div>
                                         </div>
                                 </div>
                         </div>
-                        <div class="clearfix"></div>
 
                         <div class="col-md-12 text-center">
                             <button type="reset" class="btn btn-default btn-fill shadow pull-left" onclick="location='javascript:history.back()'">뒤로가기</button>                           
-                            <button  class="btn btn-fill btn-primary pull-right shadow" id="btnItem">단지 수정 하기</button>
+                            <button type="button" class="btn btn-fill btn-primary pull-right shadow" id="btnItem">단지 수정 완료</button>
                         </div>
                 </div>
             </div>
@@ -149,7 +136,7 @@
 <% include inc/bottom %>
 
 <script>
-    //프라퍼티 상세보기 api
+    //프라퍼티(단지) 상세보기 api
     countryCodejson();//국가코드 선택  
     $('select[name="country_code"]').on("change", function(){ 
         $(this).val().replace(/\D/g,'');
@@ -168,8 +155,11 @@
         headers : headers()
     })
     .done(function(res) { 
-        console.log(res);    
+        console.log(res); 
+
+        // 상단네비 타이틀
         navTitle(res.name,res.address);    
+
         $('[name="name"]').val(res.name);
         $('[name="country_code"]').val(res.country_code);
         $('[name="city"]').val(res.city);
@@ -182,17 +172,17 @@
             var rowItem = '<tr><td scope="col"><div class="form-check"><label class="form-check-label"><input class="form-check-input" type="checkbox" name="chkObject" value=""><span class="form-check-sign"></span></label></div></td>';
             rowItem += '<td class="commonDoor">'+ name + '</td><td class="td-actions text-right">';
             rowItem += '<button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-common_id="' + id + '" name ="editName" class="btn btn-info btn-simple btn-link "><i class="fa fa-edit"></i></button></td></tr>';
-            $('#readDoorList tbody').append(rowItem);
+            $('#doorList tbody').append(rowItem);
         }
          // 테이블에 tr행 개수 
-        var doorCnt = $('#readDoorList tbody tr').length;
+        var doorCnt = $('#doorList tbody tr').length;
         if(doorCnt > 0){
             $('#doorCnt').text(doorCnt);
             $('#noDoorList').hide(); 
-            $('#readDoorList').show(); 
+            $('#doorList').show(); 
         }else if(doorCnt == 0){
             $('#noDoorList').show(); 
-            $('#readDoorList').hide(); 
+            $('#doorList').hide(); 
         }
     })
     .fail(function (request, status, error){  
@@ -200,7 +190,10 @@
         console.log(msg);                           
     })  
     
-    //단지수정하기
+
+
+
+    //프라퍼티(단지)만 수정 api
     $('#btnItem').on('click',function(){
          //  input 변수
         var name = $('input[name="name"]').val(); //필수
@@ -230,89 +223,119 @@
             }else{
 
                 // //같은 단지 다른주소 생성 체크(같은 단지 같은 주소 안됨)
-                // for(var i=0; i<res.items.length; i++){                
-                //     if(name == res.items[i].name && address == res.items[i].address){ 
-                //         cnt++;                 
-                //     }                
-                // }    
-                // if(cnt >=1){                   
-                //     alert("동일한 단지에 동일한 주소가 존재합니다. 다른 주소를 입력해 주세요");
-                //     $('input[name="address"]').focus();
-                //     $('input[name="address"]').val("");
-                // }else{
+                var cnt =0;
+                $.ajax({
+                    url : endUrl(url),
+                    method:'GET',
+                    contentType: "application/json; charset=utf-8",
+                    headers : headers()
+                })
+                .done(function(res) {  
+                    console.log(res); 
+                    for(var i=0; i<res.items.length; i++){                
+                        if(name == res.items[i].name && address == res.items[i].address){ 
+                            cnt++;                 
+                        }                
+                    }    
+                    if(cnt >=1){                   
+                        alert("동일한 단지에 동일한 주소가 존재합니다. 다른 주소를 입력해 주세요");
+                        $('input[name="address"]').focus();
+                        $('input[name="address"]').val("");
+                    }else{
 
-                    //입력박스 체크 뒤 api 호출 
-                    var params ={};
-                    if(!(name == "")) params.name = name;
-                    if(!(country_code == 0)) params.country_code = country_code;
-                    if(!(timezone == 0 )) params.timezone = timezone;
-                    if(!(address == "")) params.address = address;
-                    if(!(city == "")) params.city = city;        
-                    if(!(image_url == "")) params.image_url = image_url;               
-                        
-                    $.ajax({
-                        url : endUrl(url)+ id ,            
-                        contentType: "application/json; charset=utf-8",
-                        type:'PUT',           
-                        headers : headers(),              
-                        data:JSON.stringify(params)
-                    }) 
-                    .done(function (res) {
-                        console.log(res);
-                        $("#editPropertyDone").modal('show'); 
-                    })
-                    .fail(function(jqXHR, textStatus, errorThrown){
-                        console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
-                    })  
-                    .always(function(){ 
-                        setTimeout(function(){
-                            location.replace('/');
-                        },1500);
-                    })
-                // }
+                        //입력박스 체크 뒤 api 호출 
+                        var params ={};
+                        if(!(name == "")) params.name = name;
+                        if(!(country_code == 0)) params.country_code = country_code;
+                        if(!(timezone == 0 )) params.timezone = timezone;
+                        if(!(address == "")) params.address = address;
+                        if(!(city == "")) params.city = city;        
+                        if(!(image_url == "")) params.image_url = image_url;               
+                            
+                        //단지 수정 api
+                        $.ajax({
+                            url : endUrl(url)+ id ,            
+                            contentType: "application/json; charset=utf-8",
+                            type:'PUT',           
+                            headers : headers(),              
+                            data:JSON.stringify(params)
+                        }) 
+                        .done(function (res) {
+                            console.log(res);
+                            $("#editPropertyDone").modal('show'); 
+                        })
+                        .fail(function(jqXHR, textStatus, errorThrown){
+                            console.log('Error: ' + textStatus + ' - ' + errorThrown);                     
+                        })  
+                        .always(function(){ 
+                            setTimeout(function(){
+                                location.replace('/');
+                            },1500);
+                        })
+                    }
+                })
+                .fail(function (request, status, error){  
+                        msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                        console.log(msg);                           
+                }) 
             }
         }
     });
 
 
-//공용도어 추가  
+//공용도어 추가입력
     var commonrooms =[]; //공용도어 배열
     $('#btnDoorName').on('click', function(){
         var url="properties/"+ id + "/commonrooms";          
+        var doorCnt = $('#doorList tbody tr').length;
+        var doorname =$('#doorName').val();
         commonrooms =  commonArray(); 
-        var doorname =$('#readDoorName').val();
 
         if(doorname !== ""){ 
             if(commonrooms.length > 0){
                 for(var i=0; i< commonrooms.length;i++){
                     if(doorname == commonrooms[i]){
                         alert("동일한 이름의 공용도어가 존재합니다. 다른 이름을 입력해 주세요");                   
-                        $('#readDoorName').val('');                        
+                        $('#doorName').val('');                        
                         return false;
                     }
                 }
-            }
-            $.ajax({
-                    url : endUrl(url),
-                    method:'post',
-                    contentType: "application/json; charset=utf-8",        
-                    headers : headers(),
-                    data :JSON.stringify({
-                        name : doorname
+                
+                 // 공용도어추가입력 api
+                $.ajax({
+                        url : endUrl(url),
+                        method:'POST',
+                        contentType: "application/json; charset=utf-8",        
+                        headers : headers(),
+                        data :JSON.stringify({
+                            name : doorname
+                        })
                     })
-                })
-                .done(function(res) {  
-                    console.log(res);                    
-                    addDoorTr(res.name, res.id);               
-                    $('#doorCnt').text(doorCnt + 1); 
-                    $("#newDoorDone").modal('show');  
-                    $('#noDoorList').hide();  
-                    $('#readDoorList').show();
-                })
-                .fail(function (request, status, error){  
-                    msg = request.status + "<br>" + request.responseText + "<br>" + error;
-                    console.log(msg);                           
-                })
+                    .done(function(res) {  
+                        console.log(res);                    
+                        addDoorTr(res.name, res.id);               
+                        $('#doorCnt').text(doorCnt + 1); 
+                        $("#doorDone").modal('show');  
+                        $('#noDoorList').hide();  
+                        $('#doorList').show();
+                    })
+                    .fail(function (request, status, error){  
+                        msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                        console.log(msg);   
+                        alert("공용도어를 추가할 수 없습니다.")                        
+                    })
+                    .always(function(){                       
+                        location.reload();
+                    })
+
+            }else if(commonrooms.length == 0){ 
+                $("#doorDone").modal('show');  
+                $('#noDoorList').hide();  
+                $('#doorList').show(); 
+                addDoorTr(doorname);
+                console.log(commonrooms)
+            } 
+            $('#doorCnt').text(doorCnt + 1); 
 
         }else{
             alert("공용도어의 이름을 입력해 주세요");
@@ -322,64 +345,72 @@
 
 //commondoor 이름 읽기
 function commonArray(){           
-        var commonrooms = $("#readDoorList > tbody").find('tr').map(function(){      
-            return $(this).find('.commonDoor').text();
-            }).get();
-        return commonrooms;
-    }
+    var commonrooms = $("#doorList > tbody").find('tr').map(function(){      
+        return $(this).find('.commonDoor').text();
+    }).get();
+    return commonrooms;
+}
 //공용도어 tr 동적추가
 function addDoorTr(doorname, id){
     var rowItem = '<tr><td scope="col"><div class="form-check"><label class="form-check-label"><input class="form-check-input" type="checkbox" name="chkObject" value=""><span class="form-check-sign"></span></label></div></td>';
     rowItem += '<td class="commonDoor">'+ doorname + '</td><td class="td-actions text-right">';
     rowItem += '<button type="button" rel="tooltip" title="수정하기" data-toggle="modal" data-doorname="'+ doorname+'" data-common_id="'+ id +'" data-target="#EditName" name ="editName" class="btn btn-info btn-simple btn-link"><i class="fa fa-edit"></i></button></td></tr>';
-    $('#readDoorList tbody').append(rowItem);
-    $('#readDoorName').val(''); 
+    $('#doorList tbody').append(rowItem);
+    $('#doorName').val(''); 
     commonrooms =  commonArray();
 }
 
 
-    // 공용도어락 삭제
-    function fn_delRow(chkObjNm) {  
-        var commonId= $('[name=editName]').data('common_id');     
-        console.log(commonId);      
-        var url= 'properties/' + id + '/commonrooms/' + commonId;
-        if ($("input[name="+chkObjNm+"]").is(":checked")){ 
-            if (confirm("삭제 하시겠습니까?")) { 
-                for(var i=$("[name='"+chkObjNm+"']:checked").length-1; i>-1; i--){ 
-                    $("[name='"+chkObjNm+"']:checked").eq(i).closest("tr").remove();                   
-                } 
+// 공용도어락 삭제
+function fn_delRow(chkObjNm) {      
+    if ($("input[name="+chkObjNm+"]").is(":checked")){ 
+        
+        if (confirm("삭제 하시겠습니까?")) { 
+            var commonId="";
 
-                $.ajax({
-                    url: endUrl(url),
-                    method:'delete',
-                    contentType: "application/json; charset=utf-8",                   
-                    headers : headers()
-                })
-                .done(function(res) {                
-                    console.log(res); 
-                    // location.reload();
-                    // if(res.code == 200){
-                    //     $('#Delproperty').modal('show', function(e) { 
-                    //         var name = $(e.relatedTarget).data('property_name');
-                    //         $(this).$('h6').text(name);         
-                    //     });                        
-                    // }else{
-                    //     alert("삭제 실패");
-                    // }
-                    
-                })
-                .fail(function (request, status, error){  
-                    msg = request.status + "<br>" + request.responseText + "<br>" + error;
-                    console.log(msg);                           
-                })            
+            for(var i=$("[name='"+chkObjNm+"']:checked").length-1; i>-1; i--){ 
+                commonId=$("[name='"+chkObjNm+"']:checked").eq(i).closest("tr").find('button').data('common_id');
+                $("[name='"+chkObjNm+"']:checked").eq(i).closest("tr").remove(); 
             } 
-        } else { 
-            alert("선택된 데이터가 없습니다.");  
-        }       
-    }
 
-
-
-
+            var url= 'properties/' + id + '/commonrooms/' + commonId;            
+            $.ajax({
+                url: endUrl(url),
+                method:'DELETE',
+                contentType: "application/json; charset=utf-8",                   
+                headers : headers()
+            })
+            .done(function(res) {                
+                console.log(res);                 
+                if(res.code == 200){
+                    $('#DelDoor').modal('show', function(e) { 
+                        var name = $(e.relatedTarget).data('doorname');
+                        $(this).$('h6').text(name);         
+                    });                        
+                }else{
+                    alert("삭제 실패");
+                }                
+            })
+            .fail(function (request, status, error){  
+                msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                console.log(msg);  
+                alert("공용도어 삭제를 할 수 없습니다.");                       
+            }) 
+            .always(function(){
+                  // / 등록한 도어락 모두 삭제경우  
+                location.reload();              
+                var doorCnt = $('#doorList tbody tr').length; 
+                if(doorCnt == 0){                    
+                    $('#noDoorList').show(); 
+                    $('#doorList').hide(); 
+                }else{
+                    $('#doorCnt').text(doorCnt);                           
+                }
+            })
+        } 
+    } else { 
+        alert("선택된 데이터가 없습니다.");  
+    }       
+}
         
     </script>

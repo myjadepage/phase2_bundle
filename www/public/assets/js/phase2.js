@@ -172,14 +172,14 @@ $(document).ready(function() {
 
 
 /**
- * api 주소
+ * api 주소 앞부분
  */
 function endUrl(url){
     var API_ENDPOINT ='https://development.api.allegion.imgate.co.kr/v1/'
     return API_ENDPOINT + url;
 }
-var API_KEY = localStorage.getItem('api_key');
 
+var API_KEY = localStorage.getItem('api_key');
 function headers(){
     var obj ={};    
     obj.Authorization = "Bearer " + API_KEY; 
@@ -310,7 +310,6 @@ function characterCheck(obj) {
 /**
  *      국가코드  json
  */
-
 function countryCodelogin(){  
     $.ajax({
         url : '/countries', //json 불러오기 router이용해서 불러옴
@@ -385,31 +384,6 @@ function dayTimeset(){
     }    
 }
 
-/**
- *      빌딩 타입
- */
-
-// function buildingtype(){
-//     $('select[name="buildingtype"]').empty();
-//     $('select[name="buildingtype"]').append('<option  value="0" value="0" selected="true">빌딩 타입 선택</option>');
-//     $('select[name="buildingtype"]').prop('selectedIndex', 0);  
-//     $.ajax({
-//         url : '/building_type', //json 불러오기 router이용해서 불러옴
-//         dataType :'json',
-//         success : function (data) {
-//             console.log(data);
-//             $.each(data, function (entry) { 
-//                 $('select[name="buildingtype"]').append($('<option></option>').attr('value', entry.ko).text(entry.ko)); 
-//             })
-//         },
-//         error: function(jqXHR, textStatus, errorThrown){
-//           console.log('Error: ' + textStatus + ' - ' + errorThrown);
-//           alert("빌딩타입의 내용을 불러 올 수 없습니다.");                     
-//         }    
-//     });
-// }
-
-
 
 /*
  *  로그아웃 api
@@ -459,5 +433,4 @@ function propertyList(){
         });
     }
 
-// 단지정보입력 여부 체크
 

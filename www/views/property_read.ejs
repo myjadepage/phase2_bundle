@@ -59,11 +59,13 @@
                                     </div> 
                                     <div class="card-body">
                                             <div class="table-full-width">
+
+                                                <!-- 공용도어 없을때 -->
                                                 <table class="table" id="noDoorList" style="display: none;"> 
                                                     <tr>
                                                         <td>
                                                             <div class="con_default">
-                                                                <i class="icon m_issuekey"></i>
+                                                                <i class="icon m_issuekey"  role="presentation"></i>
                                                                 <h4 class="text-center text-info">
                                                                     ‘등록된 공용 도어가 없습니다 ’<br>
                                                                     <span>도어락 정보를 등록하여 서비스를 시작해 보세요. </span>
@@ -73,19 +75,20 @@
                                                     </tr>
                                                 </table>
 
-                                                   <table class="table" id="readDoorList">
-                                                        <colgroup>
-                                                            <col width="10%">
-                                                            <col width="*">
-                                                            <col width="25%">
-                                                        </colgroup>
-                                                        <thead>
-                                                            <tr>                                                            
-                                                                <th class="text-right">total: <strong class="text-primary" id="doorCnt"></strong></th>
-                                                            </tr>
-                                                        </thead>                                                         
-                                                      <tbody></tbody>
-                                                    </table>
+                                                <!-- 공용도어 있을때 -->
+                                                <table class="table" id="doorList">
+                                                    <colgroup>
+                                                        <col width="10%">
+                                                        <col width="*">
+                                                        <col width="25%">
+                                                    </colgroup>
+                                                    <thead>
+                                                        <tr>                                                            
+                                                            <th class="text-right">total: <strong class="text-primary" id="doorCnt"></strong></th>
+                                                        </tr>
+                                                    </thead>                                                         
+                                                   <tbody></tbody>
+                                                </table>
                                                 </div>
                                     </div>
                                     <div class="card-footer" style="height:70px;"></div>
@@ -115,12 +118,15 @@
                 $.ajax({                   
                     //property 상세보기 api
                     url : endUrl(url)+ id ,
-                    method:'get',
+                    method:'GET',
                     contentType: "application/json; charset=utf-8",                   
                     headers : headers()
                 })
                 .done(function(res) { 
-                    navTitle(res.name,res.address);    
+
+                    //상단네비 타이틀
+                    navTitle(res.name,res.address);   
+
                     $('[name="name"]').text(res.name);
                     $('[name="country_code"]').text(res.country_code);
                     $('[name="city"]').text(res.city);
@@ -131,15 +137,15 @@
                         var id = res.commonrooms[i].id;
                         var name = res.commonrooms[i].name;  
                         var rowItem = '<tr><td>' + name + '</td></tr>';
-                        $('#readDoorList tbody').append(rowItem);
+                        $('#doorList tbody').append(rowItem);
                     }
                      // 테이블에 tr행 개수 
-                    var doorCnt = $('#readDoorList tbody tr').length;
+                    var doorCnt = $('#doorList tbody tr').length;
                     if(doorCnt > 0){
                         $('#doorCnt').text(doorCnt);
                     }else if(doorCnt == 0){
                         $('#noDoorList').show(); 
-                        $('#readDoorList').hide(); 
+                        $('#doorList').hide(); 
                     }
                 })
                 .fail(function (request, status, error){  
