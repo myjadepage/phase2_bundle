@@ -123,6 +123,7 @@
                     headers : headers()
                 })
                 .done(function(res) { 
+                    console.log('상세보기',res);
 
                     //상단네비 타이틀
                     navTitle(res.name,res.address);   

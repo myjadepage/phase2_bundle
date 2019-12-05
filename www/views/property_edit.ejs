@@ -133,6 +133,27 @@
         </div>
 <% include inc/footer %>
 <% include inc/modal %>
+
+<!-- 공용도어 수정Modal -->
+<div class="modal fade modal-primary" id="EditName" tabindex="-1" role="dialog" aria-labelledby="EditName" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+               <h5>알림</h5>
+            </div>
+            <div class="modal-body setting_choice">
+                    <i class="icon confirm"></i>                       
+                <h6>공용도어 이름 수정</h6>
+                <p>이름을 입력해 주세요  <input type= "text" value="" name="editDoorName">  </p>
+            </div>
+            <div class="modal-footer">                   
+                <button type="button" class="btn btn-default btn-fill btn-wd shadow"   name="btnEditNameDone">수정</button>
+            </div>
+        </div>
+    </div>
+<div>
+
+    
 <% include inc/bottom %>
 
 <script>
@@ -166,14 +187,19 @@
         $('[name="timezone"]').val(res.timezone);
         $('[name="address"]').val(res.address);
         $('[name="day_type_offset"]').val(res.day_type_offset);
+        //도어락정보리스트
         for(var i in res.commonrooms){
             var id = res.commonrooms[i].id;
             var name = res.commonrooms[i].name;  
-            var rowItem = '<tr><td scope="col"><div class="form-check"><label class="form-check-label"><input class="form-check-input" type="checkbox" name="chkObject" value=""><span class="form-check-sign"></span></label></div></td>';
+            var rowItem = '<tr><td scope="col"><div class="form-check" rel="tooltip" ><label class="form-check-label"><input class="form-check-input" type="checkbox" name="chkObject" value="" ><span class="form-check-sign"></span></label></div></td>';
             rowItem += '<td class="commonDoor">'+ name + '</td><td class="td-actions text-right">';
-            rowItem += '<button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-common_id="' + id + '" name ="editName" class="btn btn-info btn-simple btn-link "><i class="fa fa-edit"></i></button></td></tr>';
+            rowItem += '<button type="button" rel="tooltip" title="수정하기"  data-toggle="modal" data-common_id="' + id + '" data-target="#EditName" name ="editName" class="btn btn-info btn-simple btn-link "><i class="fa fa-edit"></i></button></td></tr>';
             $('#doorList tbody').append(rowItem);
         }
+
+        checkInstall(); //도어락 설치된것은 삭제 금지
+
+
          // 테이블에 tr행 개수 
         var doorCnt = $('#doorList tbody tr').length;
         if(doorCnt > 0){
@@ -360,6 +386,23 @@ function addDoorTr(doorname, id){
     commonrooms =  commonArray();
 }
 
+    //공용도어 이름 수정시 팝업창?????????????????????????????????????????????????
+    $('[name=editName]').on('show.bs.modal', function(e) {        
+         var name = $(e.relatedTarget).data('doorname');//해당 프라퍼티 아이디 가지고 오기
+         console.log(name)
+         $('[name=btnEditNameDone]').on('click', function() {  
+            console.log(doorname) 
+            var doorname = $(e.currentTarget).find('[name =editDoorName]').val();   
+            if(name == doorname){
+                alert("동일한 이름이니다. 다른이름으로 입력해 주세요")
+            }else{
+                alert("ok")
+            }
+        });
+     });  
+
+
+
 
 // 공용도어락 삭제
 function fn_delRow(chkObjNm) {      
@@ -412,5 +455,41 @@ function fn_delRow(chkObjNm) {
         alert("선택된 데이터가 없습니다.");  
     }       
 }
-        
+      
+
+    ///공용도어 도어락 설치 여부
+    function checkInstall(){
+        var url3="properties/"+ id +"/doorlocks";
+        $.ajax({
+                method: "get",
+                url : endUrl(url3),
+                contentType: "application/json; charset=utf-8",
+                headers : headers()
+            })                                                                               
+            .done(function(res) {                         
+                console.log('도어락리스트',res); 
+                //1.도어락 설치된 공용도어 찾기
+                var checkbox = $('[name="chkObject"');
+                for(var i=0; i< res.items.length; i++){
+                    var temp = (res.items).filter(function(obj){
+                        if(obj.status =='created'){ //도어락설치된것만 찾기
+                            checkbox.attr("disabled",true);
+                            checkbox.parent().parent().addClass('disabled')
+                            .hover(function(){
+                                checkbox.parent().parent()
+                                .attr('title', '공용도어에 도어락이 설치된 경우, 삭제가 불가능합니다. 모바일 앱의 도어락 설치 메뉴에서 해당 도어락을 삭제한 후, 다시 시도해주세요.');
+                            });                                                        
+                        }
+                    })
+                }
+                
+            })
+            .fail(function (request, status, error){  
+                msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                console.log(msg);                        
+            }) 
+    }
+
+
+
     </script>

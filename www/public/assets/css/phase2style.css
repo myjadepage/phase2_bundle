@@ -361,6 +361,7 @@ textarea#staffMemo{
 }
 
 
+
  /* 모달 */
  .modal .modal-content .modal-header h5{
     font-weight: 600;
@@ -386,27 +387,32 @@ textarea#staffMemo{
     color: #fff;
     text-align: center;
 }
-#viewStaff dl{
+#viewStaff dl, 
+.report_detail dl{
     padding: 20px;
     overflow: hidden;
 }
-#viewStaff dl dd{
+#viewStaff dl dd,
+.report_detail dl dd{
     width: 100%;   
     padding: 10px 10px 0;    
 }
 
-#viewStaff dl dd:last-child,#viewStaff dl dt{
+#viewStaff dl dd:last-child,#viewStaff dl dt,
+.report_detail dl dd:last-child,.report_detail dl dt{
     border-bottom: 1px solid #000;  
     padding-bottom: 10px;
 }
-#viewStaff dl dd>label{
+#viewStaff dl dd>label,
+.report_detail dl dd>label{
     display: block;
     float: left;
     width: 100px;
     font-weight: 600;
     font-size: 12px;
 }
-#viewStaff dd strong{    
+#viewStaff dd strong,
+.report_detail dd strong{    
    display: inline-block;
    font-weight: normal;
 }

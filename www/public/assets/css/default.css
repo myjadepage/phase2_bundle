@@ -1718,7 +1718,7 @@ fieldset[disabled] .btn-neutral.active {
 
 .form-check.disabled .form-check-label {
     color: #9A9A9A;
-    opacity: .5;
+    opacity: .2;
     cursor: not-allowed;
 }
 
