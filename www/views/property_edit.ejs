@@ -472,7 +472,7 @@ function fn_delRow(chkObjNm) {
                 var checkbox = $('[name="chkObject"');
                 for(var i=0; i< res.items.length; i++){
                     var temp = (res.items).filter(function(obj){
-                        if(obj.status =='created'){ //도어락설치된것만 찾기
+                        if(obj.status !=='created'){ //도어락설치된것만 찾기
                             checkbox.attr("disabled",true);
                             checkbox.parent().parent().addClass('disabled')
                             .hover(function(){
