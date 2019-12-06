@@ -40,7 +40,28 @@
 </div>     
          
 <%- include inc/footer %>
-<%- include inc/modal %>   
+<%- include inc/modal %>  
+
+<!-- property setting Modal -->
+<div class="modal fade modal-primary" id="propertySetting" tabindex="-1" role="dialog" aria-labelledby="propertySetting" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>단지설정</h5>
+            </div>
+            <div class="modal-body setting_choice">
+                <h6>등록된 단지 정보를 수정 또는 단지 삭제를 선택해 주세요</h6>
+                <a href="" class="pro_edit"><i class="icon edit"></i><p>단지수정</p></a>
+                <a href="" class="pro_del"><i class="icon del"></i><p>단지삭제</p></a>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  End Modal -->
+
 <%- include inc/bottom %>
 
 
@@ -70,17 +91,18 @@
                 var role = res.items[i].staff.role;
                 switch (role){
                     case 'supervisor' :     //수퍼바이저일 경우 
-                        liHtml+= '<div class="alert alert-info" style="position: absolute;left: 0;right: 0;bottom: -20px;padding: 5px 15px;">'+ role +'</div>';break;
+                        liHtml+= '<div class="alert alert-info checkrole">'+ role +'</div>';break;
                     case 'master' :         //마스터일 경우
-                        liHtml+= '<div class="alert alert-success" style="position: absolute;left: 0;right: 0;bottom: -20px;padding: 5px 15px;">'+ role +'</div>';break;
+                        liHtml+= '<div class="alert alert-success checkrole">'+ role +'</div>';break;
                     case 'manager' :        //매니져일 경우
-                        liHtml+= '<div class="alert alert-warning" style="position: absolute;left: 0;right: 0;bottom: -20px;padding: 5px 15px;">'+ role +'</div>';break;
+                        liHtml+= '<div class="alert alert-warning checkrole">'+ role +'</div>';break;
                     case 'housekeeping' :   //하우스키핑 경우
-                        liHtml+= '<div class="alert alert-danger" style="position: absolute;left: 0;right: 0;bottom: -20px;padding: 5px 15px;">'+ role +'</div>';break;
+                        liHtml+= '<div class="alert alert-danger checkrole">'+ role +'</div>';break;
                 }               
                 liHtml+='</li>';
                 $('#property_list').prepend(liHtml); 
-            }            
+            } 
+                     
             propertyList();//bx슬라이드         
         
         }else if(res.total <= 0){
@@ -91,14 +113,46 @@
     .fail(function (request, status, error){  
         msg = request.status + "<br>" + request.responseText + "<br>" + error;
         console.log(msg);  
-        alert("단지를 불러 올수가 없습니다.");                    
+        alert("단지를 불러 올 수가 없습니다.");                    
     }) 
- 
 
+ 
     // 설정클릭시 수정/삭제 선택 모달
     $('#propertySetting').on('show.bs.modal', function(e) {        
          var id = $(e.relatedTarget).data('property_id');//해당 프라퍼티 아이디 가지고 오기
+         checkInstall(id); //도어락 설치된것은 삭제 금지
          $(e.currentTarget).find('.pro_edit').prop('href','/property_edit/'+ id );
          $(e.currentTarget).find('.pro_del').prop('href','/property_del/'+ id);
      });                  
+
+     //도어락 설치 여부확인api
+    ///공용도어 도어락 설치 여부
+    function checkInstall(id){
+        var url="properties/"+ id +"/doorlocks";
+        $.ajax({
+                method: "get",
+                url : endUrl(url),
+                contentType: "application/json; charset=utf-8",
+                headers : headers()
+            })                                                                               
+            .done(function(res) {                        
+               
+                //1.도어락 설치된 공용도어 찾기 
+                for(var i=0; i< res.items.length; i++){
+                    var temp = (res.items).filter(function(obj){
+                        if(obj.status !=='created'){ //도어락설치된것만 찾기
+                            $('.pro_del').prop('href','#').css('background-color', 'gray')
+                            .hover(function(){
+                                $('.pro_del')
+                                .attr('title', '공용도어에 도어락이 설치된 경우, 삭제가 불가능합니다. 모바일 앱의 도어락 설치 메뉴에서 해당 도어락을 삭제한 후, 다시 시도해주세요.');
+                            });
+                        }
+                    })
+                }              
+            })
+            .fail(function (request, status, error){  
+                msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                console.log(msg);                        
+            }) 
+    }
 </script>   

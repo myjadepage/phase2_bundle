@@ -19,15 +19,6 @@ router.get('/timezone', function(req, res) {
     res.send(result);
 })
 
-// 빌딩타입
-router.get('/building_type', function(req, res) {
-    var filePath = path.join(__dirname, '/../data/building_type.json');
-    var file = fs.readFileSync(filePath, 'utf8');
-    var result = JSON.parse(file);
-    res.send(result);
-})
-
-
 
 router.get('/login', function(req, res) {
     if (req.user) res.redirect('/');

@@ -12,7 +12,7 @@
                             <!-- 핸폰번호 -->
                             <input 
                                 class="form-control" id="phone-number-check" name="phone"
-                                placeholder="전화번호 입력 (숫자만 입력해 주세요)" maxlength="13" type="text">                            
+                                placeholder="전화번호 입력 (숫자만 입력해 주세요)" maxlength="13" type="text" numberOnly>                            
                            
                             <button type="button" class="btn btn-fill btn-info btn-block" id="reqAuthen" >인증번호 요청</button>
                             <p class="desc"><span>휴대번호 입력 후 인증번호 요청을 클릭해 주세요</span></p>
@@ -31,9 +31,29 @@
 
 
 <%- include ../inc/modal %>
+
+<!-- 전화번호 입력 오류 Modal -->
+<div class="modal fade modal-primary" id="phoneError" tabindex="-1" role="dialog" aria-labelledby="phoneError" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5>알림</h5>
+                </div>
+                <div class="modal-body setting_choice">
+                    <i class="icon warning"></i>
+                    <p class="desc text-primary">입력한 전화번호 정보를 찾을 수 없습니다.<br> 입력정보 확인후 다시 인증번호를 요청해 주세요.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--  End Modal -->
+
+
 <%- include ../inc/bottom %>   
 <script>
-    
     $('p.desc > span').hide();
     phoneNumCheck();
 
@@ -58,8 +78,8 @@
                 contentType: "application/json; charset=utf-8",
                 data:JSON.stringify({
                     "phone_number": phone_number,
-                    "need_signedup": true,                                     
-                    "is_test_mode": true                   
+                    "need_signedup": true,                                    
+                    "is_test_mode": true 
                 }),
                 beforeSend : function(){
                     $('#loading').modal('show');
@@ -76,8 +96,6 @@
                 }else{
                     endSeconds = Math.floor(new Date() / 1000) + 178;
                 }
-                console.log('endSeconds',endSeconds);
-                
                 var startSeconds = Math.floor(Date.now() / 1000);
                 var expired_at = endSeconds - startSeconds;
                 $('button#reqAuthen').addClass('active');
@@ -117,8 +135,8 @@
                     url: endUrl(url),
                     contentType: "application/json; charset=utf-8",  
                     data:JSON.stringify({
-                            "phone_number": phone_number,
-                            "verification_code": verification_code
+                        "phone_number": phone_number,
+                        "verification_code": verification_code
                     })
                 })  
                 .done(function(res) {  

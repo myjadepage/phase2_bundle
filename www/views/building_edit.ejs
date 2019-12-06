@@ -132,8 +132,7 @@
                                     url: endUrl(url2),
                                     contentType: "application/json; charset=utf-8",
                                     headers: headers(),
-                                    data: {
-                                        property_id: id,
+                                    data: {                                        
                                         language_code: "ko"
                                     }
                                 })
@@ -226,7 +225,7 @@
 
                             });
 
-                            //공용도어 추가  
+    //공용도어 추가  
     var commonrooms =[]; //공용도어 배열
     $('#btnDoorName').on('click', function(){
         var url="properties/"+ id + "/commonrooms";          
@@ -331,4 +330,4 @@ function addDoorTr(doorname, id){
     }
 
 
-                        </script>
+</script>

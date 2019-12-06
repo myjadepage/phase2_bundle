@@ -3,27 +3,6 @@
     단지팝업
 
 -->
-
-
-<!-- property setting Modal -->
-<div class="modal fade modal-primary" id="propertySetting" tabindex="-1" role="dialog" aria-labelledby="propertySetting" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5>단지설정</h5>
-            </div>
-            <div class="modal-body setting_choice">
-                <h6>등록된 단지 정보를 수정 또는 단지 삭제를 선택해 주세요</h6>
-                <a href="/property_edit" class="pro_edit"><i class="icon edit"></i><p>단지수정</p></a>
-                <a href="/property_del" class="pro_del"><i class="icon del"></i><p>단지삭제</p></a>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!--  End Modal -->
 <!-- 단지 삭제 Modal -->
 <div class="modal fade modal-primary" id="Delproperty" tabindex="-1" role="dialog" aria-labelledby="Delproperty" aria-hidden="true">
     <div class="modal-dialog">
@@ -426,47 +405,19 @@
     </div>
 </div>
 <!--  End Modal -->
-
-
-
-
-<!-- 
-    
-    기타팝업
-
--->
-
-<!-- 전화번호 입력 오류 Modal -->
-<div class="modal fade modal-primary" id="phoneError" tabindex="-1" role="dialog" aria-labelledby="phoneError" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5>알림</h5>
-            </div>
-            <div class="modal-body setting_choice">
-                <i class="icon warning"></i>
-                <p class="desc text-primary">입력한 전화번호 정보를 찾을 수 없습니다.<br> 입력정보 확인후 다시 인증번호를 요청해 주세요.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
+    <!-- 로그인중 Modal -->
+    <div class="modal fade modal-primary" id="loadging" tabindex="-1" role="dialog" aria-labelledby="loading" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5>알림</h5>
+                    </div>
+                    <div class="modal-body setting_choice">
+                        <img src="/assets/img/loading.svg" width="180px">
+                        <p class="desc text-primary">로그인 진행중 입니다<br> 잠시만 기다려 주세요</p>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-<!--  End Modal -->
-<!-- 로그인중 Modal -->
-<div class="modal fade modal-primary" id="loadging" tabindex="-1" role="dialog" aria-labelledby="loading" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5>알림</h5>
-            </div>
-            <div class="modal-body setting_choice">
-                <img src="/assets/img/loading.svg" width="180px">
-                <p class="desc text-primary">로그인 진행중 입니다<br> 잠시만 기다려 주세요</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--  End Modal -->
+        
+        <!--  End Modal -->

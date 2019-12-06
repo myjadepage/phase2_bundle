@@ -61,13 +61,17 @@ p.desc{
 }
 
 @media (max-width: 991px) {
+    .login_page .container{   
+        transform: translateY(20%) ;
+    }    
     .login_page h1.logo{
         width: 100%;
     }
     .login_page .col-xs-push-4 {
         left: 0;
     }
-}    
+}   
+
 
 /* 텍스트설정 */
 .txt_hidden{
@@ -337,6 +341,16 @@ textarea#staffMemo{
 .slide_wrap .bxPrev i, .slide_wrap .bxNext i{
     font-size: 12em;
 }
+.checkrole{
+    position: absolute;
+    left: 0;right: 0;
+    bottom: -9px;
+    padding: 5px 15px;
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+}
+
+
 
 @media (min-width:991px) and (max-width:1400px){
     .main-panel .slide_wrap {

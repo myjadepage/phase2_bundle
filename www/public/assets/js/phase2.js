@@ -190,7 +190,7 @@ function headers(){
 /* 
  *  사이드바,상단네비 날짜시간설정
  */
-var d =  new Date();
+var d=new Date().toString().substr(25,6);
 $('.timezone').text('[ '+ d + ' ]');
 
 
@@ -257,7 +257,10 @@ function phoneNumCheck(){
         }
     }); 
 }
-
+// 숫자만 입력
+$("input:text[numberOnly]").on("keyup", function() {
+    $(this).val($(this).val().replace(/[^0-9]/g,""));
+});
 
 /**
  *   글자 입력수 제한
@@ -375,8 +378,8 @@ function timeZone(){
  */
 function dayTimeset(){
     $('select[name="day_type_offset"]').empty();
-    $('select[name="day_type_offset"]').append('<option selected="true" value="1200">12 : 00</option>')
-    for(var i=0; i<10 ;i++){
+    $('select[name="day_type_offset"]').append('<option selected="true" value="0000">00 : 00</option>')
+    for(var i=1; i<10 ;i++){
         $('select[name="day_type_offset"]').append($('<option></option>').attr('value', "0"+ i +"00").text("0"+ i +" : 00"));         
     }   
     for(var i=10; i<24 ;i++){
@@ -410,27 +413,36 @@ $('#logout').click(function(){
  * 단지목록슬라이드 bx슬라이드 //인덱스
  * 
  */
+
 function propertyList(){
-        $('#property_list' ).bxSlider( {
-            speed: 500, 
-            moveSlides: 3,    
-            slideWidth:1000,  
-            minSlides: 3,     
-            maxSlides:3,        
-            infiniteLoop: false,
-            pager:false,
-            responsive:true,    
-            nextSelector: '.bxNext',
-            prevSelector: '.bxPrev',
-            nextText: '<i class="pe-7s-angle-right"></i>',
-            prevText: '<i class="pe-7s-angle-left"></i>',      
-            touchEnabled: false, //모달 충돌용방지1
-            onSliderLoad: function () {//모달 충돌용방지2
-                $('.bx-viewport').on('click','a.collapse-toggle', function () {                
-                    $(this).parent().find('.collapse-box').collapse('toggle'); 
-                });
-            }
-        });
+    var width = $(window).width();
+    var maxSlides,minSlides,moveSlides ;
+    console.log(width);
+    if (width < 1230) {
+        maxSlides = 1;moveSlides =1;minSlides =1;
+    } else {
+        maxSlides = 3;moveSlides =3;minSlides =3;
     }
+    $('#property_list' ).bxSlider( {
+        speed: 500, 
+        moveSlides: moveSlides,    
+        slideWidth:1000,  
+        minSlides: minSlides,     
+        maxSlides: maxSlides,        
+        infiniteLoop: false,
+        pager:false,
+        responsive:true,    
+        nextSelector: '.bxNext',
+        prevSelector: '.bxPrev',
+        nextText: '<i class="pe-7s-angle-right"></i>',
+        prevText: '<i class="pe-7s-angle-left"></i>',      
+        touchEnabled: false, //모달 충돌용방지1
+        onSliderLoad: function () {//모달 충돌용방지2
+            $('.bx-viewport').on('click','a.collapse-toggle', function () {                
+                $(this).parent().find('.collapse-box').collapse('toggle'); 
+            });
+        }
+    });
+}
 
 

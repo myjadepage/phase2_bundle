@@ -18,14 +18,10 @@
                                                 <div class="row form-group">
                                                     <div class="col-md-12 pr-1">
                                                         <label>단지 타입 선택</label>
-                                                        <select class="form-control">
-                                                            <option>빌딩선택</option>                                                           
-                                                        </select>
+                                                        <select class="form-control" name="buildingNames"></select>    
                                                     </div>
                                                     <div class="col-md-12 pl-1">
-                                                        <select class="form-control">
-                                                            <option>객실 선택</option>                                                           
-                                                        </select>
+                                                        <select class="form-control" name="roomNames"><option>객실 선택</option></select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -38,12 +34,13 @@
                                                         <input class="form-control" type="text" placeholder="게스트 이름 입력">
                                                     </div>
                                                     <div class="col-md-12 pr-1 pl-1">
-                                                        <select class="form-control">
-                                                            <option>대한민국 (+82)</option>                                                                          
-                                                        </select>
+                                                        <!-- 국가번호 -->
+                                                        <select class="form-control" id="CountryCode" name="country_code"></select>
                                                     </div>
                                                     <div class="col-md-12 pl-1">
-                                                        <input class="form-control" type="text" placeholder="상세 전화번호 입력">
+                                                        <input 
+                                                        class="form-control" id="phone-number-check" name="phone"
+                                                        placeholder="전화번호 입력 (숫자만 입력해 주세요)" maxlength="13" type="text" numberOnly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -142,7 +139,7 @@
                                                     <span>신규 발급하기</span>
                                                 </div>                                                
                                                 <h4>체크 박스를 선택하면 기존에 사용중인  키는 더이상 사용할 수 없습니다</h4>
-                                                <a role="button" data-toggle="modal" data-target="#staffKeyDone" class="btn btn-fill btn-primary">모바일키 발급</a>
+                                                <a role="button" data-toggle="modal" data-target="#staffKeyDone" class="btn btn-primary">모바일키 발급</a>
                                             </div>
                                         </div>
                                     </div>
@@ -190,7 +187,7 @@
                                                             <span>신규 발급하기</span>
                                                         </div>                                                
                                                         <h4>체크 박스를 선택하면 기존에 사용중인  키는 더이상 사용할 수 없습니다</h4>
-                                                       <a role="button" data-toggle="modal" data-target="#staffKeyDone" class="btn btn-fill btn-primary">출입코드 발급</a>
+                                                       <a role="button" data-toggle="modal" data-target="#staffKeyDone" class="btn btn-primary">출입코드 발급</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -224,6 +221,84 @@
     $('.nav .query_staff').attr('href','/properties/<%= id %>/staff'+itemQuery);
     $('.nav .query_report').attr('href','/properties/<%= id %>/report'+itemQuery);
     navTitle(name, address);
+
+    phoneNumCheck();
+    var countryCode;
+    countryCodelogin();//국가코드 선택  
+    $('select[name="country_code"]').on("change", function(){ 
+          countryCode = $(this).val().replace(/\D/g,'');
+    }); 
+    
+    // 빌딩리스트 불러오기api(staff_list 참고)
+    var API_KEY = localStorage.getItem('api_key');   
+    var id = "<%= id%>";
+    var url = "properties/" + id + "/buildings";
+    $.ajax({
+        method: "get",
+        url : endUrl(url),
+        contentType: "application/json; charset=utf-8",
+        headers : headers()
+    })                                                                               
+    .done(function(res) {            
+        console.log(res); 
+        $('[name=buildingNames]').empty();
+        $('[name=buildingNames]').append('<option  value="0" value="0" selected="true">빌딩 선택</option>');
+        for(var i=0; i<res.items.length;i++){
+            $('[name=buildingNames]').append($('<option></option>').attr('value', res.items[i].id).text(res.items[i].name)); 
+        }
+    })
+    .fail(function (request, status, error){  
+        msg = request.status + "<br>" + request.responseText + "<br>" + error;
+        console.log(msg); 
+        alert("건물 목록을 불러 올 수 없습니다.");                          
+    })  
+
+
+    //해당 객실리스트 api 선택
+    $('[name =buildingNames]').on('change',function(){
+        var url = "properties/" + id + "/rooms"; 
+        var bid = $(this).find(":selected").val();
+        $.ajax({
+            url : endUrl(url),
+            contentType: "application/json; charset=utf-8",
+            method : "get",
+            headers : headers(),
+            data:{               
+                building_id : bid
+            }
+        })
+        .done(function(res){
+            console.log(res); 
+            $('[name=roomNames]').empty();
+            $('[name=roomNames]').append('<option  value="0" value="0" selected="true">객실 선택</option>');
+            for(var i=0; i<res.items.length;i++){
+                $('[name=roomNames]').append($('<option></option>').attr('value', res.items[i].id).text(res.items[i].name)); 
+            }  
+                               
+        })
+        .fail(function(){
+            msg = request.status + "<br>" + request.responseText + "<br>" + error;
+            console.log(msg); 
+            alert("객실목록을 불러 올 수 없습니다.");  
+        })
+
+
+    })
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
 
 
 
