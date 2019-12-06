@@ -16,48 +16,50 @@
                                         <select class="form-control" name="buildingtype"></select>                                       
                                     </div>              
                                     <div class="col-md-3">                                       
-                                            <select class="form-control">
-                                                <option>도어타입 선택</option>
-                                                <option value="all">전체</option>
-                                                <option value="room">객실</option>
-                                                <option value="commonroom">공용도어</option>
-                                            <select>                                             
+                                        <select class="form-control">
+                                            <option>도어타입 선택</option>
+                                            <option value="all">전체</option>
+                                            <option value="room">객실</option>
+                                            <option value="commonroom">공용도어</option>
+                                        </select>                                             
                                     </div>
                                     <button class="btn btn-primary btn-fill" id="btnSearchType">검색</button>                                                                                                
                                 </div>  
                             </h4>
                             <div class="card">                                   
-                                    <div class="content table-responsive  table-full-width">
-                                        <table class="table table-hover">
-                                            <colgroup>
-                                                <col width="30%">
-                                                <col width="*">
-                                                <col width="20%">
-                                                <col width="20%">
-                                                <col width="15%">
-                                            </colgroup>
-                                            <thead>
+                                <div class="content table-responsive  table-full-width">
+                                    <table class="table table-hover">
+                                        <colgroup>
+                                            <col width="30%">
+                                            <col width="*">
+                                            <col width="20%">
+                                            <col width="20%">
+                                            <col width="15%">
+                                        </colgroup>
+                                        <thead>
+                                            <tr>
                                                 <th>빌딩이름</th>
                                                 <th>도어타입</th>
                                                 <th>설치상태</th>
                                                 <th>설치일</th>                                              
                                                 <th>정렬<select><option>이름순</option><option>설치상태</option></select></th>
-                                            </thead>
-                                            <tbody class="doorlock_list"></tbody>
-                                            <tbody class="doorlock_nolist">
-                                                    <tr>
-                                                        <td colspan="5">
-                                                            <div class="con_default">
-                                                                <i class="icon m_issuekey"></i>
-                                                                <h4 class="text-center text-info">
-                                                                    ‘ 도어락 정보가 없습니다. ’
-                                                                </h4>
-                                                            </div>
-                                                        </td>                                                                      
-                                                    </tr>                                                                        
-                                                </tbody>
-                                        </table>        
-                                    </div>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="doorlock_list"></tbody>
+                                        <tbody class="doorlock_nolist">
+                                            <tr>
+                                                <td colspan="5">
+                                                    <div class="con_default">
+                                                        <i class="icon m_issuekey"></i>
+                                                        <h4 class="text-center text-info">
+                                                            ‘ 도어락 정보가 없습니다. ’
+                                                        </h4>
+                                                    </div>
+                                                </td>                                                                      
+                                            </tr>                                                                        
+                                        </tbody>
+                                    </table>        
+                                </div>
                             </div>
 
                             <button class="btn btn-default btn-fill shadow " onclick="location='javascript:history.back()'">나가기</button>
@@ -68,9 +70,9 @@
             </div>
         </div>
 
-<% include inc/footer %>
-<% include inc/modal %>
-<% include inc/bottom %>
+<%- include inc/footer %>
+<%- include inc/modal %>
+<%- include inc/bottom %>
 
 <script>
     //navTitle 쿼리 
@@ -78,6 +80,7 @@
     var address;
     var itemQuery;       
     qs();
+    console.log(itemQuery)
     $('.nav .query_building').attr('href','/properties/<%= id %>/building'+itemQuery );
     $('.nav .query_doorlock').attr('href','/properties/<%= id %>/doorlock'+itemQuery);
     $('.nav .query_issuekey').attr('href','/properties/<%= id %>/issuekey'+itemQuery);
@@ -90,17 +93,16 @@
     var API_KEY = localStorage.getItem('api_key');   
     var id = "<%= id %>";
     var url = "properties/" + id + "/buildings";
-    console.log('id', id);
 
     // 빌딩타입 불러오기    
     var url2 ="properties/" + id + "/buildingtypes"   
+    console.log(url2);
     $.ajax({
         method: "get",
         url : endUrl(url2),
         contentType: "application/json; charset=utf-8",
         headers : headers(),
-        data:{
-            property_id : id,
+        data:{           
             language_code : "ko"
         }
     })                                                                               
@@ -109,15 +111,17 @@
         $('select[name="buildingtype"]').empty();
         $('select[name="buildingtype"]').append('<option  value="0" value="0" selected="true">빌딩 타입 선택</option>');
         $('select[name="buildingtype"]').prop('selectedIndex', 0); 
-        for(var i of res.items){
-            $('select[name="buildingtype"]').append($('<option></option>').attr('value', i.id).text(i.name)); 
-        }                                                        
+        for(var i=0; i<res.items.length; i++){
+            $('select[name="buildingtype"]').append($('<option></option>').attr('value', res.items[i].id).text(res.items[i].name)); 
+        }
     })
     .fail(function (request, status, error){  
         msg = request.status + "<br>" + request.responseText + "<br>" + error;
         console.log(msg); 
         alert("빌딩타입을 불러 올 수 없습니다.");                          
     }) 
+
+
 
     //도어락리스트 api
     var url3="properties/"+ id +"/doorlocks";

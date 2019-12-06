@@ -1,5 +1,5 @@
-<%- include('inc/head',{title:'phase2'}) %>
-    <%- include('inc/sidebar',{title:'phase2', date:new Date}) %>
+<%- include('inc/head', {title:'phase2'}) %>
+    <%- include('inc/sidebar',{title:'phase2', date}) %>
         <%- include('inc/nav',{date:new Date}) %>
 
             <div class="content">
@@ -142,8 +142,8 @@
                                     $('select[name="buildingtype"]').empty();
                                     $('select[name="buildingtype"]').append('<option  value="0" value="0" selected="true">빌딩 타입 선택</option>');
                                     $('select[name="buildingtype"]').prop('selectedIndex', 0);
-                                    for (var i of res.items) {
-                                        $('select[name="buildingtype"]').append($('<option></option>').attr('value', i.id).text(i.name));
+                                    for(var i=0; i<res.items.length; i++){
+                                        $('select[name="buildingtype"]').append($('<option></option>').attr('value', res.items[i].id).text(res.items[i].name)); 
                                     }
                                 })
                                 .fail(function(request, status, error) {
@@ -153,7 +153,6 @@
                                 })
 
                             //빌딩상세 api
-
                             $.ajax({
                                     method: "get",
                                     url: endUrl(url),

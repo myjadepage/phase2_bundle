@@ -39,20 +39,20 @@
         </ul>
         <%} else {%>
         <ul class="nav">            
-            <li class="<%= path === '/building_list' ? 'active' : '' %>">
-                <a href="/properties/<%= id%>/building/" class="query_building"><i class="pe-7s-network"></i><p>PROPERTY</p></a>
+            <li class="<%= path === '/building' ? 'active' : '' %>">
+                <a href="/properties/<%= id%>/building" class="query_building"><i class="pe-7s-network"></i><p>PROPERTY</p></a>
             </li>            
-            <li  class="<%= path === '/doorlock_list' ? 'active' : '' %>">
-                <a href="/properties/<%= id%>/doorlock/" class="query_doorlock"><i class="pe-7s-settings"></i><p>DOORLOCK</p></a>
+            <li  class="<%= path === '/doorlock' ? 'active' : '' %>">
+                <a href="/properties/<%= id%>/doorlock" class="query_doorlock"><i class="pe-7s-settings"></i><p>DOORLOCK</p></a>
             </li>
             <li  class="<%= path === '/issuekey' ? 'active' : '' %>">
-                <a href="/properties/<%= id%>/issuekey/" class="query_issuekey"><i class="pe-7s-key"></i><p>ISSUEKEY</p></a>
+                <a href="/properties/<%= id%>/issuekey" class="query_issuekey"><i class="pe-7s-key"></i><p>ISSUEKEY</p></a>
             </li>
-            <li  class="<%= path === '/staff_list' ? 'active' : '' %>">
-                <a href="/properties/<%= id%>/staff/" class="query_staff"><i class="pe-7s-users"></i><p>STAFF</p></a>
+            <li  class="<%= path === '/staff' ? 'active' : '' %>">
+                <a href="/properties/<%= id%>/staff" class="query_staff"><i class="pe-7s-users"></i><p>STAFF</p></a>
             </li>
             <li  class="<%= path === '/report' ? 'active' : '' %>">
-                <a href="/properties/<%= id%>/report/" class="query_report"><i class="pe-7s-comment"></i><p>REPORT</p></a>
+                <a href="/properties/<%= id%>/report" class="query_report"><i class="pe-7s-comment"></i><p>REPORT</p></a>
             </li>
         </ul>
         <% } %>

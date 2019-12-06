@@ -79,14 +79,14 @@
                                 <!-- IE에서는 txtArea1 의 객체를 찾기 때문이다.-->       
                             </div>
                     </div>
-                    <button class="btn btn-default btn-fill shadow pull-left">나가기</button>
+                    <button class="btn btn-default btn-fill shadow pull-left" onclick="location='javascript:history.back()'">나가기</button>
                 </div>
             </div>
         </div>
     </div>
 
-<% include inc/footer %>
-<% include inc/modal %>
+<%- include inc/footer %>
+<%- include inc/modal %>
 
 <!--스텝정보상세보기Modal -->
 <div class="modal fade modal-primary report_detail" id="viewStaffReport" tabindex="-1" role="dialog" aria-labelledby="viewStaffReport" aria-hidden="true">
@@ -122,7 +122,7 @@
 
 
 
-<% include inc/bottom %>
+<%- include inc/bottom %>
 
 <script>
     //navTitle 쿼리  
