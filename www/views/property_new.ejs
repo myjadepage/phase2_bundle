@@ -44,12 +44,12 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="propertyType">단지 타입 선택<i class="text-danger"  role="presentation">*</i></label>
-                                                        <select class="form-control" name="type">
-                                                            <option value="0" selected="true" disabled>단지 타입 선택</option>
+                                                        <select class="form-control" name="preset_type">
+                                                            <!-- <option value="0" selected="true" disabled>단지 타입 선택</option>
                                                             <option value="Residential">Residential</option>
                                                             <option value="B&B Hotel">B&B Hotel</option>
                                                             <option value="Hospitality">Hospitality</option>
-                                                            <option value="Office">Office</option>
+                                                            <option value="Office">Office</option> -->
                                                         </select>                                                               
                                                     </div>
                                                 </div>
@@ -211,7 +211,8 @@
      $('select[name="country_code"]').on("change", function(){ 
         $(this).val().replace(/\D/g,'');
      }); 
-     timeZone();// 타임존선택 timeZone    
+     timeZone();// 타임존선택 timeZone  
+     presetType(); //preset 선택
      dayTimeset();////day-type-offset option
 
 
@@ -225,7 +226,7 @@
         var city = $('input[name="city"]').val(); //필수
         var address =$('input[name="address"]').val(); //필수
         var day_type_offset =$('select[name="day_type_offset"] option:selected').val(); //필수  
-        var type = $('select[name="type"] option:selected').val(); //필수  
+        var type = $('select[name="preset_type"] option:selected').val(); //필수  
         var image_url = $('#hotel_logo').val(); 
         commonrooms =  commonArray();           
        
@@ -267,15 +268,14 @@
                         $('input[name="address"]').val("");
                     }else{
 
-
-
                         //입력박스 체크 뒤 api 호출 
                         var params ={};
                         if(!(name == "")) params.name = name;
                         if(!(country_code == 0)) params.country_code = country_code;
                         if(!(timezone == 0 )) params.timezone = timezone;
                         if(!(address == "")) params.address = address;
-                        if(!(city == "")) params.city = city;        
+                        if(!(city == "")) params.city = city;   
+                        if(!(type == "")) params.preset_id = type;     
                         if(!(image_url == "")) params.image_url = image_url;
                         if(!(commonrooms == "")) params.commonrooms = commonrooms; 
                         

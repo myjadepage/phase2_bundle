@@ -384,8 +384,9 @@ textarea#staffMemo{
 }
 .pagination{
     position: absolute;
+    left:50%;
     bottom: 10px;
-    margin-left: -3%;
+    margin-left: -5%;
 }
 
 

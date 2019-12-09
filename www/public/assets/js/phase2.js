@@ -388,6 +388,31 @@ function dayTimeset(){
 }
 
 
+    // 프리셋타입 선택
+    function presetType(){
+        $('select[name="preset_type"]').empty();
+        $('select[name="preset_type"]').append('<option  value="0" selected="true" disabled>단지 타입 선택</option>');
+        $('select[name="preset_type"]').prop('selectedIndex', 0);  
+        var url = 'properties/presets'
+        $.ajax({
+            url : endUrl(url),
+            method: "get",
+            headers : headers()
+        })
+        .done(function (res) {
+            console.log(res);
+            for(var i=0; i<res.items.length;i++){
+                $('select[name="preset_type"]').append($('<option></option>').attr('value', res.items[i].id).text(res.items[i].name + ' (' + res.items[i].desc +')')); 
+            }
+        })
+        .fail(function(jqXHR, textStatus, errorThrown){
+            console.log('Error: ' + textStatus + ' - ' + errorThrown);  
+            alert("단지타입을 불러 올 수 없습니다.");                    
+        })  
+    }
+
+
+
 /*
  *  로그아웃 api
  */    
