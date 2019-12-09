@@ -62,7 +62,7 @@
                                     </tr>
                                 </table> 
 
-                                <table class="table table-hover" id="reportList" style="display: none;">
+                                <table class="table table-hover paging_list" id="reportList" style="display: none;">
                                     <colgroup>
                                         <col width="30%">
                                         <col width="*">
@@ -179,8 +179,14 @@
                 .done(function(res) {   
                     console.log(res);
                     //items값이 없으면 "해당값이 없다 출력"                     
-                    if(res.items.length == 0){$('#noReportList').show();}
-                    else {$('#reportList').show();}
+                    if(res.items.length == 0){ 
+                        $('#noReportList').show();
+                        $('#reportList').hide() 
+                    }
+                    else {
+                        $('#noReportList').hide();
+                        $('#reportList').show();
+                    }
 
                     //결과값 받을적마다 리셋
                     $('#reportList thead tr').remove();
@@ -200,7 +206,7 @@
 
                     for(var i=0; i<res.items.length;i++){
                         var trHtml ='';
-                        trHtml += '<tr data-toggle="modal" data-id="'+ i +'" data-target="#viewStaffReport"><td>' + res.items[i].grantee_name + '</td>';
+                        trHtml += '<tr data-toggle="modal" data-id="'+ i +'" data-target="#viewStaffReport" style="cursor:pointer"><td>' + res.items[i].grantee_name + '</td>';
                         trHtml += '<td>' + res.items[i].grantee_role + '</td>';
                         trHtml += '<td>' + res.items[i].actor_name + '</td>';
                         trHtml += '<td>' + simpleDate(res.items[i].created_at) + '</td></tr>';
@@ -214,7 +220,10 @@
                         staff_obj.created_at = res.items[i].created_at;
                         staff_arr.push(staff_obj);
                     }
-                    console.log(staff_arr);
+
+                    $('ul.pagination').remove();
+                    page();               
+                   
                                        
                     //select 선택하기
                     $('[name="buildingNames"]').on('change', function(){
@@ -232,8 +241,10 @@
                                         trHtml += '<td>' + simpleDate(res.items[i].created_at) + '</td></tr>';
                                         $('#reportList tbody').append(trHtml);
                                     }
+
+                                  
                                     break;     
-                                case "grantee_name" : sortTable(0);break;
+                                case "grantee_name" : sortTable(0);;break;
                                 case "grantee_role" : sortTable(1);break;
                                 case "actor_name" : sortTable(2);break;
                                 case "created_at" : sortTable(3);break;
@@ -259,8 +270,14 @@
                 .done(function(res) {                                
                     console.log(res); 
                     //items값이 없으면 "해당값이 없다 출력"                     
-                    if(res.items.length == 0){$('#noReportList').show();}
-                    else {$('#reportList').show();}
+                    if(res.items.length == 0){ 
+                        $('#noReportList').show();
+                        $('#reportList').hide() 
+                    }
+                    else {
+                        $('#noReportList').hide();
+                        $('#reportList').show();
+                    }
                     
                     //결과값 받을적마다 리셋
                     $('#reportList thead tr').remove();
@@ -279,7 +296,7 @@
                     //결과값 테이블에 넣기
                     for(var i=0; i<res.items.length;i++){
                         var trHtml ='';
-                        if(res.items[i].facility_name == undefined ){trHtml += '<tr data-toggle="modal" data-id="'+ i +'" data-target="#viewFacilityReport"><td> - </td>';}
+                        if(res.items[i].facility_name == undefined ){trHtml += '<tr data-toggle="modal" data-id="'+ i +'" data-target="#viewFacilityReport" style="cursor:pointer"><td> - </td>';}
                             else{trHtml += '<tr data-toggle="modal" data-id="'+ i +'" data-target="#viewFacilityReport"><td>' + res.items[i].facility_name + '</td>';}
                         if(res.items[i].building_name == undefined){trHtml += '<td> - </td>';}
                             else{trHtml += '<td>' + res.items[i].building_name + '</td>';}
@@ -297,6 +314,9 @@
                         facility_obj.created_at = res.items[i].created_at;
                         facility_arr.push(facility_obj);
                     }
+                    
+                    $('ul.pagination').remove();
+                    page();
 
                     //select 선택하기
                     $('[name="buildingNames"]').on('change', function(){     
@@ -317,6 +337,7 @@
                                             else{trHtml += '<td>' + simpleDate(res.items[i].created_at) + '</td></tr>';}
                                         $('#reportList tbody').append(trHtml);
                                     }
+                                   
                                     break;                                
                                 case "facility_name" : sortTable(0);break;
                                 case "building_name" : sortTable(1);break;

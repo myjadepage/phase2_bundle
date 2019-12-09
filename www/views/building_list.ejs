@@ -30,7 +30,7 @@
                                                 </td>
                                             </tr>
                                         </table>
-                                        <table class="table table-hover" id="buildingList" style="display: none;"> 
+                                        <table class="table table-hover paging_list" id="buildingList" style="display: none;"> 
                                             <colgroup>
                                                 <col width="20%">
                                                 <col width="*">
@@ -45,8 +45,8 @@
                                                     <th>정렬:생성일 기준</th>
                                                 </tr>
                                             </thead>
-                                            <tbody></tbody>
-                                        </table>        
+                                            <tbody></tbody>                                            
+                                        </table>                                       
                                     </div>
                             </div>
 
@@ -80,6 +80,8 @@
     var API_KEY = localStorage.getItem('api_key');   
     var id = "<%= id%>";
     var url = "properties/" + id + "/buildings";
+
+       
     $.ajax({
         method: "get",
         url : endUrl(url),
@@ -102,7 +104,9 @@
                 trHtml += "<button type='button' rel='tooltip' title='객실(공용도어)에 도어락이 설치된 경우,삭제가 불가능합니다. 모바일 앱의 도어락 설치 메뉴에서 해당 도어락을 삭제한 후,  다시 시도해주세요.' class='btn btn-simple btn-link'  data-building_id='" + item.id + "'id='btnDelBuilding'><i class='icon trash'></i></button></td>";
                 trHtml += "</tr>";            
             });       
-            $('#buildingList tbody').append(trHtml);
+            $('#buildingList tbody').append(trHtml); 
+            
+            page();
             
         }else if(res.total == 0){
             $('#noBuildingList').show(); 

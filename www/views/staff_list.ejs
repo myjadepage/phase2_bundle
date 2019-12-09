@@ -36,7 +36,7 @@
                                             </tr>
                                         </table>
 
-                                        <table class="table table-hover" id="staffList" style="display: none;"> 
+                                        <table class="table table-hover paging_list" id="staffList" style="display: none;"> 
                                             <colgroup>
                                                 <col width="20%">
                                                 <col width="*">
@@ -50,7 +50,7 @@
                                                 <th>정렬:생성일 기준</th>
                                             </thead>
                                             <tbody></tbody>
-                                        </table>        
+                                        </table>
                                     </div>
                             </div>
 
@@ -123,6 +123,9 @@
             });       
             $('#staffList tbody').append(trHtml);
             
+            page();
+
+                        
         }else if(res.total == 0){
             $('#noStaffList').show(); 
             $('#staffList').hide(); 
@@ -219,7 +222,7 @@
         alert("건물 목록을 불러 올 수 없습니다.");                          
     })  
 
-    
+ 
     //리스트에 보이는 날짜포맷 변경
     function simpleDate(date){
         var date = new Date(date);

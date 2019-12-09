@@ -375,6 +375,23 @@ textarea#staffMemo{
 }
 
 
+/* 페이징 */
+.card .content{   
+    text-align: center;
+}
+.card .content .table{
+    text-align: left;
+}
+.pagination{
+    position: absolute;
+    bottom: 10px;
+    margin-left: -3%;
+}
+
+
+
+
+
 
  /* 모달 */
  .modal .modal-content .modal-header h5{

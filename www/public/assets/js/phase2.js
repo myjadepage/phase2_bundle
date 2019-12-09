@@ -445,4 +445,40 @@ function propertyList(){
     });
 }
 
+   //페이징
+   function page(){
+    $('.paging_list').each(function() {
+            var currentPage = 0;
+            var numPerPage = 6;
+            var $table = $(this);
+
+            $table.find('tbody tr').hide()
+            .slice(currentPage * numPerPage, (currentPage + 1) * numPerPage)
+            .show();
+
+            $table.bind('repaginate', function() {
+                $table.find('tbody tr').hide()
+                .slice(currentPage * numPerPage,(currentPage + 1) * numPerPage)
+                .show();
+            });
+                
+            var numRows = $table.find('tbody tr').length;
+            var numPages = Math.ceil(numRows / numPerPage);
+            var $pager = $('<ul class="pagination"></ul>');
+
+            for (var i = 0; i < numPages; i++) {
+                var $li =$('<li></li');
+                $('<a href="#" class="page-number"></a>').text(i + 1)
+                .bind('click', { newPage : i }, function(e) {
+                    currentPage = e.data['newPage'];
+                    $table.trigger('repaginate');
+                    $(this).parent().addClass('active').siblings().removeClass('active');
+                }).appendTo($li);
+                $li.appendTo($pager);
+            }
+            $pager.insertAfter($table).find('a.page-number:first').parent().addClass('active');
+        });
+}
+
+
 
