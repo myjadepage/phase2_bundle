@@ -88,7 +88,7 @@
                 liHtml+='<p class="description">'+ res.items[i].address +'</p></div>';
                 liHtml+='<a class="setting icon"  data-property_id="' + res.items[i].id + '" data-toggle="modal" data-target="#propertySetting" class="open-properDial" role="button" ></a>';
                 
-                var role = res.items[i].staff.role;
+                var role = res.items[i].staff.role; //staff role check
                 switch (role){
                     case 'supervisor' :     //수퍼바이저일 경우 
                         liHtml+= '<div class="alert alert-info checkrole">'+ role +'</div>';break;

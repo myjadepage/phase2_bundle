@@ -526,6 +526,17 @@ ul.room_name_item  .form-check.border span.room_name{
     color: #000;
 }
 
+
+/* select sort 설정 */
+select[name="sort"], select[name="sort"].form-control:focus {
+    background-color: transparent;
+    border: none;
+}
+select[name="sort"].form-control{
+    color: #3472F7;
+}
+
+
 /* //////아이콘위치설정  //////////////////////////////////////////////////// */
 .icon{
     display: inline-block;

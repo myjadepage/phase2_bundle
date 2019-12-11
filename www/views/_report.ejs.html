@@ -43,7 +43,20 @@
                         </div>  
                     </h4>
                     <div class="card">                                   
-                            <div class="content table-responsive table-full-width">  
+                            <div class="content table-responsive table-full-width">
+                                <table class="table table-hover" id="defaultReportList" >
+                                    <tr>
+                                        <td colspan="3" style="border: none;">
+                                            <div class="con_default">
+                                                <i class="icon m_report"></i>
+                                                <h4 class="text-center text-info">
+                                                    ‘ 리포트 종류를 선택해 주세요 ’
+                                                </h4>
+                                            </div>
+                                        </td>                                                                      
+                                    </tr>
+                                </table> 
+
                                 <table class="table table-hover" id="noReportList" style="display: none;">
                                     <tr>
                                         <td colspan="3" style="border: none;">
@@ -57,7 +70,13 @@
                                     </tr>
                                 </table> 
 
-                                <table class="table table-hover paging_list" id="reportList" style="display: none;">                                   
+                                <table class="table table-hover paging_list" id="reportList" style="display: none;">
+                                    <colgroup>
+                                        <col width="30%">
+                                        <col width="*">
+                                        <col width="25%">
+                                        <col width="15%">
+                                    </colgroup>
                                     <thead></thead>
                                     <tbody></tbody>
                                 </table> 
@@ -273,38 +292,24 @@
                     $('#reportList tbody tr').remove();
                     //정렬선택
                     $('[name=buildingNames]').empty();
-                    $('[name=buildingNames]').append('<option  value="0" selected="true">빌딩 선택</option>');                    
-                    
-                   
+                    $('[name=buildingNames]').append('<option  value="0" selected="true">정렬 선택</option>');
+                    $('[name=buildingNames]').append('<option  value="facility_name">시설 이름</option>');
+                    $('[name=buildingNames]').append('<option  value="building_name">빌딩 이름</option>');
+                    $('[name=buildingNames]').append('<option  value="actor_name"">스태프 이름</option>');
+                    $('[name=buildingNames]').append('<option  value="created_at">일시</option>'); 
                     //테이블제목
                     titleHtml='';
-                    titleHtml += '<tr><th width="15%">시설 이름</th><th width="15%">빌딩 이름</th><th>내용</th><th width="10%">스태프 이름</th><th width="15%">일시</th></tr>';
+                    titleHtml += '<tr><th>시설 이름</th><th>빌딩 이름</th><th>스태프 이름</th><th>일시</th></tr>';
                     $('#reportList thead').append(titleHtml);
                     //결과값 테이블에 넣기
-                    for(var i=0; i<res.items.length;i++){                       
+                    for(var i=0; i<res.items.length;i++){
                         var trHtml ='';
-                        // 시설이름
                         if(res.items[i].facility_name == undefined ){trHtml += '<tr data-toggle="modal" data-id="'+ i +'" data-target="#viewFacilityReport" style="cursor:pointer"><td> - </td>';}
                             else{trHtml += '<tr data-toggle="modal" data-id="'+ i +'" data-target="#viewFacilityReport"><td>' + res.items[i].facility_name + '</td>';}
-                        // 빌딩이름    
                         if(res.items[i].building_name == undefined){trHtml += '<td> - </td>';}
-                        else{trHtml += '<td>' + res.items[i].building_name + '</td>';}  
-                       
-
-                        // 내용    
-                        if(!res.items[i].json_diffs){
-                            trHtml += '<td> - </td>';
-                        }else{
-
-                            for(var j=0; j<res.items[i].json_diffs.length; j++){
-                                trHtml += '<td>' + res.items[i].json_diffs[j].oldValue +'->' + res.items[i].json_diffs[j].newValue + '</td>';
-                            }
-                        }
-                                             
-                        // 스태프이름    
+                            else{trHtml += '<td>' + res.items[i].building_name + '</td>';}
                         if(res.items[i].actor_name == undefined){trHtml += '<td> - </td>';}
                             else{trHtml += '<td>' + res.items[i].actor_name + '</td>';}
-                        // 일시    
                         if(res.items[i].created_at == undefined){trHtml += '<td> - </td></tr>';}
                             else{trHtml += '<td>' + simpleDate(res.items[i].created_at) + '</td></tr>';}
                         $('#reportList tbody').append(trHtml);
@@ -313,17 +318,42 @@
                         var facility_obj ={};
                         facility_obj.facility_name = res.items[i].facility_name;
                         facility_obj.building_name = res.items[i].building_name;
-                        facility_obj.json_diffs = res.items[i].json_diffs;
                         facility_obj.actor_name = res.items[i].actor_name;
                         facility_obj.created_at = res.items[i].created_at;
                         facility_arr.push(facility_obj);
-
-                       //빌딩선택하기 빌딩 중복제거
-                        $('[name=buildingNames]').append('<option  value="" >'+ facility_obj.building_name +'</option>'); 
                     }
                     
                     $('ul.pagination').remove();
-                    page();                   
+                    page();
+
+                    //select 선택하기
+                    $('[name="buildingNames"]').on('change', function(){     
+                        if(this.value !== ""){
+                            var optVal = $(this).find(":selected").val();
+                            switch(optVal){ 
+                                case "0" : 
+                                    $('#reportList tbody tr').remove();
+                                    for(var i=0; i<res.items.length;i++){
+                                        var trHtml ='';
+                                        if(res.items[i].facility_name == undefined ){trHtml += '<tr><td> - </td>';}
+                                            else{trHtml += '<tr><td>' + res.items[i].facility_name + '</td>';}
+                                        if(res.items[i].building_name == undefined){trHtml += '<td> - </td>';}
+                                            else{trHtml += '<td>' + res.items[i].building_name + '</td>';}
+                                        if(res.items[i].actor_name == undefined){trHtml += '<td> - </td>';}
+                                            else{trHtml += '<td>' + res.items[i].actor_name + '</td>';}
+                                        if(res.items[i].created_at == undefined){trHtml += '<td> - </td></tr>';}
+                                            else{trHtml += '<td>' + simpleDate(res.items[i].created_at) + '</td></tr>';}
+                                        $('#reportList tbody').append(trHtml);
+                                    }
+                                   
+                                    break;                                
+                                case "facility_name" : sortTable(0);break;
+                                case "building_name" : sortTable(1);break;
+                                case "actor_name" : sortTable(2);break;
+                                case "created_at" : sortTable(3);break;
+                            }
+                        }
+                    })   
                 })
                 .fail(function (request, status, error){  
                     msg = request.status + "<br>" + request.responseText + "<br>" + error;
@@ -338,7 +368,7 @@
 
             }
         }
-    }); 
+    });
 
     // 상세내용 모달(스태프 리포트)
     $('#viewStaffReport').on('show.bs.modal', function(e) {         
