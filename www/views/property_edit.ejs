@@ -325,35 +325,7 @@
                         $('#doorName').val('');                        
                         return false;
                     }
-                }
-                
-                 // 공용도어추가입력 api
-                $.ajax({
-                        url : endUrl(url),
-                        method:'POST',
-                        contentType: "application/json; charset=utf-8",        
-                        headers : headers(),
-                        data :JSON.stringify({
-                            name : doorname
-                        })
-                    })
-                    .done(function(res) {  
-                        console.log(res);                    
-                        addDoorTr(res.name, res.id);               
-                        $('#doorCnt').text(doorCnt + 1); 
-                        $("#doorDone").modal('show');  
-                        $('#noDoorList').hide();  
-                        $('#doorList').show();
-                    })
-                    .fail(function (request, status, error){  
-                        msg = request.status + "<br>" + request.responseText + "<br>" + error;
-                        console.log(msg);   
-                        alert("공용도어를 추가할 수 없습니다.")                        
-                    })
-                    .always(function(){                       
-                        location.reload();
-                    })
-
+                }                
             }else if(commonrooms.length == 0){ 
                 $("#doorDone").modal('show');  
                 $('#noDoorList').hide();  
@@ -361,6 +333,37 @@
                 addDoorTr(doorname);
                 console.log(commonrooms)
             } 
+            
+            // 공용도어추가입력 api
+            $.ajax({
+                   url : endUrl(url),
+                   method:'POST',
+                   contentType: "application/json; charset=utf-8",        
+                   headers : headers(),
+                   data :JSON.stringify({
+                       name : doorname
+                   })
+            })
+            .done(function(res) {  
+                console.log(res);                    
+                addDoorTr(res.name, res.id);               
+                $('#doorCnt').text(doorCnt + 1); 
+                $("#doorDone").modal('show');  
+                $('#noDoorList').hide();  
+                $('#doorList').show();
+            })
+            .fail(function (request, status, error){  
+                msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                console.log(msg);   
+                alert("공용도어를 추가할 수 없습니다.")                        
+            })
+            .always(function(){           
+                setTimeout(function(){
+                    location.reload();
+                }, 1000);
+            })
+
+
             $('#doorCnt').text(doorCnt + 1); 
 
         }else{
