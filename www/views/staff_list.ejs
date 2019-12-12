@@ -12,11 +12,9 @@
 
                             <h4>
                                 <div class="row">
-                                    <div class="col-md-3">
-                                        <select class="form-control" name="buildingNames"></select>                                             
-                                    </div>  
+                                    <div class="col-md-3"></div>  
                                     <div class="col-md-9">            
-                                        <a href="/properties/<%= id %>/staff_key_list" class="btn btn-primary pull-right">스텝키 발급 내역</a>                                                                                                   
+                                        <a href="/properties/<%= id %>/staff_key_list" class="btn btn-primary pull-right">스태프키 발급 내역</a>                                                                                                   
                                     </div>
                                 </div>  
                             </h4>
@@ -38,16 +36,26 @@
 
                                         <table class="table table-hover paging_list" id="staffList" style="display: none;"> 
                                             <colgroup>
-                                                <col width="20%">
-                                                <col width="*">
-                                                <col width="35%">
                                                 <col width="15%">
+                                                <col width="*">
+                                                <col width="25%">
+                                                <col width="10%">
+                                                <col width="10%">
+                                                <col width="20%">
                                             </colgroup>
                                             <thead>                                               
-                                                <th>생성일</th>
-                                                <th>스텝이름</th>   
-                                                <th>등급</th>                                             
-                                                <th>정렬:생성일 기준</th>
+                                                <th>등록일</th>
+                                                <th>스태프이름</th>   
+                                                <th>연락처</th>
+                                                <th>권한</th>
+                                                <th>스태프키</th>
+                                                <th style="text-align: center;">정렬 :
+                                                    <select name="sort">                                   
+                                                        <option value="">이름순</option>
+                                                        <option value="">등록순</option>
+                                                        <option value="">권한순</option>
+                                                    </select>
+                                                </th>
                                             </thead>
                                             <tbody></tbody>
                                         </table>
@@ -55,7 +63,7 @@
                             </div>
 
                             <button class="btn btn-default btn-fill shadow pull-left" onclick="location='javascript:history.back()'">나가기</button>
-                            <a href='/properties/<%= id %>/staff_new' class="btn btn-primary btn-fill shadow pull-right query">스텝 등록하기</a>
+                            <a href='/properties/<%= id %>/staff_new' class="btn btn-primary btn-fill shadow pull-right query">스태프 등록하기</a>
                             
 
                     </div>    
@@ -117,8 +125,11 @@
             res.items.forEach(function(item, i, array){    
                 var date =new Date(item.created_at);        
                 trHtml +='<tr><td>' + formatDate(date) + '</td><td><a data-toggle="modal" data-target="#viewStaff" data-staff_id="'+ item.id +'" role="button">' + item.name + '</a></td>';
-                trHtml +='<td>' + item.role + ' [ 보유키 : '+ res.total+'개 ]</td>';
-                trHtml +='<td><button onclick=location.href="/properties/'+ id+'/staff_key' + itemQuery +'" type="button"  title="키발급하기" class="btn btn-simple btn-link"><i class="icon key"></i></button>';
+                trHtml +='<td> +' + item.phone_number +'</td>';
+                trHtml +='<td>' + item.role +'</td>';
+                trHtml +='<td> 발급됨 </td>';
+                trHtml +='<td><a href="/properties/'+ id+'/staff_key' + itemQuery +'" type="button"  title="키발급하기" class="btn btn-simple btn-link"><i class="icon key"></i></a>';
+                trHtml +='<a href="#" type="button"  title="수정하기" class="btn btn-simple btn-link"><i class="icon edit"></i></a>';
                 trHtml +='<button type="button" id="btnDelStaff" data-staff_id="' + item.id + '" data-target="#Delstaff" data-toggle="modal" title="삭제하기" class="btn btn-simple btn-link"><i class="icon trash"></i></button></td></tr>';
             });       
             $('#staffList tbody').append(trHtml);

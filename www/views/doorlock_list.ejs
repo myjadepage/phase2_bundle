@@ -28,7 +28,7 @@
                             </h4>
                             <div class="card">                                   
                                 <div class="content table-responsive  table-full-width">
-                                    <table class="table table-hover">
+                                    <table class="table table-hover paging_list">
                                         <colgroup>
                                             <col width="30%">
                                             <col width="*">
@@ -42,7 +42,12 @@
                                                 <th>도어타입</th>
                                                 <th>설치상태</th>
                                                 <th>설치일</th>                                              
-                                                <th>정렬<select><option>이름순</option><option>설치상태</option></select></th>
+                                                <th>정렬 :
+                                                    <select name="sort">                                   
+                                                        <option value="">이름순</option>
+                                                        <option value="">설치상태</option>
+                                                    </select>
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody class="doorlock_list"></tbody>
@@ -138,7 +143,12 @@
         if(res.items.length >0){
             for(var i=0; i<res.items.length;i++){
                 var date =new Date(res.items[i].created_at);
-                trHtml +='<tr><td>'+res.items[i].building.name +'</td>';
+                if( res.items[i].building.name == null || res.items[i].building.name == undefined){
+                    trHtml +='<tr><td> - </td>';
+                }else{
+                    trHtml +='<tr><td>'+res.items[i].building.name +'</td>';
+                }
+                
                 trHtml +='<td>'+ res.items[i].type +'</td>';
                     if(res.items[i].status == "created"){//미설치시
                         trHtml +='<td><i class="icon created"></td>';
@@ -150,10 +160,14 @@
                 $('.doorlock_list').append(trHtml);
             }
             $('.doorlock_nolist').hide();
+            
+
         }else{
             $('.doorlock_nolist').show();
             $('.doorlock_list').hide();
         }
+
+        page(); 
     })
     .fail(function (request, status, error){  
         msg = request.status + "<br>" + request.responseText + "<br>" + error;

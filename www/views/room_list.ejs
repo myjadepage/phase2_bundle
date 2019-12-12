@@ -60,7 +60,7 @@
                                     </div>
                             </div>
 
-                            <button class="btn btn-default btn-fill shadow pull-left">취소</button>
+                            <button class="btn btn-default btn-fill shadow pull-left" onclick="location='javascript:history.back()'">나가기</button>
                             <a href='/properties/<%= id %>/room_new/<%= bid %>' class="btn btn-primary btn-fill shadow pull-right query">신규 객실 생성</a>                           
                             
                     </div>
@@ -128,26 +128,29 @@
             console.log(res);            
             $('#cntRoom').text(res.total);
             if(res.total > 0){
-            $('#noRoomList').hide(); 
-            $('#roomList').show(); 
-            var trHtml ="";
-            res.items.forEach(function(item, i, array){  
-                var date =new Date(item.created_at);  
-                trHtml += "<tr><td>" + formatDate(date) + "</td><td>" + item.name+ "</td>";  
-               
-                    if(res.items.type == "created"){//미설치시
-                        trHtml +='<td><i class="icon created"></i><small class="text-info">미사용중</small></td>';
-                    }else{//설치시
-                        trHtml +='<td><i class="icon installed"></i><small class="text-primary" >사용중</small</td>';
-                    }   
+                $('#noRoomList').hide(); 
+                $('#roomList').show(); 
+                var trHtml ="";
+                res.items.forEach(function(item, i, array){  
+                    var date =new Date(item.created_at);  
+                    trHtml += "<tr><td>" + formatDate(date) + "</td><td>" + item.name+ "</td>";  
                 
-                trHtml += "<td ><i class='icon mode_shield'></i><small  class='text-primary'>보안모드</small></td>";               
-                trHtml += "<td><button title='객실이름변경하기' data-toggle='modal' data-target='#EditName' class='btn btn-simple btn-link' ><i class='icon edit' ></i></button>";
-                trHtml += "<button type='button' title='삭제하기' class='btn btn-simple btn-link'  data-room_id='" + item.id + "'id='btnDelRoom'><i class='icon trash'></i></button></td>";
-                trHtml += "</tr>";                                             
-                                                  
-            });       
-            $('#roomList tbody').append(trHtml);
+                        if(item.doorlock.status == "created"){//미설치시
+                            trHtml +='<td><i class="icon created"></i><small class="text-created">도어락 미설치</small></td>';
+                        }else if(item.doorlock.status == "installed"){//설치시 사용중
+                            trHtml +='<td><i class="icon installed"></i><small class="text-primary" >사용중</small</td>';
+                        }else if(item.is_cleaning){//청소중
+                            trHtml +='<td><i class="icon cleaning"></i><small class="text-default" >청소중</small</td>';
+                        }
+                    
+                    trHtml += "<td ><i class='icon mode_shield'></i><small  class='text-primary'>보안모드</small></td>";               
+                    // trHtml += "<td ><i class='icon mode_touch'></i><small  class='text-primary'>간편모드</small></td>"; 
+                    trHtml += "<td><button title='객실이름변경하기' data-toggle='modal' data-target='#EditName' class='btn btn-simple btn-link' ><i class='icon edit' ></i></button>";
+                    trHtml += "<button type='button' title='삭제하기' class='btn btn-simple btn-link'  data-room_id='" + item.id + "'id='btnDelRoom'><i class='icon trash'></i></button></td>";
+                    trHtml += "</tr>";                                             
+                                                    
+                });       
+                $('#roomList tbody').append(trHtml);
             
             }else if(res.total == 0){
                 $('#noRoomList').show(); 
@@ -173,7 +176,7 @@
             .done(function(res) {                
                 console.log(res);                 
                 if(res.code == 200){
-                    $('#DelBuilding').modal('show');                    
+                    $('#delRoom').modal('show');                    
                 }else{
                     alert("삭제 실패");
                 }            
@@ -184,7 +187,7 @@
             })  
             .always(function(){ 
                 setTimeout(function(){
-                location.reload();
+                    location.reload();
                 },1500);
             }) 
         });
@@ -208,7 +211,7 @@
     .fail(function (request, status, error){  
         msg = request.status + "<br>" + request.responseText + "<br>" + error;
         console.log(msg); 
-        alert("건물 목록을 불러 올 수 없습니다.");                          
+        alert("빌딩 목록을 불러 올 수 없습니다.");                          
     })  
 
     //리스트에 보이는 날짜포맷 변경
