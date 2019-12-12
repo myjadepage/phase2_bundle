@@ -56,8 +56,8 @@
                                     </div>
                             </div>
 
-                            <button class="btn btn-default btn-fill shadow pull-left" onclick="location='javascript:history.back()'">취소</button>
-                            <a href='/properties/<%=id%>/building_new' class="btn btn-primary btn-fill shadow pull-right query">빌딩 생성하기</a>
+                            <button class="btn btn-default btn-fill shadow pull-left" onclick="location='javascript:history.back()'">나가기</button>
+                            <a href='#' class="btn btn-primary btn-fill shadow pull-right query">빌딩 생성하기</a>
                            
                     </div>
                 </div>
@@ -138,17 +138,19 @@
             })
             .done(function(res) {                
                 console.log(res);
-                location.reload();                 
-                // if(res.code == 200){
-                //     $('#Delproperty').on('show.modal');                    
-                // }else{
-                //     alert("삭제 실패");
-                // }            
+                if(res.code == 200){                   
+                   $('#DelBuilding').modal('show');                    
+                }                         
             })
             .fail(function (request, status, error){  
                 msg = request.status + "<br>" + request.responseText + "<br>" + error;
                 console.log(msg);  
-            })   
+            }) 
+            .always(function(){ 
+                setTimeout(function(){
+                    location.reload();
+                },1500);
+            })  
         });
 
     //리스트에 보이는 날짜포맷 변경

@@ -168,7 +168,7 @@
      domId : "",
      fnTimer : function(){
          var m = Math.floor(this.comSecond / 60) + " : " + (this.comSecond % 60);	// 남은 시간 계산   
-         console.log(m);
+        //  console.log(m);
          this.domId.addClass('btn-info').html( m + " 인증번호 확인");
          if (this.comSecond < 0) {			// 시간이 종료 되었으면..             
              $('#authDo').removeClass('btn-info').html("인증하기");

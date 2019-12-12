@@ -33,36 +33,52 @@
                                             <h5 class="card-title"></h5>                                      
                                         </div> 
                                         <div class="card-body">
-                                                <div class="table-full-width">                                               
-                                                       <table class="table">                                                               
-                                                            <thead>
-                                                                <tr>
-                                                                    <th colspan="2">
-                                                                        <div class="form-check">
-                                                                            <label class="form-check-label">
-                                                                                <input class="form-check-input" type="checkbox" value="" id="checkAll" >
-                                                                                <span class="form-check-sign"></span>                                                                            
-                                                                            </label>
-                                                                            <span class="check_cnt"><i></i> selected</span>                                                                             
-                                                                            <button role="button" data-toggle="modal" class="btn btn-simple btn-link" name="btnDelRoom" id="btnDelRoom">
-                                                                                    <i class="icon trash"></i>
-                                                                            </button>
-                                                                        </div>                                                                           
-                                                                    </th>                                                               
-                                                                    <th class="text-right">total: <strong class="text-primary" id="cntRoom"></strong></th>
-                                                                </tr>
-                                                            </thead> 
-                                                            
-                                                          <tbody>
-                                                                <tr>
-                                                                    <td colspan="3">
-                                                                        <ul class="room_name_item"></ul>
-                                                                    </td>                                                                       
-                                                                </tr> 
-                                                                                                                                       
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
+                                                <div class="table-full-width">  
+                                                    <table class="table" id="noRoomList" style="display: none;"> 
+                                                        <tr>
+                                                            <td colspan="3" style="border: none;">
+                                                                <div class="con_default">
+                                                                    <i class="icon room"></i>
+                                                                    <h4 class="text-center text-info">
+                                                                        ‘ 아직 생성된 객실 정보가 없습니다 ’<br>
+                                                                        <span>객실 정보를 등록하여 서비스를 시작해 보세요. </span>
+                                                                    </h4>
+                                                                </div>
+                                                            </td>                                                                      
+                                                        </tr>
+                                                    </table>                                                  
+                                                    
+
+
+                                                    <table class="table" id="roomList"  style="display: none;">                                                                
+                                                         <thead>
+                                                             <tr>
+                                                                 <th colspan="2">
+                                                                     <div class="form-check">
+                                                                         <label class="form-check-label">
+                                                                             <input class="form-check-input" type="checkbox" value="" id="checkAll" >
+                                                                             <span class="form-check-sign"></span>                                                                            
+                                                                         </label>
+                                                                         <span class="check_cnt"><i></i> selected</span>                                                                             
+                                                                         <button role="button" data-toggle="modal" class="btn btn-simple btn-link" name="btnDelRoom" id="btnDelRoom">
+                                                                                 <i class="icon trash"></i>
+                                                                         </button>
+                                                                     </div>                                                                           
+                                                                 </th>                                                               
+                                                                 <th class="text-right">total: <strong class="text-primary" id="cntRoom"></strong></th>
+                                                             </tr>
+                                                         </thead> 
+                                                         
+                                                       <tbody>
+                                                             <tr>
+                                                                 <td colspan="3">
+                                                                     <ul class="room_name_item"></ul>
+                                                                 </td>                                                                       
+                                                             </tr> 
+                                                                                                                                    
+                                                         </tbody>
+                                                     </table>
+                                                </div>
                                         </div>                                          
                                     </div>
                         </div>
@@ -104,23 +120,17 @@
     var name;
     var address;
     var itemQuery;   
-    (function qs() {
-        var qsparam = new Array(2);
-        var query = window.location.search.substring(1).split('&');  
-        console.log(query);     
-        for (var i = 0; i < query.length; i++) {
-            var pos = query[i].indexOf('=');
-            if (pos > 0){
-                    var key = decodeURIComponent(query[i].substring(0, pos));
-                    var val = decodeURIComponent(query[i].substring(pos + 1));
-                    qsparam[i] = val;    
-            }                          
-        }
-        name = qsparam[0];
-        address = qsparam[1];
-        itemQuery ='?name=' + name + '&address=' + address;        
-    })();
-    navTitle(name, address);
+    qs();
+    $('.nav .query_building').attr('href','/properties/<%= id %>/building'+itemQuery );
+    $('.nav .query_doorlock').attr('href','/properties/<%= id %>/doorlock'+itemQuery);
+    $('.nav .query_issuekey').attr('href','/properties/<%= id %>/issuekey'+itemQuery);
+    $('.nav .query_staff').attr('href','/properties/<%= id %>/staff'+itemQuery);
+    $('.nav .query_report').attr('href','/properties/<%= id %>/report'+itemQuery);
+    navTitle(name, address);  
+    
+    
+
+
 
     var API_KEY = localStorage.getItem('api_key');   
     var id = "<%= id %>";
@@ -204,40 +214,42 @@
         });
 
      
-        //선택된(하나) 삭제 api   
-        
-        $('#btnDelRoom').click(function(){                        
-            if(confirm("삭제하시겠습니까?")){
+        //선택된(하나) 삭제 api           
+        $('#btnDelRoom').click(function(){    
                 var rid="";
                 var check_row =$('ul.room_name_item > li input[name="checkRow"]');   
                 for(var i=0; i<check_row.length; i++){
                     rid=$('ul.room_name_item > li input[name="checkRow"]:checked').val();                   
+                } 
+                if(rid == undefined){
+                    alert("삭제할 객실을 선택해 주세요")
+                }else{
+                    if(confirm("삭제하시겠습니까?")){
+                        $.ajax({
+                            url : endUrl(url) + "/" + rid,
+                            contentType: "application/json; charset=utf-8",
+                            method : "delete",
+                            headers : headers()                                        
+                        })
+                        .done(function(res){
+                            console.log(res);                   
+                            $('#DelRoom').modal('show');                           
+                            
+                        })
+                        .fail(function(){
+                            msg = request.status + "<br>" + request.responseText + "<br>" + error;
+                            console.log(msg); 
+                            alert("객실을 삭제할 수 없습니다.");  
+                        }) 
+                        .always(function(){ 
+                            setTimeout(function(){
+                                location.reload();
+                            },1500);
+                        })
+                    } else{
+                    return false;
+                 }      
                 }
-
-                $.ajax({
-                    url : endUrl(url) + "/" + rid,
-                    contentType: "application/json; charset=utf-8",
-                    method : "delete",
-                    headers : headers()                                        
-                })
-                .done(function(res){
-                    console.log(res);                   
-                    $('#DelRoom').modal('show');                           
-                    
-                })
-                .fail(function(){
-                    msg = request.status + "<br>" + request.responseText + "<br>" + error;
-                    console.log(msg); 
-                    alert("객실을 삭제할 수 없습니다.");  
-                }) 
-                .always(function(){ 
-                    setTimeout(function(){
-                        location.reload();
-                    },1500);
-                })                
-            }else{
-                return false;
-            }
         });
    
 </script>

@@ -193,6 +193,14 @@ router.get('/properties/:id/staff_new', common.ensureAuthenticated, function(req
         id: id
     });
 });
+router.get('/properties/:id/staff_edit', common.ensureAuthenticated, function(req, res) {
+    var id = req.params.id;
+    res.render('staff_edit', {
+        date: common.currDateTime(),
+        path: '/staff',
+        id: id
+    });
+});
 router.get('/properties/:id/staff_key_list', common.ensureAuthenticated, function(req, res) {
     var id = req.params.id;
     res.render('staff_key_list', {

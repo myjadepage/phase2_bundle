@@ -63,7 +63,7 @@
                             </div>
 
                             <button class="btn btn-default btn-fill shadow pull-left" onclick="location='javascript:history.back()'">나가기</button>
-                            <a href='/properties/<%= id %>/staff_new' class="btn btn-primary btn-fill shadow pull-right query">스태프 등록하기</a>
+                            <a href='#' class="btn btn-primary btn-fill shadow pull-right query">스태프 등록하기</a>
                             
 
                     </div>    
@@ -95,6 +95,7 @@
     var address;
     var itemQuery;       
     qs();
+    $('.query').prop('href','/properties/<%= id %>/staff_new'+itemQuery );  
     $('.nav .query_building').attr('href','/properties/<%= id %>/building'+itemQuery );
     $('.nav .query_doorlock').attr('href','/properties/<%= id %>/doorlock'+itemQuery);
     $('.nav .query_issuekey').attr('href','/properties/<%= id %>/issuekey'+itemQuery);
@@ -148,38 +149,7 @@
         alert("건물 목록을 불러 올 수 없습니다.");                          
     }) 
 
-    // 스텝 상세조회 (모달)    
-    $('#viewStaff').on('show.bs.modal', function(e) { 
-         var staff_id = $(e.relatedTarget).data('staff_id');
-         console.log(staff_id);
-         $.ajax({
-            url : endUrl(url) + "/"+ staff_id,       
-            method:'get',
-            contentType: "application/json; charset=utf-8",
-            headers : {
-                "Authorization": "Bearer " + API_KEY
-            }
-        })
-        .done(function(res) {  
-            console.log(res);
-            $('#viewStaff .modal-body').empty();
-            if(res.desc == null){
-                res.desc = "-";
-            }
-            var date = simpleDate(res.created_at);
-            dlHtml="";
-            dlHtml +='<dl><dt>' + res.name + '</dt><dd><label>연락처</label><span>' + res.phone_number + '</span></dd>';
-            dlHtml +='<dd><label>스텝 레벨</label><span>' + res.role + '</span></dd>';
-            dlHtml +='<dd><label>등록일</label><span>' + date + '</span></dd><dd><label>보유키</label>';
-            dlHtml +='<span><strong>마스터키(사용기간 : 2019-10-01 ~ 2099-10-01)</strong><strong>스텝키(사용기간 : 2019-10-01 ~ 2099-10-01)</strong></span></dd>';
-            dlHtml +='<dd><label>메모</label><span>' + res.desc + '</span></dd></dl>';
-            $('#viewStaff .modal-body').append(dlHtml);
-        })
-        .fail(function (request, status, error){  
-            msg = request.status + "<br>" + request.responseText + "<br>" + error;
-            console.log(msg);                           
-        })
-     });  
+  
 
      //스텝삭제하기
      $('#staffList').on('click','#btnDelStaff', function(){
@@ -193,8 +163,7 @@
             })
             .done(function(res) {                
                 console.log(res);                 
-                if(res.code == 200){
-                   console.log(res);
+                if(res.code == 200){                   
                    $('#Delstaff').modal('show');                    
                 }else{
                    $('#DelstaffError').modal('show');
@@ -207,7 +176,7 @@
             .always(function(){ 
                 setTimeout(function(){
                     location.reload();
-                },1500);
+                },1000);
             })   
         });
 
