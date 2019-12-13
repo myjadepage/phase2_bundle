@@ -302,8 +302,8 @@
             </div>
             <div class="modal-body setting_choice">
                 <i class="icon confirm"></i>
-                <h6>스탭이름</h6>
-                <p>스탭 등록이 성공적으로 완료 되었습니다.</p>
+                <h6></h6>
+                <p>스태프 등록이 성공적으로 완료 되었습니다.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
@@ -321,8 +321,8 @@
             </div>
             <div class="modal-body setting_choice">
                 <i class="icon warning"></i>
-                <h6>스탭 등록 오류</h6>
-                <p>동일한 스탭이 등록 되어 있습니다<br>확인 후 다시 등록 바랍니다</p>
+                <h6>스태프 등록 오류</h6>
+                <p>동일한 스태프가 등록 되어 있습니다<br>확인 후 다시 등록 바랍니다</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
@@ -333,7 +333,7 @@
 <!--  End Modal -->
 
 <!--스텝정보상세보기Modal -->
-<div class="modal fade modal-primary" id="viewStaff" tabindex="-1" role="dialog" aria-labelledby="viewStaff" aria-hidden="true">
+<!-- <div class="modal fade modal-primary" id="viewStaff" tabindex="-1" role="dialog" aria-labelledby="viewStaff" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -345,8 +345,29 @@
             </div>
         </div>
     </div>
+</div> -->
+<!--  End Modal -->
+
+<!-- 스텝 수정 완료 Modal -->
+<div class="modal fade modal-primary" id="editStaffr" tabindex="-1" role="dialog" aria-labelledby="DelstaffError" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>알림</h5>
+            </div>
+            <div class="modal-body setting_choice">
+                <i class="icon warning"></i>
+                <h6></h6>
+                <p>스태프의 정보를 수정하였습니다.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
 </div>
 <!--  End Modal -->
+
 
 <!-- 스텝 삭제 오류 Modal -->
 <div class="modal fade modal-primary" id="DelstaffError" tabindex="-1" role="dialog" aria-labelledby="DelstaffError" aria-hidden="true">
@@ -357,8 +378,8 @@
             </div>
             <div class="modal-body setting_choice">
                 <i class="icon warning"></i>
-                <h6>사용중인 스탭키를 삭제해 주세요.</h6>
-                <p>삭제를 원하는 스탭의 사용중인 키를 [ 스탭키 발급 내역 ]<br>에서 삭제를 진행해 주세요.</p>
+                <h6>사용중인 스태프키를 삭제해 주세요.</h6>
+                <p>삭제를 원하는 스태프의 사용중인 키를 [ 스태프키 발급 내역 ]<br>에서 삭제를 진행해 주세요.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
@@ -367,6 +388,28 @@
     </div>
 </div>
 <!--  End Modal -->
+
+<!-- 스텝 삭제 확인알림 Modal -->
+<div class="modal fade modal-primary" id="beforeDelstaff" tabindex="-1" role="dialog" aria-labelledby="Delstaff" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>알림</h5>
+            </div>
+            <div class="modal-body">
+                <i class="icon warning"></i>
+                <h6>스태프를 삭제하시겠습니까?</h6>
+                <p>스태프를 삭제하면 해당 스태프에게 발급된 모든 키가 무효화 됩니다. 스태프 삭제시 주의 해주세요</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
+                <button type="button" class="btn btn-primary btn-fill btn-wd shadow" data-dismiss="modal">스태프 삭제</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  End Modal -->
+
 <!-- 스텝 삭제 Modal -->
 <div class="modal fade modal-primary" id="Delstaff" tabindex="-1" role="dialog" aria-labelledby="Delstaff" aria-hidden="true">
     <div class="modal-dialog">
@@ -377,7 +420,7 @@
             <div class="modal-body setting_choice">
                 <i class="icon trash"></i>
                 <h6></h6>
-                <p>스텝 삭제가 완료되었습니다.</p>
+                <p>스태프 삭제가 완료되었습니다.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
@@ -395,8 +438,8 @@
             </div>
             <div class="modal-body setting_choice">
                 <i class="icon confirm"></i>
-                <h6>스탭키 발급 완료</h6>
-                <p>[ 스탭이름 ] 에게 [ 스탭키 종류 ] 발급이 완료 되었습니다</p>
+                <h6>스태프키 발급 완료</h6>
+                <p>[ 스탭이름 ] 에게 [ 스태프키 종류 ] 발급이 완료 되었습니다</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default btn-fill btn-wd shadow" data-dismiss="modal">닫기</button>
